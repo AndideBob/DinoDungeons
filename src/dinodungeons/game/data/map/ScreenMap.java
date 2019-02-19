@@ -4,7 +4,7 @@ import dinodungeons.game.data.exceptions.ScreenMapIndexOutOfBounds;
 
 public class ScreenMap {
 
-	private MapID id;
+	private String id;
 	private int sizeX;
 	private int sizeY;
 	
@@ -12,7 +12,7 @@ public class ScreenMap {
 	
 	private BaseLayerTile[][] baseLayerTiles;
 	
-	public ScreenMap(MapID id, int sizeX, int sizeY) {
+	public ScreenMap(String id, int sizeX, int sizeY) {
 		this.id = id;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
@@ -39,6 +39,10 @@ public class ScreenMap {
 			}
 		}
 	}
+	
+	public String getID() {
+		return id;
+	}
 
 	public int getSizeX() {
 		return sizeX;
@@ -46,6 +50,10 @@ public class ScreenMap {
 
 	public int getSizeY() {
 		return sizeY;
+	}
+	
+	public int getBaseLayerValueForPosition(int x, int y) {
+		return baseLayer[x][y];
 	}
 
 	public BaseLayerTile getBaseLayerTileForPosition(int x, int y) {

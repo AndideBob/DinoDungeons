@@ -2,7 +2,10 @@ package dinodungeons.game.data.map;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -18,10 +21,15 @@ public class ScreenMapLoader {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ScreenMap loadMap(MapID id){
-		String path = GameWindowConstants.FILEPATH_DIRECTORY + File.separator + "data" + File.separator + "maps" + File.separator + id.getInternalID() + ".map";
+	public ScreenMap loadMap(String id){
+		String path = GameWindowConstants.FILEPATH_DIRECTORY + File.separator + "data" + File.separator + "maps" + File.separator + id + ".ddm";
 		try {
-            BufferedReader br = Files.newBufferedReader(Paths.get(path));
+			File file = new File(path);
+			if (!file.exists()) {
+				return new ScreenMap(id, 16, 12);
+			}
+			FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
             String line = br.readLine();
             int lineIndex = 0;
             //Map Constants
