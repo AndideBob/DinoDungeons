@@ -6,6 +6,7 @@ import java.util.HashSet;
 import dinodungeons.game.data.exceptions.ScreenMapIndexOutOfBounds;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
+import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
@@ -26,8 +27,8 @@ import lwjgladapter.logging.Logger;
 
 public class Editor extends Game {
 
-	TilesetManager tileSetManager = new TilesetManager();
-	DrawTextManager textManager;
+	
+	
 	ScreenMap currentMap;
 	
 	ScreenMapLoader loader;
@@ -41,205 +42,53 @@ public class Editor extends Game {
 	private String infoText = "";
 	
 	//Base Layer Placement
-	private static final int minBaseLayerSelection = 0;
-	private static final int maxBaseLayerSelection = 5;
-	private int currentTileSelection = minBaseLayerSelection;
-	private int currentTileSetSelection = minBaseLayerSelection;
-	private int currentExitSelection = 0;
-	private Texture selectorTexture;
+	private int currentSelection = 0;
 	
 	//Tile Sets
-	private final TileSet[] tileSets = TileSet.values();
+	public static final TileSet[] tileSets = TileSet.values();
 	//Entrance Types
-	private final TransportationType[] transportationTypes = TransportationType.values();
+	public static final TransportationType[] transportationTypes = TransportationType.values();
 	private String exitMapID = "0000";
 	private int exitPosX = 0;
 	private int exitPosY = 0;
+	
+	EditorDrawManager drawManager;
 	
 	public Editor() {
 		loader = new ScreenMapLoader();
 		saver = new ScreenMapSaver();
 		currentMap = new ScreenMap("000", 16, 12);
-		currentState = EditorState.INSPECTOR;
+		switchToState(EditorState.INSPECTOR);
+		drawManager = new EditorDrawManager();
 	}
 
 	@Override
 	public void draw() {
+		drawManager.setCurrentMap(currentMap);
 		//DrawCurrentMap
-		for(int x = 0; x < currentMap.getSizeX(); x++){
-			for(int y = 0; y < currentMap.getSizeY(); y++){
-				BaseLayerTile tile = currentMap.getBaseLayerTileForPosition(x, y);
-				TileSet tileSet = currentMap.getTileSet();
-				tileSetManager.drawTile(tile, tileSet, x * 16, y * 16);
-			}
-		}
+		drawManager.drawMap();
 		//DrawExitLayer
 		if(currentState == EditorState.PLACE_EXITS ||
 				currentState == EditorState.INSPECTOR){
-			for(int x = 0; x < currentMap.getSizeX(); x++){
-				for(int y = 0; y < currentMap.getSizeY(); y++){
-					MapObject mapObject = currentMap.getMapObjectForPosition(x, y);
-					drawMapObject(mapObject, x, y);
-				}
-			}
+			drawManager.drawObjectsLayer();
 		}
 		//DrawPointer
 		if(isMouseOnMap()) {
 			int x = currentMousePosition[0] / 16;
 			int y = currentMousePosition[1] / 16;
-			selectorTexture.draw(x * 16, y * 16);
+			drawManager.drawSelector(x, y);
 		}
 		//DrawUI
-		textManager.DrawText(0, 247, "[F1]Save", 9);
-		textManager.DrawText(0, 238, "[F2]Load", 9);
-		textManager.DrawText(0, 229, "[F3]Exits", 10);
-		textManager.DrawText(96, 247, "[</>]", 5);
-		//ToolSelection
-		int optionsShown = 3;
-		int lowest;
-		int highest;
-		switch(currentState) {
-		case INSPECTOR:
-			textManager.DrawText(146, 247, "Inspector", 10);
-			break;
-		case PLACE_BASELAYER:
-			textManager.DrawText(146, 247, "Base layer", 10);
-			optionsShown = 3;
-			lowest = Math.max(minBaseLayerSelection, currentTileSelection-optionsShown);
-			highest = Math.min(maxBaseLayerSelection, lowest+optionsShown);
-			for(int i = lowest; i <= highest; i++) {
-				String text = i == currentTileSelection ? ">" : " ";
-				text += "[" + i + "]";
-				switch(i) {
-				case 0:
-					text += "wall";
-					break;
-				case 1:
-					text += "border";
-					break;
-				case 2:
-					text += "floor a";
-					break;
-				case 3:
-					text += "floor b";
-					break;
-				case 4:
-					text += "floor c";
-					break;
-				case 5:
-					text += "stairs";
-					break;
-				}
-				textManager.DrawText(136, 211 + 9*optionsShown, text, 16);
-				optionsShown--;
-			}
-			break;
-		case CHANGE_TILESET:
-			textManager.DrawText(146, 247, "Tile Set", 10);
-			lowest = Math.max(0, currentTileSetSelection-optionsShown);
-			highest = Math.min(tileSets.length -1, lowest+optionsShown);
-			for(int i = lowest; i <= highest; i++) {
-				String text = i == currentTileSetSelection ? ">" : " ";
-				text += "[" + i + "]";
-				text += tileSets[i].getRepresentationInFile();
-				textManager.DrawText(126, 211 + 9*optionsShown, text, 16);
-				optionsShown--;
-			}
-			break;
-		case PLACE_EXITS:
-			textManager.DrawText(146, 247, "Exits", 10);
-			lowest = Math.max(0, currentExitSelection-optionsShown);
-			highest = Math.min(transportationTypes.length -1, lowest+optionsShown);
-			for(int i = lowest; i <= highest; i++) {
-				String text = i == currentExitSelection ? ">" : " ";
-				text += "[" + i + "]";
-				switch(transportationTypes[i]){
-				case CAVE_ENTRY:
-					text += "Cave En";
-					break;
-				case CAVE_EXIT:
-					text += "Cave Ex";
-					break;
-				case DUNGEON_EXIT:
-					text += "Dngn Ex";
-					break;
-				case INSTANT_TELEPORT:
-					text += "Instant";
-					break;
-				case STAIRS:
-					text += "Stairs";
-					break;
-				}
-				
-				textManager.DrawText(126, 211 + 9*optionsShown, text, 16);
-				optionsShown--;
-			}
-			break;
-		case ENTER_TEXT:
-		default:
-			break;
-		}
+		drawManager.drawUI(currentState, currentSelection);
 		//InfoText
-		textManager.DrawText(0, 202, infoText, 25);
+		drawManager.drawInfoText(infoText);
 		//EnterText
 		if(currentState == EditorState.ENTER_TEXT) {
-			textManager.DrawText(0, 192, enteredText, 4);
-			if(enteredText.length() < 4) {
-				textManager.DrawText(enteredText.length() * 10, 192, "|", 1);
-			}
+			drawManager.drawEnteredText(enteredText);
 		}
 	}
 
-	private void drawMapObject(MapObject mapObject, int x, int y) {
-		if(mapObject instanceof EmptyMapObject){
-			//Do not draw anything
-			return;
-		}
-		if(mapObject instanceof TransportMapObject){
-			TransportMapObject transport = (TransportMapObject) mapObject;
-			String txtUpL = "";
-			String txtLowL = "";
-			String txtUpR = "";
-			String txtLowR = "";
-			switch(transport.getTransportationType()){
-			case CAVE_ENTRY:
-				txtUpL = "C";
-				txtUpR = "V";
-				txtLowL = "E";
-				txtLowR = "N";
-				break;
-			case CAVE_EXIT:
-				txtUpL = "C";
-				txtUpR = "V";
-				txtLowL = "E";
-				txtLowR = "X";
-				break;
-			case DUNGEON_EXIT:
-				txtUpL = "D";
-				txtUpR = "N";
-				txtLowL = "E";
-				txtLowR = "X";
-				break;
-			case INSTANT_TELEPORT:
-				txtUpL = "I";
-				txtUpR = "N";
-				txtLowL = "T";
-				txtLowR = "P";
-				break;
-			case STAIRS:
-				txtUpL = "S";
-				txtUpR = "T";
-				txtLowL = "R";
-				txtLowR = "S";
-				break;
-			}
-			textManager.DrawText(x * 16 - 1, y * 16 + 8, txtUpL, 1);
-			textManager.DrawText(x * 16 + 7, y * 16 + 8, txtUpR, 1);
-			textManager.DrawText(x * 16 - 1, y * 16, txtLowL, 1);
-			textManager.DrawText(x * 16 + 7, y * 16, txtLowR, 1);
-			return;
-		}
-	}
+	
 
 	private boolean isMouseOnMap() {
 		if(currentState == EditorState.ENTER_TEXT) {
@@ -257,9 +106,7 @@ public class Editor extends Game {
 
 	@Override
 	public void loadResources() {
-		tileSetManager.loadResources();
-		textManager = new DrawTextManager(GFXResourceID.TEXT.getFilePath());
-		selectorTexture = new Texture(GFXResourceID.EDITOR_SELECTOR.getFilePath());
+		drawManager.loadTextures();
 	}
 
 	@Override
@@ -268,7 +115,7 @@ public class Editor extends Game {
 		if(currentState != EditorState.ENTER_TEXT) {
 			//Enter Save Mode
 			if(InputManager.instance.getKeyState(KeyboardKey.KEY_F1).equals(ButtonState.RELEASED)) {
-				currentState = EditorState.ENTER_TEXT;
+				switchToState(EditorState.ENTER_TEXT);
 				textUsage = TextUsage.SAVING;
 				infoText = "Enter File-id to save:";
 				enteredText = "";
@@ -277,7 +124,7 @@ public class Editor extends Game {
 			//Enter Load Mode
 			if(currentState != EditorState.ENTER_TEXT) {
 				if(InputManager.instance.getKeyState(KeyboardKey.KEY_F2).equals(ButtonState.RELEASED)) {
-					currentState = EditorState.ENTER_TEXT;
+					switchToState(EditorState.ENTER_TEXT);
 					textUsage = TextUsage.LOAD;
 					infoText = "Enter File-id to load:";
 					enteredText = "";
@@ -286,7 +133,7 @@ public class Editor extends Game {
 			}
 			//Enter Entrance Mode
 			if(InputManager.instance.getKeyState(KeyboardKey.KEY_F3).equals(ButtonState.RELEASED)) {
-				currentState = EditorState.ENTER_TEXT;
+				switchToState(EditorState.ENTER_TEXT);
 				textUsage = TextUsage.EXIT_NORTH;
 				infoText = "Enter Map-ID upwards:";
 				enteredText = currentMap.getTransitionUpID();
@@ -294,7 +141,7 @@ public class Editor extends Game {
 			}
 			//Enter Exit Placement Edit Mode
 			if(currentState == EditorState.PLACE_EXITS && InputManager.instance.getKeyState(KeyboardKey.KEY_F5).equals(ButtonState.RELEASED)) {
-				currentState = EditorState.ENTER_TEXT;
+				switchToState(EditorState.ENTER_TEXT);
 				textUsage = TextUsage.EXIT_MAP_ID;
 				infoText = "Enter Destination Map-ID:";
 				enteredText = exitMapID;
@@ -352,13 +199,8 @@ public class Editor extends Game {
 					switch (textUsage) {
 					case LOAD:
 						currentMap = loader.loadMap(enteredText);
-						for(int i = 0; i < tileSets.length; i++){
-							if(tileSets[i].equals(currentMap.getTileSet())){
-								currentTileSetSelection = i;
-							}
-						}
 						infoText = "Load successfull!";
-						currentState = EditorState.PLACE_BASELAYER;
+						switchToState(EditorState.PLACE_BASELAYER);
 						break;
 					case SAVING:
 						if(saver.saveMap(enteredText, currentMap)) {
@@ -367,24 +209,24 @@ public class Editor extends Game {
 						else {
 							infoText = "An error occured during saving!";
 						}
-						currentState = EditorState.PLACE_BASELAYER;
+						switchToState(EditorState.PLACE_BASELAYER);
 						break;
 					case EXIT_EAST:
-						currentState = EditorState.ENTER_TEXT;
+						switchToState(EditorState.ENTER_TEXT);
 						textUsage = TextUsage.EXIT_SOUTH;
 						infoText = "Enter Map-ID downwards:";
 						currentMap.setTransitionRightID(enteredText);
 						enteredText = currentMap.getTransitionDownID();
 						break;
 					case EXIT_NORTH:
-						currentState = EditorState.ENTER_TEXT;
+						switchToState(EditorState.ENTER_TEXT);
 						textUsage = TextUsage.EXIT_EAST;
 						infoText = "Enter Map-ID right:";
 						currentMap.setTransitionUpID(enteredText);
 						enteredText = currentMap.getTransitionRightID();
 						break;
 					case EXIT_SOUTH:
-						currentState = EditorState.ENTER_TEXT;
+						switchToState(EditorState.ENTER_TEXT);
 						textUsage = TextUsage.EXIT_WEST;
 						infoText = "Enter Map-ID left:";
 						currentMap.setTransitionDownID(enteredText);
@@ -393,31 +235,31 @@ public class Editor extends Game {
 					case EXIT_WEST:
 						infoText = "Exits updated!";
 						currentMap.setTransitionLeftID(enteredText);
-						currentState = EditorState.PLACE_BASELAYER;
+						switchToState(EditorState.PLACE_BASELAYER);
 						break;
 					case EXIT_MAP_ID:
-						currentState = EditorState.ENTER_TEXT;
+						switchToState(EditorState.ENTER_TEXT);
 						textUsage = TextUsage.EXIT_MAP_X;
 						infoText = "Enter Destination X-Position:";
 						exitMapID = enteredText;
 						enteredText = String.valueOf(exitPosX);
 						break;
 					case EXIT_MAP_X:
-						currentState = EditorState.ENTER_TEXT;
+						switchToState(EditorState.ENTER_TEXT);
 						textUsage = TextUsage.EXIT_MAP_Y;
 						infoText = "Enter Destination Y-Position:";
 						exitPosX = Integer.parseInt(enteredText);
 						enteredText = String.valueOf(exitPosY);
 						break;
 					case EXIT_MAP_Y:
-						currentState = EditorState.PLACE_EXITS;
+						switchToState(EditorState.PLACE_EXITS);
 						exitPosY = Integer.parseInt(enteredText);
 						infoText = "[F5]Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
 						break;
 					default:
 						Logger.logError("Text usage not defined!");
 						infoText = "Error!";
-						currentState = EditorState.PLACE_BASELAYER;
+						switchToState(EditorState.PLACE_BASELAYER);
 						break;
 					}
 				}
@@ -434,37 +276,10 @@ public class Editor extends Game {
 		case PLACE_BASELAYER:
 			//Selection
 			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.RELEASED)) {
-				currentTileSelection = (currentTileSelection + maxBaseLayerSelection) % (maxBaseLayerSelection + 1);
+				currentSelection = (currentSelection + ScreenMapConstants.maxBaseLayerSelection) % (ScreenMapConstants.maxBaseLayerSelection + 1);
 			}
 			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.RELEASED)) {
-				currentTileSelection = (currentTileSelection + 1) % (maxBaseLayerSelection + 1);
-			}
-			//Quick Selection
-			for(KeyboardKey key : KeyboardKey.numberButtons) {
-				if(InputManager.instance.getKeyState(key).equals(ButtonState.RELEASED)) {
-					switch (key) {
-					case KEY_0:
-						currentTileSelection = 0;
-						break;
-					case KEY_1:
-						currentTileSelection = 1;
-						break;
-					case KEY_2:
-						currentTileSelection = 2;
-						break;
-					case KEY_3:
-						currentTileSelection = 3;
-						break;
-					case KEY_4:
-						currentTileSelection = 4;
-						break;
-					case KEY_5:
-						currentTileSelection = 5;
-						break;
-					default:
-						break;
-					}
-				}
+				currentSelection = (currentSelection + 1) % (ScreenMapConstants.maxBaseLayerSelection + 1);
 			}
 			//Placing Tiles
 			if(isMouseOnMap()) {
@@ -472,9 +287,9 @@ public class Editor extends Game {
 					int x = currentMousePosition[0] / 16;
 					int y = currentMousePosition[1] / 16;
 					int tileValue = currentMap.getBaseLayerValueForPosition(x, y);
-					if(tileValue != currentTileSelection) {
+					if(tileValue != currentSelection) {
 						try {
-							currentMap.setBaseLayer(x, y, currentTileSelection);
+							currentMap.setBaseLayer(x, y, currentSelection);
 							currentMap.updateBaseLayerTiles();
 						} catch (ScreenMapIndexOutOfBounds e) {
 							Logger.logError(e);
@@ -485,24 +300,24 @@ public class Editor extends Game {
 			break;
 		case CHANGE_TILESET:
 			//Selection
-			int oldTileSetSelection = currentTileSetSelection;
+			int oldTileSetSelection = currentSelection;
 			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.RELEASED)) {
-				currentTileSetSelection = (currentTileSetSelection + tileSets.length -1) % (tileSets.length);
+				currentSelection = (currentSelection + tileSets.length -1) % (tileSets.length);
 			}
 			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.RELEASED)) {
-				currentTileSetSelection = (currentTileSetSelection + 1) % (tileSets.length);
+				currentSelection = (currentSelection + 1) % (tileSets.length);
 			}
-			if(oldTileSetSelection != currentTileSetSelection){
-				currentMap.setTileSet(tileSets[currentTileSetSelection]);
+			if(oldTileSetSelection != currentSelection){
+				currentMap.setTileSet(tileSets[currentSelection]);
 			}
 			break;
 		case PLACE_EXITS:
 			//Selection
 			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.RELEASED)) {
-				currentExitSelection = (currentExitSelection + transportationTypes.length -1) % (transportationTypes.length);
+				currentSelection = (currentSelection + transportationTypes.length -1) % (transportationTypes.length);
 			}
 			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.RELEASED)) {
-				currentExitSelection = (currentExitSelection + 1) % (transportationTypes.length);
+				currentSelection = (currentSelection + 1) % (transportationTypes.length);
 			}
 			//Placing Exits
 			if(isMouseOnMap()) {
@@ -513,7 +328,7 @@ public class Editor extends Game {
 					transport.setDestinationMapID(exitMapID);
 					transport.setX(exitPosX);
 					transport.setY(exitPosY);
-					transport.setTransportationType(transportationTypes[currentExitSelection]);
+					transport.setTransportationType(transportationTypes[currentSelection]);
 					currentMap.setMapObjectForPosition(x, y, transport);
 				}
 			}
@@ -521,22 +336,46 @@ public class Editor extends Game {
 		}
 	}
 	
+	private void switchToState(EditorState state){
+		currentSelection = 0;
+		switch(state){
+		case CHANGE_TILESET:
+			for(int i = 0; i < tileSets.length; i++){
+				if(tileSets[i].equals(currentMap.getTileSet())){
+					currentSelection = i;
+				}
+			}
+			break;
+		case ENTER_TEXT:
+			break;
+		case INSPECTOR:
+			break;
+		case PLACE_BASELAYER:
+			break;
+		case PLACE_EXITS:
+			infoText = "[F5]Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
+			break;
+		default:
+			break;
+		}
+		currentState = state;
+	}
+	
 	private void switchToPreviousState() {
 		switch(currentState) {
 		case ENTER_TEXT:
 			break;
 		case INSPECTOR:
-			currentState = EditorState.PLACE_EXITS;
-			infoText = "[F5]Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
+			switchToState(EditorState.PLACE_EXITS);
 			break;
 		case PLACE_BASELAYER:
-			currentState = EditorState.INSPECTOR;
+			switchToState(EditorState.INSPECTOR);
 			break;
 		case CHANGE_TILESET:
-			currentState = EditorState.PLACE_BASELAYER;
+			switchToState(EditorState.PLACE_BASELAYER);
 			break;
 		case PLACE_EXITS:
-			currentState = EditorState.CHANGE_TILESET;
+			switchToState(EditorState.CHANGE_TILESET);
 			break;
 		}
 	}
@@ -546,17 +385,16 @@ public class Editor extends Game {
 		case ENTER_TEXT:
 			break;
 		case INSPECTOR:
-			currentState = EditorState.PLACE_BASELAYER;
+			switchToState(EditorState.PLACE_BASELAYER);
 			break;
 		case PLACE_BASELAYER:
-			currentState = EditorState.CHANGE_TILESET;
+			switchToState(EditorState.CHANGE_TILESET);
 			break;
 		case CHANGE_TILESET:
-			currentState = EditorState.PLACE_EXITS;
-			infoText = "[F5]Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
+			switchToState(EditorState.PLACE_EXITS);
 			break;
 		case PLACE_EXITS:
-			currentState = EditorState.INSPECTOR;
+			switchToState(EditorState.INSPECTOR);
 			break;
 		}
 	}
@@ -646,14 +484,6 @@ public class Editor extends Game {
 			}			
 		}
 		return "";
-	}
-	
-	private enum EditorState{
-		INSPECTOR,
-		PLACE_BASELAYER,
-		CHANGE_TILESET,
-		PLACE_EXITS,
-		ENTER_TEXT
 	}
 	
 	private enum TextUsage{

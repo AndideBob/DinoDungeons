@@ -9,6 +9,9 @@ public class ScreenMapConstants {
 	public static final String mapDirectiory = GameWindowConstants.FILEPATH_DIRECTORY + File.separator + "data" + File.separator + "maps";
 	public static final String mapFileExtension = ".ddm";
 
+	public static final int minBaseLayerSelection = 0;
+	public static final int maxBaseLayerSelection = 5;
+	
 	public static final int BASE_LAYER_WALL = 0;
 	public static final int BASE_LAYER_BORDER = 1;
 	public static final int BASE_LAYER_FLOOR_A = 2;
