@@ -10,6 +10,8 @@ import lwjgladapter.logging.Logger;
 public class ScreenMapSaver {
 	
 	private static final String seperatorString = ";";
+	
+	private MapObjectParser mapObjectParser = new MapObjectParser();
 
 	public ScreenMapSaver() {
 		// TODO Auto-generated constructor stub
@@ -46,7 +48,7 @@ public class ScreenMapSaver {
             //Object Layer
             for(int y = 0; y < map.getSizeY(); y++) {
             	for(int x = 0; x < map.getSizeX(); x++) {
-            		bw.write(String.valueOf(0));
+            		bw.write(String.valueOf(mapObjectParser.parseMapObjectToString(map.getMapObjectForPosition(x, y))));
             		if(x < map.getSizeX() - 1) {
             			bw.write(String.valueOf(seperatorString));
             		}

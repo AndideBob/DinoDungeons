@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import dinodungeons.game.data.exceptions.DinoDungeonsException;
+import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.gfx.tilesets.TileSet;
 import lwjgladapter.logging.Logger;
 
@@ -13,6 +14,7 @@ public class ScreenMapLoader {
 	
 	private static final String seperatorString = ";";
 	
+	private MapObjectParser mapObjectParser = new MapObjectParser();
 
 	public ScreenMapLoader() {
 		// TODO Auto-generated constructor stub
@@ -109,7 +111,8 @@ public class ScreenMapLoader {
 	}
 	
 	private void parseObjectOntoMap(int x, int y, String tileString, ScreenMap map) throws DinoDungeonsException{
-		
+		MapObject mapObject = mapObjectParser.parseStringToMapObject(tileString);
+		map.setMapObjectForPosition(x, y, mapObject);
 	}
 
 }
