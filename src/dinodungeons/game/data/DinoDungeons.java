@@ -23,7 +23,7 @@ public class DinoDungeons extends Game {
 	}
 
 	@Override
-	public void update() {
+	public void update(long deltaTimeInMS) {
 		// TODO Auto-generated method stub
 
 	}

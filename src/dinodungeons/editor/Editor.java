@@ -178,7 +178,7 @@ public class Editor extends Game {
 	}
 
 	@Override
-	public void update() {
+	public void update(long deltaTimeInMs) {
 		currentMousePosition = getMousePosition();
 		if(currentState != EditorState.ENTER_TEXT) {
 			//Enter Save Mode
