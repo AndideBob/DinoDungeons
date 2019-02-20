@@ -4,24 +4,19 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import dinodungeons.game.data.exceptions.ScreenMapIndexOutOfBounds;
-import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
-import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
-import dinodungeons.gfx.GFXResourceID;
-import dinodungeons.gfx.text.DrawTextManager;
 import dinodungeons.gfx.tilesets.TileSet;
-import dinodungeons.gfx.tilesets.TilesetManager;
 import lwjgladapter.game.Game;
-import lwjgladapter.gfx.Texture;
 import lwjgladapter.input.ButtonState;
 import lwjgladapter.input.InputManager;
 import lwjgladapter.input.KeyboardKey;
+import lwjgladapter.input.KeyboardKeyUtil;
 import lwjgladapter.input.MouseButton;
 import lwjgladapter.logging.Logger;
 
@@ -57,7 +52,7 @@ public class Editor extends Game {
 	public Editor() {
 		loader = new ScreenMapLoader();
 		saver = new ScreenMapSaver();
-		currentMap = new ScreenMap("000", 16, 12);
+		currentMap = ScreenMap.defaultMap;
 		switchToState(EditorState.INSPECTOR);
 		drawManager = new EditorDrawManager();
 	}
@@ -112,48 +107,8 @@ public class Editor extends Game {
 	@Override
 	public void update(long deltaTimeInMs) {
 		currentMousePosition = getMousePosition();
-		if(currentState != EditorState.ENTER_TEXT) {
-			//Enter Save Mode
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_F1).equals(ButtonState.RELEASED)) {
-				switchToState(EditorState.ENTER_TEXT);
-				textUsage = TextUsage.SAVING;
-				infoText = "Enter File-id to save:";
-				enteredText = "";
-				return;
-			}
-			//Enter Load Mode
-			if(currentState != EditorState.ENTER_TEXT) {
-				if(InputManager.instance.getKeyState(KeyboardKey.KEY_F2).equals(ButtonState.RELEASED)) {
-					switchToState(EditorState.ENTER_TEXT);
-					textUsage = TextUsage.LOAD;
-					infoText = "Enter File-id to load:";
-					enteredText = "";
-					return;
-				}
-			}
-			//Enter Entrance Mode
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_F3).equals(ButtonState.RELEASED)) {
-				switchToState(EditorState.ENTER_TEXT);
-				textUsage = TextUsage.EXIT_NORTH;
-				infoText = "Enter Map-ID upwards:";
-				enteredText = currentMap.getTransitionUpID();
-				return;
-			}
-			//Enter Exit Placement Edit Mode
-			if(currentState == EditorState.PLACE_EXITS && InputManager.instance.getKeyState(KeyboardKey.KEY_F5).equals(ButtonState.RELEASED)) {
-				switchToState(EditorState.ENTER_TEXT);
-				textUsage = TextUsage.EXIT_MAP_ID;
-				infoText = "Enter Destination Map-ID:";
-				enteredText = exitMapID;
-				return;
-			}
-			//Switch Mode
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.RELEASED)) {
-				switchToPreviousState();
-			}
-			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.RELEASED)) {
-				switchToNextState();
-			}
+		if(checkIfModeWasSwitched()){
+			return;
 		}
 		//General Commands
 		switch(currentState) {
@@ -212,25 +167,13 @@ public class Editor extends Game {
 						switchToState(EditorState.PLACE_BASELAYER);
 						break;
 					case EXIT_EAST:
-						switchToState(EditorState.ENTER_TEXT);
-						textUsage = TextUsage.EXIT_SOUTH;
-						infoText = "Enter Map-ID downwards:";
-						currentMap.setTransitionRightID(enteredText);
-						enteredText = currentMap.getTransitionDownID();
+						switchToEnterTextMode(TextUsage.EXIT_SOUTH);
 						break;
 					case EXIT_NORTH:
-						switchToState(EditorState.ENTER_TEXT);
-						textUsage = TextUsage.EXIT_EAST;
-						infoText = "Enter Map-ID right:";
-						currentMap.setTransitionUpID(enteredText);
-						enteredText = currentMap.getTransitionRightID();
+						switchToEnterTextMode(TextUsage.EXIT_EAST);
 						break;
 					case EXIT_SOUTH:
-						switchToState(EditorState.ENTER_TEXT);
-						textUsage = TextUsage.EXIT_WEST;
-						infoText = "Enter Map-ID left:";
-						currentMap.setTransitionDownID(enteredText);
-						enteredText = currentMap.getTransitionLeftID();
+						switchToEnterTextMode(TextUsage.EXIT_WEST);
 						break;
 					case EXIT_WEST:
 						infoText = "Exits updated!";
@@ -238,23 +181,14 @@ public class Editor extends Game {
 						switchToState(EditorState.PLACE_BASELAYER);
 						break;
 					case EXIT_MAP_ID:
-						switchToState(EditorState.ENTER_TEXT);
-						textUsage = TextUsage.EXIT_MAP_X;
-						infoText = "Enter Destination X-Position:";
-						exitMapID = enteredText;
-						enteredText = String.valueOf(exitPosX);
+						switchToEnterTextMode(TextUsage.EXIT_MAP_X);
 						break;
 					case EXIT_MAP_X:
-						switchToState(EditorState.ENTER_TEXT);
-						textUsage = TextUsage.EXIT_MAP_Y;
-						infoText = "Enter Destination Y-Position:";
-						exitPosX = Integer.parseInt(enteredText);
-						enteredText = String.valueOf(exitPosY);
+						switchToEnterTextMode(TextUsage.EXIT_MAP_Y);
 						break;
 					case EXIT_MAP_Y:
-						switchToState(EditorState.PLACE_EXITS);
 						exitPosY = Integer.parseInt(enteredText);
-						infoText = "[F5]Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
+						switchToState(EditorState.PLACE_EXITS);
 						break;
 					default:
 						Logger.logError("Text usage not defined!");
@@ -336,6 +270,92 @@ public class Editor extends Game {
 		}
 	}
 	
+	private boolean checkIfModeWasSwitched(){
+		//Escape to Inspector
+		if(InputManager.instance.getKeyState(KeyboardKey.KEY_ESCAPE).equals(ButtonState.RELEASED)) {
+			switchToState(EditorState.INSPECTOR);
+			return true;
+		}
+		if(currentState != EditorState.ENTER_TEXT) {
+			//Enter Save Mode
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_F1).equals(ButtonState.RELEASED)) {
+				switchToEnterTextMode(TextUsage.SAVING);
+				return true;
+			}
+			//Enter Load Mode
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_F2).equals(ButtonState.RELEASED)) {
+				switchToEnterTextMode(TextUsage.LOAD);
+				return true;
+			}
+			//Enter Entrance Mode
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_F3).equals(ButtonState.RELEASED)) {
+				switchToEnterTextMode(TextUsage.EXIT_NORTH);
+				return true;
+			}
+			//Enter Exit Placement Edit Mode
+			if(currentState == EditorState.PLACE_EXITS && InputManager.instance.getKeyState(KeyboardKey.KEY_F5).equals(ButtonState.RELEASED)) {
+				switchToEnterTextMode(TextUsage.EXIT_MAP_ID);
+				return true;
+			}
+			//Switch Mode
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.RELEASED)) {
+				switchToPreviousState();
+				return true;
+			}
+			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.RELEASED)) {
+				switchToNextState();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private void switchToEnterTextMode(TextUsage usage){
+		switchToState(EditorState.ENTER_TEXT);
+		textUsage = usage;
+		switch(textUsage){
+		case EXIT_EAST:
+			infoText = "Enter Map-ID right:";
+			currentMap.setTransitionUpID(enteredText);
+			enteredText = currentMap.getTransitionRightID();
+			break;
+		case EXIT_MAP_ID:
+			infoText = "Enter Destination Map-ID:";
+			enteredText = exitMapID;
+			break;
+		case EXIT_MAP_X:
+			infoText = "Enter Destination X-Position:";
+			exitMapID = enteredText;
+			enteredText = String.valueOf(exitPosX);
+			break;
+		case EXIT_MAP_Y:
+			infoText = "Enter Destination Y-Position:";
+			exitPosX = Integer.parseInt(enteredText);
+			enteredText = String.valueOf(exitPosY);
+			break;
+		case EXIT_NORTH:
+			infoText = "Enter Map-ID upwards:";
+			enteredText = currentMap.getTransitionUpID();
+			break;
+		case EXIT_SOUTH:
+			infoText = "Enter Map-ID downwards:";
+			currentMap.setTransitionRightID(enteredText);
+			enteredText = currentMap.getTransitionDownID();
+			break;
+		case EXIT_WEST:
+			infoText = "Enter Map-ID left:";
+			currentMap.setTransitionDownID(enteredText);
+			enteredText = currentMap.getTransitionLeftID();
+			break;
+		case LOAD:
+			infoText = "Enter File-id to load:";
+			break;
+		case SAVING:
+			infoText = "Enter File-id to save:";
+			break;
+		}
+	}
+	
 	private void switchToState(EditorState state){
 		currentSelection = 0;
 		switch(state){
@@ -347,6 +367,7 @@ public class Editor extends Game {
 			}
 			break;
 		case ENTER_TEXT:
+			enteredText = "";
 			break;
 		case INSPECTOR:
 			break;
@@ -403,84 +424,10 @@ public class Editor extends Game {
 		HashSet<KeyboardKey> keySet = new HashSet<>();
 		keySet.addAll(Arrays.asList(KeyboardKey.letterButtons));
 		keySet.addAll(Arrays.asList(KeyboardKey.numberButtons));
+		keySet.addAll(Arrays.asList(KeyboardKey.numPadButtons));
 		for(KeyboardKey key : keySet) {
 			if(InputManager.instance.getKeyState(key).equals(ButtonState.RELEASED)) {
-				switch (key) {
-				case KEY_0:
-					return "0";
-				case KEY_1:
-					return "1";
-				case KEY_2:
-					return "2";
-				case KEY_3:
-					return "3";
-				case KEY_4:
-					return "4";
-				case KEY_5:
-					return "5";
-				case KEY_6:
-					return "6";
-				case KEY_7:
-					return "7";
-				case KEY_8:
-					return "8";
-				case KEY_9:
-					return "9";
-				case KEY_A:
-					return "A";
-				case KEY_B:
-					return "B";
-				case KEY_C:
-					return "C";
-				case KEY_D:
-					return "D";
-				case KEY_E:
-					return "E";
-				case KEY_F:
-					return "F";
-				case KEY_G:
-					return "G";
-				case KEY_H:
-					return "H";
-				case KEY_I:
-					return "I";
-				case KEY_J:
-					return "J";
-				case KEY_K:
-					return "K";
-				case KEY_L:
-					return "L";
-				case KEY_M:
-					return "M";
-				case KEY_N:
-					return "N";
-				case KEY_O:
-					return "O";
-				case KEY_P:
-					return "P";
-				case KEY_Q:
-					return "Q";
-				case KEY_R:
-					return "R";
-				case KEY_S:
-					return "S";
-				case KEY_T:
-					return "T";
-				case KEY_U:
-					return "U";
-				case KEY_V:
-					return "V";
-				case KEY_W:
-					return "W";
-				case KEY_X:
-					return "X";
-				case KEY_Y:
-					return "Y";
-				case KEY_Z:
-					return "Z";
-				default:
-					break;
-				}
+				return KeyboardKeyUtil.convertKeyboardKeyToString(key);
 			}			
 		}
 		return "";
