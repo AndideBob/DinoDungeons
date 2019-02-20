@@ -59,6 +59,17 @@ public class ScreenMapSaver {
                 }
             	bw.newLine();
             }
+            bw.write(String.valueOf("-----"));
+            bw.newLine();
+            //Exits
+            bw.write(String.valueOf(map.getTransitionUpID()));
+            bw.newLine();
+            bw.write(String.valueOf(map.getTransitionRightID()));
+            bw.newLine();
+            bw.write(String.valueOf(map.getTransitionDownID()));
+            bw.newLine();
+            bw.write(String.valueOf(map.getTransitionLeftID()));
+            bw.newLine();
             bw.close();
         } catch (IOException e) {
             Logger.logError(e);

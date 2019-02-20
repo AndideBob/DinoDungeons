@@ -66,6 +66,29 @@ public class ScreenMapLoader {
             			parseObjectOntoMap(x,height-y-1,tiles[x],result);
             		}
             	}
+            	else if(lineIndex-height-4 == height){
+            		//TODO: Initialize Map Objects
+            	}
+            	else if(lineIndex == height*2+5) {
+            		//ExitNorth
+            		String exit = line.length() > 4 ? line.substring(0, 3) : line;
+            		result.setTransitionUpID(exit);
+            	}
+            	else if(lineIndex == height*2+6) {
+            		//ExitEast
+            		String exit = line.length() > 4 ? line.substring(0, 3) : line;
+            		result.setTransitionRightID(exit);
+            	}
+            	else if(lineIndex == height*2+7) {
+            		//ExitSouth
+            		String exit = line.length() > 4 ? line.substring(0, 3) : line;
+            		result.setTransitionDownID(exit);
+            	}
+            	else if(lineIndex == height*2+8) {
+            		//ExitWest
+            		String exit = line.length() > 4 ? line.substring(0, 3) : line;
+            		result.setTransitionLeftID(exit);
+            	}
             	lineIndex++;
             	line = br.readLine();
             }
