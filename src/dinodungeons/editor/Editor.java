@@ -68,6 +68,7 @@ public class Editor extends Game {
 		//DrawUI
 		textManager.DrawText(0, 247, "[F1]Save", 9);
 		textManager.DrawText(0, 238, "[F2]Load", 9);
+		textManager.DrawText(0, 229, "[F3]Exits", 10);
 		textManager.DrawText(96, 247, "[</>]", 5);
 		//ToolSelection
 		switch(currentState) {
@@ -139,8 +140,8 @@ public class Editor extends Game {
 	@Override
 	public void update() {
 		currentMousePosition = getMousePosition();
-		//Enter Save Mode
 		if(currentState != EditorState.ENTER_TEXT) {
+			//Enter Save Mode
 			if(InputManager.instance.getKeyState(KeyboardKey.KEY_F1).equals(ButtonState.RELEASED)) {
 				currentState = EditorState.ENTER_TEXT;
 				textUsage = TextUsage.SAVING;
@@ -148,17 +149,33 @@ public class Editor extends Game {
 				enteredText = "";
 				return;
 			}
-		}
-		//Enter Load Mode
-		if(currentState != EditorState.ENTER_TEXT) {
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_F2).equals(ButtonState.RELEASED)) {
+			//Enter Load Mode
+			if(currentState != EditorState.ENTER_TEXT) {
+				if(InputManager.instance.getKeyState(KeyboardKey.KEY_F2).equals(ButtonState.RELEASED)) {
+					currentState = EditorState.ENTER_TEXT;
+					textUsage = TextUsage.LOAD;
+					infoText = "Enter File-id to load:";
+					enteredText = "";
+					return;
+				}
+			}
+			//Enter Entrance Mode
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_F3).equals(ButtonState.RELEASED)) {
 				currentState = EditorState.ENTER_TEXT;
-				textUsage = TextUsage.LOAD;
-				infoText = "Enter File-id to load:";
-				enteredText = "";
+				textUsage = TextUsage.EXIT_NORTH;
+				infoText = "Enter Map-ID upwards:";
+				enteredText = currentMap.getTransitionUpID();
 				return;
 			}
+			//Switch Mode
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.RELEASED)) {
+				switchToPreviousState();
+			}
+			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.RELEASED)) {
+				switchToNextState();
+			}
 		}
+		//General Commands
 		switch(currentState) {
 		case ENTER_TEXT:
 			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ENTER).equals(ButtonState.RELEASED)) {
@@ -178,7 +195,36 @@ public class Editor extends Game {
 						}
 						currentState = EditorState.PLACE_BASELAYER;
 						break;
+					case EXIT_EAST:
+						currentState = EditorState.ENTER_TEXT;
+						textUsage = TextUsage.EXIT_SOUTH;
+						infoText = "Enter Map-ID downwards:";
+						currentMap.setTransitionRightID(enteredText);
+						enteredText = currentMap.getTransitionDownID();
+						break;
+					case EXIT_NORTH:
+						currentState = EditorState.ENTER_TEXT;
+						textUsage = TextUsage.EXIT_EAST;
+						infoText = "Enter Map-ID right:";
+						currentMap.setTransitionUpID(enteredText);
+						enteredText = currentMap.getTransitionRightID();
+						break;
+					case EXIT_SOUTH:
+						currentState = EditorState.ENTER_TEXT;
+						textUsage = TextUsage.EXIT_WEST;
+						infoText = "Enter Map-ID left:";
+						currentMap.setTransitionDownID(enteredText);
+						enteredText = currentMap.getTransitionLeftID();
+						break;
+					case EXIT_WEST:
+						infoText = "Exits updated!";
+						currentMap.setTransitionLeftID(enteredText);
+						currentState = EditorState.PLACE_BASELAYER;
+						break;
 					default:
+						Logger.logError("Text usage not defined!");
+						infoText = "Error!";
+						currentState = EditorState.PLACE_BASELAYER;
 						break;
 					}
 				}
@@ -194,10 +240,10 @@ public class Editor extends Game {
 			break;
 		case PLACE_BASELAYER:
 			//Selection
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.RELEASED)) {
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.RELEASED)) {
 				currentTileSelection = (currentTileSelection + maxBaseLayerSelection) % (maxBaseLayerSelection + 1);
 			}
-			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.RELEASED)) {
+			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.RELEASED)) {
 				currentTileSelection = (currentTileSelection + 1) % (maxBaseLayerSelection + 1);
 			}
 			//Quick Selection
@@ -241,6 +287,26 @@ public class Editor extends Game {
 					}
 				}
 			}
+			break;
+		}
+	}
+	
+	private void switchToPreviousState() {
+		switch(currentState) {
+		case ENTER_TEXT:
+			break;
+		case PLACE_BASELAYER:
+			currentState = EditorState.PLACE_BASELAYER;
+			break;
+		}
+	}
+	
+	private void switchToNextState() {
+		switch(currentState) {
+		case ENTER_TEXT:
+			break;
+		case PLACE_BASELAYER:
+			currentState = EditorState.PLACE_BASELAYER;
 			break;
 		}
 	}
@@ -339,7 +405,11 @@ public class Editor extends Game {
 	
 	private enum TextUsage{
 		SAVING,
-		LOAD
+		LOAD,
+		EXIT_NORTH,
+		EXIT_SOUTH,
+		EXIT_EAST,
+		EXIT_WEST
 	}
 
 }

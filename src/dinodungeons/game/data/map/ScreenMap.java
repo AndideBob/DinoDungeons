@@ -8,6 +8,13 @@ public class ScreenMap {
 	private int sizeX;
 	private int sizeY;
 	
+	private String transitionUpID;
+	private String transitionRightID;
+	private String transitionDownID;
+	private String transitionLeftID;
+	
+	public static final ScreenMap defaultMap = new ScreenMap("0000", 16, 12);
+	
 	private int[][] baseLayer;
 	
 	private BaseLayerTile[][] baseLayerTiles;
@@ -19,6 +26,11 @@ public class ScreenMap {
 		baseLayer = new int[sizeX][sizeY];
 		baseLayerTiles = new BaseLayerTile[sizeX][sizeY];
 		updateBaseLayerTiles();
+		//Entrances
+		transitionDownID = "0000";
+		transitionLeftID = "0000";
+		transitionRightID = "0000";
+		transitionUpID = "0000";
 	}
 	
 	public void updateBaseLayerTiles(){
@@ -52,6 +64,38 @@ public class ScreenMap {
 		return sizeY;
 	}
 	
+	public String getTransitionLeftID() {
+		return transitionLeftID;
+	}
+
+	public void setTransitionLeftID(String transitionLeftID) {
+		this.transitionLeftID = transitionLeftID;
+	}
+
+	public String getTransitionUpID() {
+		return transitionUpID;
+	}
+
+	public void setTransitionUpID(String transitionUpID) {
+		this.transitionUpID = transitionUpID;
+	}
+
+	public String getTransitionRightID() {
+		return transitionRightID;
+	}
+
+	public void setTransitionRightID(String transitionRightID) {
+		this.transitionRightID = transitionRightID;
+	}
+
+	public String getTransitionDownID() {
+		return transitionDownID;
+	}
+
+	public void setTransitionDownID(String transitionDownID) {
+		this.transitionDownID = transitionDownID;
+	}
+
 	public int getBaseLayerValueForPosition(int x, int y) {
 		return baseLayer[x][y];
 	}
@@ -225,5 +269,4 @@ public class ScreenMap {
 			throw new ScreenMapIndexOutOfBounds("Tried to access [" + posX + "," + posY + "] but Map is only of Size [" + sizeX + "," + sizeY + "]");
 		}
 	}
-
 }

@@ -24,16 +24,16 @@ public class ScreenMapLoader {
 	public ScreenMap loadMap(String id){
 		String path = GameWindowConstants.FILEPATH_DIRECTORY + File.separator + "data" + File.separator + "maps" + File.separator + id + ".ddm";
 		try {
+			ScreenMap result = ScreenMap.defaultMap;
 			File file = new File(path);
 			if (!file.exists()) {
-				return new ScreenMap(id, 16, 12);
+				return result;
 			}
 			FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
             String line = br.readLine();
             int lineIndex = 0;
             //Map Constants
-            ScreenMap result = new ScreenMap(id, 1, 1);
             int width = 1;
             int height = 1;
             while(line != null){
