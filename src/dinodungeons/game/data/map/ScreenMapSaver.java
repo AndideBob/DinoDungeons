@@ -64,6 +64,10 @@ public class ScreenMapSaver {
             bw.newLine();
             bw.write(String.valueOf(map.getTransitionLeftID()));
             bw.newLine();
+            bw.write(String.valueOf("-----"));
+            bw.newLine();
+            bw.write(String.valueOf(map.getTileSet().getRepresentationInFile()));
+            bw.newLine();
             bw.close();
         } catch (IOException e) {
             Logger.logError(e);

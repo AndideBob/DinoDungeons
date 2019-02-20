@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import dinodungeons.game.data.exceptions.DinoDungeonsException;
+import dinodungeons.gfx.tilesets.TileSet;
 import lwjgladapter.logging.Logger;
 
 public class ScreenMapLoader {
@@ -84,6 +85,10 @@ public class ScreenMapLoader {
             		//ExitWest
             		String exit = line.length() > 4 ? line.substring(0, 3) : line;
             		result.setTransitionLeftID(exit);
+            	}
+            	else if(lineIndex == height*2+10){
+            		//TileSet
+            		result.setTileSet(TileSet.getTileSetFromRepesentation(line));
             	}
             	lineIndex++;
             	line = br.readLine();

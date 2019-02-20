@@ -1,9 +1,13 @@
 package dinodungeons.game.data.map;
 
 import dinodungeons.game.data.exceptions.ScreenMapIndexOutOfBounds;
+import dinodungeons.game.data.map.objects.MapObject;
+import dinodungeons.gfx.tilesets.TileSet;
 
 public class ScreenMap {
 
+	public static final ScreenMap defaultMap = new ScreenMap("0000", 16, 12);
+	
 	private String id;
 	private int sizeX;
 	private int sizeY;
@@ -13,11 +17,13 @@ public class ScreenMap {
 	private String transitionDownID;
 	private String transitionLeftID;
 	
-	public static final ScreenMap defaultMap = new ScreenMap("0000", 16, 12);
+	private TileSet tileSet;
 	
 	private int[][] baseLayer;
 	
 	private BaseLayerTile[][] baseLayerTiles;
+	
+	private MapObject[][] objectLayer;
 	
 	public ScreenMap(String id, int sizeX, int sizeY) {
 		this.id = id;
@@ -25,12 +31,15 @@ public class ScreenMap {
 		this.sizeY = sizeY;
 		baseLayer = new int[sizeX][sizeY];
 		baseLayerTiles = new BaseLayerTile[sizeX][sizeY];
+		objectLayer = new MapObject[sizeX][sizeY];
 		updateBaseLayerTiles();
 		//Entrances
 		transitionDownID = "0000";
 		transitionLeftID = "0000";
 		transitionRightID = "0000";
 		transitionUpID = "0000";
+		//TileSet
+		tileSet = TileSet.NONE;
 	}
 	
 	public void updateBaseLayerTiles(){
@@ -94,6 +103,22 @@ public class ScreenMap {
 
 	public void setTransitionDownID(String transitionDownID) {
 		this.transitionDownID = transitionDownID;
+	}
+	
+	public TileSet getTileSet() {
+		return tileSet;
+	}
+
+	public void setTileSet(TileSet tileSet) {
+		this.tileSet = tileSet;
+	}
+
+	public MapObject getMapObjectForPosition(int x, int y) {
+		return objectLayer[x][y];
+	}
+	
+	public void setMapObjectForPosition(int x, int y, MapObject mapObject) {
+		objectLayer[x][y] = mapObject;
 	}
 
 	public int getBaseLayerValueForPosition(int x, int y) {

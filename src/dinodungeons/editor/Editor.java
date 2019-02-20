@@ -8,6 +8,7 @@ import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
+import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.gfx.GFXResourceID;
 import dinodungeons.gfx.text.DrawTextManager;
 import dinodungeons.gfx.tilesets.TileSet;
@@ -55,8 +56,15 @@ public class Editor extends Game {
 		for(int x = 0; x < currentMap.getSizeX(); x++){
 			for(int y = 0; y < currentMap.getSizeY(); y++){
 				BaseLayerTile tile = currentMap.getBaseLayerTileForPosition(x, y);
-				TileSet tileSet = TileSet.TEST;
+				TileSet tileSet = currentMap.getTileSet();
 				tileSetManager.drawTile(tile, tileSet, x * 16, y * 16);
+			}
+		}
+		//DrawObjectLayer
+		for(int x = 0; x < currentMap.getSizeX(); x++){
+			for(int y = 0; y < currentMap.getSizeY(); y++){
+				MapObject mapObject = currentMap.getMapObjectForPosition(x, y);
+				
 			}
 		}
 		//DrawPointer
