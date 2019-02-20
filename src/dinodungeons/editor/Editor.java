@@ -60,7 +60,7 @@ public class Editor extends Game {
 		loader = new ScreenMapLoader();
 		saver = new ScreenMapSaver();
 		currentMap = new ScreenMap("000", 16, 12);
-		currentState = EditorState.PLACE_BASELAYER;
+		currentState = EditorState.INSPECTOR;
 	}
 
 	@Override
@@ -74,7 +74,8 @@ public class Editor extends Game {
 			}
 		}
 		//DrawExitLayer
-		if(currentState == EditorState.PLACE_EXITS){
+		if(currentState == EditorState.PLACE_EXITS ||
+				currentState == EditorState.INSPECTOR){
 			for(int x = 0; x < currentMap.getSizeX(); x++){
 				for(int y = 0; y < currentMap.getSizeY(); y++){
 					MapObject mapObject = currentMap.getMapObjectForPosition(x, y);
@@ -98,6 +99,9 @@ public class Editor extends Game {
 		int lowest;
 		int highest;
 		switch(currentState) {
+		case INSPECTOR:
+			textManager.DrawText(146, 247, "Inspector", 10);
+			break;
 		case PLACE_BASELAYER:
 			textManager.DrawText(146, 247, "Base layer", 10);
 			optionsShown = 3;
@@ -151,13 +155,13 @@ public class Editor extends Game {
 				text += "[" + i + "]";
 				switch(transportationTypes[i]){
 				case CAVE_ENTRY:
-					text += "Cave_En";
+					text += "Cave En";
 					break;
 				case CAVE_EXIT:
-					text += "Cave_Ex";
+					text += "Cave Ex";
 					break;
 				case DUNGEON_EXIT:
-					text += "Dngn_Ex";
+					text += "Dngn Ex";
 					break;
 				case INSTANT_TELEPORT:
 					text += "Instant";
@@ -193,31 +197,46 @@ public class Editor extends Game {
 		}
 		if(mapObject instanceof TransportMapObject){
 			TransportMapObject transport = (TransportMapObject) mapObject;
-			String txtUp = "";
-			String txtLow = "";
+			String txtUpL = "";
+			String txtLowL = "";
+			String txtUpR = "";
+			String txtLowR = "";
 			switch(transport.getTransportationType()){
 			case CAVE_ENTRY:
-				txtUp = "CV";
-				txtLow = "EN";
+				txtUpL = "C";
+				txtUpR = "V";
+				txtLowL = "E";
+				txtLowR = "N";
 				break;
 			case CAVE_EXIT:
-				txtUp = "CV";
-				txtLow = "EX";
+				txtUpL = "C";
+				txtUpR = "V";
+				txtLowL = "E";
+				txtLowR = "X";
 				break;
 			case DUNGEON_EXIT:
-				txtUp = "DN";
-				txtLow = "EX";
+				txtUpL = "D";
+				txtUpR = "N";
+				txtLowL = "E";
+				txtLowR = "X";
 				break;
 			case INSTANT_TELEPORT:
-				txtUp = "TP";
+				txtUpL = "I";
+				txtUpR = "N";
+				txtLowL = "T";
+				txtLowR = "P";
 				break;
 			case STAIRS:
-				txtUp = "ST";
-				txtLow = "RS";
+				txtUpL = "S";
+				txtUpR = "T";
+				txtLowL = "R";
+				txtLowR = "S";
 				break;
 			}
-			textManager.DrawText(x + 3, y + 13, txtUp, 2);
-			textManager.DrawText(x + 3, y + 3, txtLow, 2);
+			textManager.DrawText(x * 16 - 1, y * 16 + 8, txtUpL, 1);
+			textManager.DrawText(x * 16 + 7, y * 16 + 8, txtUpR, 1);
+			textManager.DrawText(x * 16 - 1, y * 16, txtLowL, 1);
+			textManager.DrawText(x * 16 + 7, y * 16, txtLowR, 1);
 			return;
 		}
 	}
@@ -291,6 +310,42 @@ public class Editor extends Game {
 		}
 		//General Commands
 		switch(currentState) {
+		case INSPECTOR:
+			//Placing Tiles
+			if(isMouseOnMap()) {
+				int x = currentMousePosition[0] / 16;
+				int y = currentMousePosition[1] / 16;
+				MapObject mapObject = currentMap.getMapObjectForPosition(x, y);
+				if(mapObject instanceof TransportMapObject){
+					TransportMapObject transport = (TransportMapObject)mapObject;
+					infoText = "";
+					switch(transport.getTransportationType()){
+					case CAVE_ENTRY:
+						infoText += "Cave En";
+						break;
+					case CAVE_EXIT:
+						infoText += "Cave Ex";
+						break;
+					case DUNGEON_EXIT:
+						infoText += "Dngn Ex";
+						break;
+					case INSTANT_TELEPORT:
+						infoText += "Instant";
+						break;
+					case STAIRS:
+						infoText += "Stairs";
+						break;
+					}
+					infoText += " Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
+				}
+				else{
+					infoText = "";
+				}
+			}
+			else{
+				infoText = "Select a tile on the map!";
+			}
+			break;
 		case ENTER_TEXT:
 			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ENTER).equals(ButtonState.RELEASED)) {
 				if(enteredText.length() > 0) {
@@ -356,8 +411,8 @@ public class Editor extends Game {
 						break;
 					case EXIT_MAP_Y:
 						currentState = EditorState.PLACE_EXITS;
-						infoText = "[F5]Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
 						exitPosY = Integer.parseInt(enteredText);
+						infoText = "[F5]Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
 						break;
 					default:
 						Logger.logError("Text usage not defined!");
@@ -451,7 +506,7 @@ public class Editor extends Game {
 			}
 			//Placing Exits
 			if(isMouseOnMap()) {
-				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
+				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.RELEASED)) {
 					int x = currentMousePosition[0] / 16;
 					int y = currentMousePosition[1] / 16;
 					TransportMapObject transport = new TransportMapObject();
@@ -470,9 +525,12 @@ public class Editor extends Game {
 		switch(currentState) {
 		case ENTER_TEXT:
 			break;
-		case PLACE_BASELAYER:
+		case INSPECTOR:
 			currentState = EditorState.PLACE_EXITS;
 			infoText = "[F5]Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
+			break;
+		case PLACE_BASELAYER:
+			currentState = EditorState.INSPECTOR;
 			break;
 		case CHANGE_TILESET:
 			currentState = EditorState.PLACE_BASELAYER;
@@ -487,6 +545,9 @@ public class Editor extends Game {
 		switch(currentState) {
 		case ENTER_TEXT:
 			break;
+		case INSPECTOR:
+			currentState = EditorState.PLACE_BASELAYER;
+			break;
 		case PLACE_BASELAYER:
 			currentState = EditorState.CHANGE_TILESET;
 			break;
@@ -495,7 +556,7 @@ public class Editor extends Game {
 			infoText = "[F5]Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
 			break;
 		case PLACE_EXITS:
-			currentState = EditorState.PLACE_BASELAYER;
+			currentState = EditorState.INSPECTOR;
 			break;
 		}
 	}
@@ -588,6 +649,7 @@ public class Editor extends Game {
 	}
 	
 	private enum EditorState{
+		INSPECTOR,
 		PLACE_BASELAYER,
 		CHANGE_TILESET,
 		PLACE_EXITS,
