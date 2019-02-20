@@ -1,6 +1,13 @@
 package dinodungeons.game.data.map;
 
+import java.io.File;
+
+import lwjgladapter.GameWindowConstants;
+
 public class ScreenMapConstants {
+	
+	public static final String mapDirectiory = GameWindowConstants.FILEPATH_DIRECTORY + File.separator + "data" + File.separator + "maps";
+	public static final String mapFileExtension = ".ddm";
 
 	public static final int BASE_LAYER_WALL = 0;
 	public static final int BASE_LAYER_BORDER = 1;

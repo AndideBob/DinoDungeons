@@ -3,6 +3,7 @@ package dinodungeons.main;
 import java.util.HashSet;
 
 import dinodungeons.editor.Editor;
+import dinodungeons.game.data.DinoDungeons;
 import lwjgladapter.GameWindow;
 import lwjgladapter.GameWindowConstants;
 import lwjgladapter.datatypes.Color;
@@ -14,12 +15,19 @@ public class Main {
 	private static boolean startAsEditor = false;
 	
 	public static void main(String[] args) {
-		GameWindowConstants.DEFAULT_SCREEN_WIDTH = 256;
-		GameWindowConstants.DEFAULT_SCREEN_HEIGHT = 256;
-		GameWindow gameWindow = new GameWindow(512, 512, Color.BLACK, "The great Dreamer");
 		handleArgs(args);
-		Game gameToRun = startAsEditor ? new Editor() : null;
-		gameWindow.run(gameToRun);
+		if(startAsEditor){
+			GameWindowConstants.DEFAULT_SCREEN_WIDTH = 256;
+			GameWindowConstants.DEFAULT_SCREEN_HEIGHT = 256;
+			GameWindow gameWindow = new GameWindow(512, 512, Color.BLACK, "Dino Dungeons Editor");
+			gameWindow.run(new Editor());
+		}
+		else{
+			GameWindowConstants.DEFAULT_SCREEN_WIDTH = 360;
+			GameWindowConstants.DEFAULT_SCREEN_HEIGHT = 180;
+			GameWindow gameWindow = new GameWindow(720, 360, Color.BLACK, "Dino Dungeons");
+			gameWindow.run(new DinoDungeons());
+		}
 	}
 	
 	private static void handleArgs(String[] args){

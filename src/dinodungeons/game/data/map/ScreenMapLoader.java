@@ -6,19 +6,19 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import dinodungeons.game.data.exceptions.DinoDungeonsException;
-import lwjgladapter.GameWindowConstants;
 import lwjgladapter.logging.Logger;
 
 public class ScreenMapLoader {
 	
 	private static final String seperatorString = ";";
+	
 
 	public ScreenMapLoader() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	public ScreenMap loadMap(String id){
-		String path = GameWindowConstants.FILEPATH_DIRECTORY + File.separator + "data" + File.separator + "maps" + File.separator + id + ".ddm";
+		String path = File.separator + ScreenMapConstants.mapDirectiory + id + ScreenMapConstants.mapFileExtension;
 		try {
 			ScreenMap result = ScreenMap.defaultMap;
 			File file = new File(path);

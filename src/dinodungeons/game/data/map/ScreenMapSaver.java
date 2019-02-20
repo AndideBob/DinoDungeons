@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import lwjgladapter.GameWindowConstants;
 import lwjgladapter.logging.Logger;
 
 public class ScreenMapSaver {
@@ -17,7 +16,7 @@ public class ScreenMapSaver {
 	}
 	
 	public boolean saveMap(String id, ScreenMap map){
-		String path = GameWindowConstants.FILEPATH_DIRECTORY + File.separator + "data" + File.separator + "maps" + File.separator + id + ".ddm";
+		String path =  File.separator + ScreenMapConstants.mapDirectiory + id + ScreenMapConstants.mapFileExtension;
 		try {
 			File file = new File(path);
 			if (!file.exists()) {

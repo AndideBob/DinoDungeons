@@ -10,7 +10,7 @@ import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
 import dinodungeons.gfx.GFXResourceID;
 import dinodungeons.gfx.text.DrawTextManager;
-import dinodungeons.gfx.tilesets.DungeonTileSet;
+import dinodungeons.gfx.tilesets.TileSet;
 import dinodungeons.gfx.tilesets.TilesetManager;
 import lwjgladapter.game.Game;
 import lwjgladapter.gfx.Texture;
@@ -55,7 +55,7 @@ public class Editor extends Game {
 		for(int x = 0; x < currentMap.getSizeX(); x++){
 			for(int y = 0; y < currentMap.getSizeY(); y++){
 				BaseLayerTile tile = currentMap.getBaseLayerTileForPosition(x, y);
-				DungeonTileSet tileSet = DungeonTileSet.TEST;
+				TileSet tileSet = TileSet.TEST;
 				tileSetManager.drawTile(tile, tileSet, x * 16, y * 16);
 			}
 		}
