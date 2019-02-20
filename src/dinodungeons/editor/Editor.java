@@ -8,6 +8,7 @@ import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
+import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.gfx.GFXResourceID;
 import dinodungeons.gfx.text.DrawTextManager;
@@ -41,13 +42,18 @@ public class Editor extends Game {
 	private static final int minBaseLayerSelection = 0;
 	private static final int maxBaseLayerSelection = 5;
 	private int currentTileSelection = minBaseLayerSelection;
+	private int currentTileSetSelection = minBaseLayerSelection;
 	private Texture selectorTexture;
+	
+	//Tile Sets
+	private TileSet[] tileSets;
 	
 	public Editor() {
 		loader = new ScreenMapLoader();
 		saver = new ScreenMapSaver();
 		currentMap = new ScreenMap("000", 16, 12);
 		currentState = EditorState.PLACE_BASELAYER;
+		tileSets = TileSet.values();
 	}
 
 	@Override
@@ -61,10 +67,12 @@ public class Editor extends Game {
 			}
 		}
 		//DrawObjectLayer
-		for(int x = 0; x < currentMap.getSizeX(); x++){
-			for(int y = 0; y < currentMap.getSizeY(); y++){
-				MapObject mapObject = currentMap.getMapObjectForPosition(x, y);
-				
+		if(currentState == EditorState.PLACE_OBJECTS){
+			for(int x = 0; x < currentMap.getSizeX(); x++){
+				for(int y = 0; y < currentMap.getSizeY(); y++){
+					MapObject mapObject = currentMap.getMapObjectForPosition(x, y);
+					drawMapObject(mapObject, x, y);
+				}
 			}
 		}
 		//DrawPointer
@@ -79,12 +87,15 @@ public class Editor extends Game {
 		textManager.DrawText(0, 229, "[F3]Exits", 10);
 		textManager.DrawText(96, 247, "[</>]", 5);
 		//ToolSelection
+		int optionsShown = 3;
+		int lowest;
+		int highest;
 		switch(currentState) {
 		case PLACE_BASELAYER:
 			textManager.DrawText(146, 247, "Base layer", 10);
-			int optionsShown = 3;
-			int lowest = Math.max(minBaseLayerSelection, currentTileSelection-optionsShown);
-			int highest = Math.min(maxBaseLayerSelection, lowest+optionsShown);
+			optionsShown = 3;
+			lowest = Math.max(minBaseLayerSelection, currentTileSelection-optionsShown);
+			highest = Math.min(maxBaseLayerSelection, lowest+optionsShown);
 			for(int i = lowest; i <= highest; i++) {
 				String text = i == currentTileSelection ? ">" : " ";
 				text += "[" + i + "]";
@@ -112,6 +123,18 @@ public class Editor extends Game {
 				optionsShown--;
 			}
 			break;
+		case CHANGE_TILESET:
+			textManager.DrawText(146, 247, "Tile Set", 10);
+			lowest = Math.max(0, currentTileSetSelection-optionsShown);
+			highest = Math.min(tileSets.length -1, lowest+optionsShown);
+			for(int i = lowest; i <= highest; i++) {
+				String text = i == currentTileSetSelection ? ">" : " ";
+				text += "[" + i + "]";
+				text += tileSets[i].getRepresentationInFile();
+				textManager.DrawText(126, 211 + 9*optionsShown, text, 16);
+				optionsShown--;
+			}
+			break;
 		case ENTER_TEXT:
 		default:
 			break;
@@ -124,6 +147,12 @@ public class Editor extends Game {
 			if(enteredText.length() < 4) {
 				textManager.DrawText(enteredText.length() * 10, 192, "|", 1);
 			}
+		}
+	}
+
+	private void drawMapObject(MapObject mapObject, int x, int y) {
+		if(mapObject instanceof EmptyMapObject){
+			//Do not draw anything
 		}
 	}
 
@@ -194,6 +223,11 @@ public class Editor extends Game {
 					switch (textUsage) {
 					case LOAD:
 						currentMap = loader.loadMap(enteredText);
+						for(int i = 0; i < tileSets.length; i++){
+							if(tileSets[i].equals(currentMap.getTileSet())){
+								currentTileSetSelection = i;
+							}
+						}
 						infoText = "Load successfull!";
 						currentState = EditorState.PLACE_BASELAYER;
 						break;
@@ -301,6 +335,19 @@ public class Editor extends Game {
 				}
 			}
 			break;
+		case CHANGE_TILESET:
+			//Selection
+			int oldTileSetSelection = currentTileSetSelection;
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.RELEASED)) {
+				currentTileSetSelection = (currentTileSetSelection + tileSets.length -1) % (tileSets.length);
+			}
+			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.RELEASED)) {
+				currentTileSetSelection = (currentTileSetSelection + 1) % (tileSets.length);
+			}
+			if(oldTileSetSelection != currentTileSetSelection){
+				currentMap.setTileSet(tileSets[currentTileSetSelection]);
+			}
+			break;
 		}
 	}
 	
@@ -309,7 +356,13 @@ public class Editor extends Game {
 		case ENTER_TEXT:
 			break;
 		case PLACE_BASELAYER:
+			currentState = EditorState.PLACE_OBJECTS;
+			break;
+		case CHANGE_TILESET:
 			currentState = EditorState.PLACE_BASELAYER;
+			break;
+		case PLACE_OBJECTS:
+			currentState = EditorState.CHANGE_TILESET;
 			break;
 		}
 	}
@@ -319,6 +372,12 @@ public class Editor extends Game {
 		case ENTER_TEXT:
 			break;
 		case PLACE_BASELAYER:
+			currentState = EditorState.CHANGE_TILESET;
+			break;
+		case CHANGE_TILESET:
+			currentState = EditorState.PLACE_OBJECTS;
+			break;
+		case PLACE_OBJECTS:
 			currentState = EditorState.PLACE_BASELAYER;
 			break;
 		}
@@ -413,6 +472,8 @@ public class Editor extends Game {
 	
 	private enum EditorState{
 		PLACE_BASELAYER,
+		CHANGE_TILESET,
+		PLACE_OBJECTS,
 		ENTER_TEXT
 	}
 	

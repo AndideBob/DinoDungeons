@@ -3,7 +3,8 @@ package dinodungeons.gfx.tilesets;
 import dinodungeons.gfx.GFXResourceID;
 
 public enum TileSet {
-	NONE(GFXResourceID.DUNGEON_TEST, "test");
+	NONE(GFXResourceID.DUNGEON_TEST, "test"),
+	DUNGEON_RED(GFXResourceID.DUNGEON_RED, "red");;
 	
 	private GFXResourceID resourceID;
 	private String representationInFile;
