@@ -21,7 +21,7 @@ public class ScreenMapLoader {
 	}
 	
 	public ScreenMap loadMap(String id){
-		String path = File.separator + ScreenMapConstants.mapDirectiory + id + ScreenMapConstants.mapFileExtension;
+		String path = File.separator + ScreenMapConstants.mapDirectiory + File.separator + id + ScreenMapConstants.mapFileExtension;
 		try {
 			ScreenMap result = ScreenMap.defaultMap;
 			File file = new File(path);

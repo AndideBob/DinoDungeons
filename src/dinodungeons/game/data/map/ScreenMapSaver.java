@@ -18,7 +18,7 @@ public class ScreenMapSaver {
 	}
 	
 	public boolean saveMap(String id, ScreenMap map){
-		String path =  File.separator + ScreenMapConstants.mapDirectiory + id + ScreenMapConstants.mapFileExtension;
+		String path =  File.separator + ScreenMapConstants.mapDirectiory + File.separator + id + ScreenMapConstants.mapFileExtension;
 		try {
 			File file = new File(path);
 			if (!file.exists()) {
