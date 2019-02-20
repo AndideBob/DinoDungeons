@@ -104,6 +104,9 @@ public class Editor extends Game {
 				optionsShown--;
 			}
 			break;
+		case ENTER_TEXT:
+		default:
+			break;
 		}
 		//InfoText
 		textManager.DrawText(0, 202, infoText, 25);
@@ -267,6 +270,8 @@ public class Editor extends Game {
 						break;
 					case KEY_5:
 						currentTileSelection = 5;
+						break;
+					default:
 						break;
 					}
 				}
