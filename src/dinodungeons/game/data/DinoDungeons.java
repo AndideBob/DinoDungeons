@@ -2,6 +2,7 @@ package dinodungeons.game.data;
 
 import dinodungeons.game.data.map.MapManager;
 import lwjgladapter.game.Game;
+import lwjgladapter.logging.Logger;
 
 public class DinoDungeons extends Game {
 
@@ -24,7 +25,7 @@ public class DinoDungeons extends Game {
 
 	@Override
 	public void update(long deltaTimeInMS) {
-		// TODO Auto-generated method stub
+		//Logger.logDebug("FPS: " + deltaTimeInMS);
 
 	}
 
