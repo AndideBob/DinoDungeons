@@ -35,6 +35,8 @@ public class Editor extends Game {
 	
 	private String enteredText = "";
 	private String infoText = "";
+	private int selectedTileX = -1;
+	private int selectedTileY = -1;
 	
 	//Base Layer Placement
 	private int currentSelection = 0;
@@ -68,7 +70,12 @@ public class Editor extends Game {
 			drawManager.drawObjectsLayer();
 		}
 		//DrawPointer
-		if(isMouseOnMap()) {
+		if(currentState == EditorState.INSPECTOR){
+			if(selectedTileX >= 0 && selectedTileY >= 0){
+				drawManager.drawSelector(selectedTileX, selectedTileY);
+			}
+		}
+		else if(isMouseOnMap()) {
 			int x = currentMousePosition[0] / 16;
 			int y = currentMousePosition[1] / 16;
 			drawManager.drawSelector(x, y);
@@ -117,35 +124,11 @@ public class Editor extends Game {
 			if(isMouseOnMap()) {
 				int x = currentMousePosition[0] / 16;
 				int y = currentMousePosition[1] / 16;
-				MapObject mapObject = currentMap.getMapObjectForPosition(x, y);
-				if(mapObject instanceof TransportMapObject){
-					TransportMapObject transport = (TransportMapObject)mapObject;
-					infoText = "";
-					switch(transport.getTransportationType()){
-					case CAVE_ENTRY:
-						infoText += "Cave En";
-						break;
-					case CAVE_EXIT:
-						infoText += "Cave Ex";
-						break;
-					case DUNGEON_EXIT:
-						infoText += "Dngn Ex";
-						break;
-					case INSTANT_TELEPORT:
-						infoText += "Instant";
-						break;
-					case STAIRS:
-						infoText += "Stairs";
-						break;
-					}
-					infoText += " Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
+				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.RELEASED)) {
+					selectedTileX = x;
+					selectedTileY = y;
+					infoText = currentMap.getMapObjectForPosition(x, y).getEditorInfo();
 				}
-				else{
-					infoText = "";
-				}
-			}
-			else{
-				infoText = "Select a tile on the map!";
 			}
 			break;
 		case ENTER_TEXT:
@@ -370,6 +353,9 @@ public class Editor extends Game {
 			enteredText = "";
 			break;
 		case INSPECTOR:
+			infoText = "Select a tile on the map!";
+			selectedTileX = -1;
+			selectedTileY = -1;
 			break;
 		case PLACE_BASELAYER:
 			break;

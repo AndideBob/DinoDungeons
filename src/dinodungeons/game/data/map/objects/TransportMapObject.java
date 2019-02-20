@@ -16,6 +16,30 @@ public class TransportMapObject extends MapObject {
 		y = 0;
 		transportationType = TransportationType.INSTANT_TELEPORT;
 	}
+	
+	@Override
+	public String getEditorInfo() {
+		String infoText = "";
+		switch(transportationType){
+		case CAVE_ENTRY:
+			infoText += "Cave En";
+			break;
+		case CAVE_EXIT:
+			infoText += "Cave Ex";
+			break;
+		case DUNGEON_EXIT:
+			infoText += "Dngn Ex";
+			break;
+		case INSTANT_TELEPORT:
+			infoText += "Instant";
+			break;
+		case STAIRS:
+			infoText += "Stairs";
+			break;
+		}
+		infoText += " Map:" + destinationMapID + " X:" + x + " Y:" + y;
+		return infoText;
+	}
 
 	public String getDestinationMapID() {
 		return destinationMapID;
@@ -75,4 +99,5 @@ public class TransportMapObject extends MapObject {
 			return INSTANT_TELEPORT;
 		}
 	}
+	
 }
