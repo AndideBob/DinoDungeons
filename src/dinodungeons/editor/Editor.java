@@ -8,7 +8,6 @@ import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
-import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
 import dinodungeons.gfx.tilesets.TileSet;
@@ -21,8 +20,6 @@ import lwjgladapter.input.MouseButton;
 import lwjgladapter.logging.Logger;
 
 public class Editor extends Game {
-
-	
 	
 	ScreenMap currentMap;
 	

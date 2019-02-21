@@ -7,9 +7,7 @@ import dinodungeons.game.DinoDungeons;
 import lwjgladapter.GameWindow;
 import lwjgladapter.GameWindowConstants;
 import lwjgladapter.datatypes.Color;
-import lwjgladapter.game.Game;
 import lwjgladapter.logging.Logger;
-import lwjgladapter.physics.collision.PhysicsHelper;
 
 public class Main {
 	
