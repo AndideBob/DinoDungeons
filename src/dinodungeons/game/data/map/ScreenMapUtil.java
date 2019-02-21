@@ -4,16 +4,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
+import dinodungeons.game.DinoDungeons;
+import dinodungeons.game.data.map.objects.MapObject;
+import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
+import dinodungeons.game.gameobjects.exits.InstantExitObject;
 import dinodungeons.game.gameobjects.general.WallObject;
 import lwjgladapter.logging.Logger;
 
 public class ScreenMapUtil {
+	
+	private static DinoDungeons gameHandle = null;
+	
+	public static void setGameHandle(DinoDungeons newGameHandle){
+		gameHandle = newGameHandle;
+	}
 
 	public static Collection<GameObject> createGameObjectsForMap(ScreenMap map){
 		ArrayList<GameObject> gameObjects = new ArrayList<>();
 		gameObjects.addAll(createWallsForMap(map));
+		gameObjects.addAll(createObjectsForMap(map));
 		return gameObjects;
 	}
 	
@@ -68,6 +79,38 @@ public class ScreenMapUtil {
 			}
 		}
 		return walls;
+	}
+	
+	private static Collection<GameObject> createObjectsForMap(ScreenMap map){
+		ArrayList<GameObject> objects = new ArrayList<>();
+		for(int y = 0; y < map.getSizeY(); y++){
+			for(int x = 0; x < map.getSizeX(); x++){
+				GameObject object = convertMapObjectToGameObject(map.getMapObjectForPosition(x, y), x, y);
+				if(object != null){
+					objects.add(object);
+				}
+			}
+		}
+		return objects;
+	}
+	
+	private static GameObject convertMapObjectToGameObject(MapObject object, int posX, int posY){
+		if(object instanceof TransportMapObject){
+			return buildTransportGameObject((TransportMapObject) object, posX, posY);
+		}
+		return null;
+	}
+	
+	private static GameObject buildTransportGameObject(TransportMapObject transportMapObject, int posX, int posY){
+		if(gameHandle == null){
+			//TODO: Throw Exception here
+		}
+		switch(transportMapObject.getTransportationType()){
+		case INSTANT_TELEPORT:
+			return new InstantExitObject(GameObjectTag.TRANSPORT, posX, posY, gameHandle,
+					transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());	
+		}
+		return null;
 	}
 	
 	private static String getPositionString(int x, int y){

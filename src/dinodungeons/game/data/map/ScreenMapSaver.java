@@ -46,7 +46,7 @@ public class ScreenMapSaver {
             bw.write(String.valueOf("-----"));
             bw.newLine();
             //Object Layer
-            for(int y = 0; y < map.getSizeY(); y++) {
+            for(int y = (map.getSizeY()-1); y >= 0; y--) {
             	for(int x = 0; x < map.getSizeX(); x++) {
             		bw.write(String.valueOf(mapObjectParser.parseMapObjectToString(map.getMapObjectForPosition(x, y))));
             		if(x < map.getSizeX() - 1) {

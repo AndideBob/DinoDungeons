@@ -15,6 +15,7 @@ import dinodungeons.gfx.tilesets.TileSet;
 import dinodungeons.gfx.tilesets.TilesetManager;
 import lwjgladapter.datatypes.LWJGLAdapterException;
 import lwjgladapter.game.Game;
+import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.PhysicsHelper;
 import lwjgladapter.physics.collision.base.Collider;
 import lwjgladapter.physics.collision.exceptions.CollisionNotSupportedException;
@@ -26,27 +27,33 @@ public class DinoDungeons extends Game {
 	
 	private ArrayList<GameObject> gameObjects;
 	private ScreenMap currentMap;
+	private boolean switchMap;
+	private String nextMapID;
+	private int nextPlayerXLocation;
+	private int nextPlayerYLocation;
 	
 	public DinoDungeons() {
 		mapManager = new MapManager();
 		tileSetManager = new TilesetManager();
 		gameObjects = new ArrayList<>();
+		ScreenMapUtil.setGameHandle(this);
+		switchMap = false;
 	}
 	
 	private void loadInitialGameState() throws InvalidMapIDException{
-		currentMap = mapManager.getMapById("0000");
-		gameObjects.addAll(ScreenMapUtil.createGameObjectsForMap(currentMap));
-		gameObjects.add(new PlayerObject(GameObjectTag.PLAYER, 36,36));
+		switchMapTeleport("0000", 32, 32);
 	}
 
 	@Override
 	public void draw() {
 		//DrawMap
-		for(int x = 0; x < currentMap.getSizeX(); x++){
-			for(int y = 0; y < currentMap.getSizeY(); y++){
-				BaseLayerTile tile = currentMap.getBaseLayerTileForPosition(x, y);
-				TileSet tileSet = currentMap.getTileSet();
-				tileSetManager.drawTile(tile, tileSet, x * 16, y * 16);
+		if(currentMap != null){
+			for(int x = 0; x < currentMap.getSizeX(); x++){
+				for(int y = 0; y < currentMap.getSizeY(); y++){
+					BaseLayerTile tile = currentMap.getBaseLayerTileForPosition(x, y);
+					TileSet tileSet = currentMap.getTileSet();
+					tileSetManager.drawTile(tile, tileSet, x * 16, y * 16);
+				}
 			}
 		}
 		//DrawGameObjects
@@ -65,10 +72,28 @@ public class DinoDungeons extends Game {
 
 	@Override
 	public void update(long deltaTimeInMs) throws LWJGLAdapterException {
+		switchMapIfNecessary();
 		updateCollisions();
 		for(GameObject o : gameObjects){
 			o.update(deltaTimeInMs);
 		}
+	}
+	
+	private void switchMapIfNecessary() throws InvalidMapIDException {
+		if(switchMap){
+			switchMap = false;
+			currentMap = mapManager.getMapById(nextMapID);
+			gameObjects.clear();
+			gameObjects.addAll(ScreenMapUtil.createGameObjectsForMap(currentMap));
+			gameObjects.add(new PlayerObject(GameObjectTag.PLAYER, nextPlayerXLocation, nextPlayerYLocation));
+		}
+	}
+
+	public void switchMapTeleport(String newMapID, int newPlayerPosX, int newPlayerPosY){
+		switchMap = true;
+		nextMapID = newMapID;
+		nextPlayerXLocation = newPlayerPosX;
+		nextPlayerYLocation = newPlayerPosY;
 	}
 	
 	private void updateCollisions() throws CollisionNotSupportedException{

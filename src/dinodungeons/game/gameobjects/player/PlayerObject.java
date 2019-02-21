@@ -54,8 +54,8 @@ public class PlayerObject extends GameObject {
 		movementChangeX = 0;
 		movementChangeY = 0;
 		movementSpeed = 0.05f;
-		colliderXAxis = new RectCollider(startX, startY, 16, 16);
-		colliderYAxis = new RectCollider(startX, startY, 16, 16);
+		colliderXAxis = new RectCollider(startX, startY, 14, 14);
+		colliderYAxis = new RectCollider(startX, startY, 14, 14);
 		colliders = new HashSet<>();
 		colliders.add(colliderXAxis);
 		colliders.add(colliderYAxis);
@@ -122,10 +122,10 @@ public class PlayerObject extends GameObject {
 	}
 	
 	private void updateColliders(){
-		colliderXAxis.setPositionX(Math.round(predictedPositionX));
-		colliderXAxis.setPositionY(Math.round(positionY));
-		colliderYAxis.setPositionX(Math.round(positionX));
-		colliderYAxis.setPositionY(Math.round(predictedPositionY));
+		colliderXAxis.setPositionX((int)(predictedPositionX) + 1);
+		colliderXAxis.setPositionY((int)(positionY) + 1);
+		colliderYAxis.setPositionX((int)(positionX) + 1);
+		colliderYAxis.setPositionY((int)(predictedPositionY) + 1);
 	}
 	
 	private void updateShownFrame(long deltaTimeInMs){
