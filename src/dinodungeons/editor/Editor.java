@@ -41,6 +41,8 @@ public class Editor extends Game {
 	//Base Layer Placement
 	private int currentSelection = 0;
 	
+	//Editor States
+	private static final EditorState[] editorStates = EditorState.values();
 	//Tile Sets
 	public static final TileSet[] tileSets = TileSet.values();
 	//Entrance Types
@@ -88,22 +90,6 @@ public class Editor extends Game {
 		if(currentState == EditorState.ENTER_TEXT) {
 			drawManager.drawEnteredText(enteredText);
 		}
-	}
-
-	
-
-	private boolean isMouseOnMap() {
-		if(currentState == EditorState.ENTER_TEXT) {
-			return false;
-		}
-		return currentMousePosition[1] < 192;
-	}
-	
-	private int[] getMousePosition() {
-		int[] result = new int[2];
-		result[0] = InputManager.instance.getRelativeMousePositionXAsInt();
-		result[1] = InputManager.instance.getRelativeMousePositionYAsInt();
-		return result;
 	}
 
 	@Override
@@ -192,12 +178,7 @@ public class Editor extends Game {
 			break;
 		case PLACE_BASELAYER:
 			//Selection
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.RELEASED)) {
-				currentSelection = (currentSelection + ScreenMapConstants.maxBaseLayerSelection) % (ScreenMapConstants.maxBaseLayerSelection + 1);
-			}
-			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.RELEASED)) {
-				currentSelection = (currentSelection + 1) % (ScreenMapConstants.maxBaseLayerSelection + 1);
-			}
+			switchSelection(ScreenMapConstants.maxBaseLayerSelection + 1);
 			//Placing Tiles
 			if(isMouseOnMap()) {
 				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
@@ -218,24 +199,14 @@ public class Editor extends Game {
 		case CHANGE_TILESET:
 			//Selection
 			int oldTileSetSelection = currentSelection;
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.RELEASED)) {
-				currentSelection = (currentSelection + tileSets.length -1) % (tileSets.length);
-			}
-			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.RELEASED)) {
-				currentSelection = (currentSelection + 1) % (tileSets.length);
-			}
+			switchSelection(tileSets.length);
 			if(oldTileSetSelection != currentSelection){
 				currentMap.setTileSet(tileSets[currentSelection]);
 			}
 			break;
 		case PLACE_EXITS:
 			//Selection
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.RELEASED)) {
-				currentSelection = (currentSelection + transportationTypes.length -1) % (transportationTypes.length);
-			}
-			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.RELEASED)) {
-				currentSelection = (currentSelection + 1) % (transportationTypes.length);
-			}
+			switchSelection(transportationTypes.length);
 			//Placing Exits
 			if(isMouseOnMap()) {
 				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.RELEASED)) {
@@ -250,6 +221,29 @@ public class Editor extends Game {
 				}
 			}
 			break;
+		}
+	}
+	
+	private boolean isMouseOnMap() {
+		if(currentState == EditorState.ENTER_TEXT) {
+			return false;
+		}
+		return currentMousePosition[1] < 192;
+	}
+	
+	private int[] getMousePosition() {
+		int[] result = new int[2];
+		result[0] = InputManager.instance.getRelativeMousePositionXAsInt();
+		result[1] = InputManager.instance.getRelativeMousePositionYAsInt();
+		return result;
+	}
+	
+	private void switchSelection(int selectionMod){
+		if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.RELEASED)) {
+			currentSelection = (currentSelection + selectionMod -1) % (selectionMod);
+		}
+		else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.RELEASED)) {
+			currentSelection = (currentSelection + 1) % (selectionMod);
 		}
 	}
 	
@@ -281,14 +275,7 @@ public class Editor extends Game {
 				return true;
 			}
 			//Switch Mode
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.RELEASED)) {
-				switchToPreviousState();
-				return true;
-			}
-			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.RELEASED)) {
-				switchToNextState();
-				return true;
-			}
+			return switchState();
 		}
 		return false;
 	}
@@ -339,6 +326,33 @@ public class Editor extends Game {
 		}
 	}
 	
+	private boolean switchState(){
+		int curState = 0;
+		for(int i = 0; i < editorStates.length; i++){
+			if(editorStates[i].equals(currentState)){
+				curState = i;
+				break;
+			}
+		}
+		if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.RELEASED)) {
+			curState = (curState + editorStates.length -1) % (editorStates.length);
+			if(editorStates[curState].equals(EditorState.ENTER_TEXT)){
+				curState = (curState + editorStates.length -1) % (editorStates.length);
+			}
+			switchToState(editorStates[curState]);
+			return true;
+		}
+		else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.RELEASED)) {
+			curState = (curState + 1) % (editorStates.length);
+			if(editorStates[curState].equals(EditorState.ENTER_TEXT)){
+				curState = (curState + 1) % (editorStates.length);
+			}
+			switchToState(editorStates[curState]);
+			return true;
+		}
+		return false;
+	}
+	
 	private void switchToState(EditorState state){
 		currentSelection = 0;
 		switch(state){
@@ -366,44 +380,6 @@ public class Editor extends Game {
 			break;
 		}
 		currentState = state;
-	}
-	
-	private void switchToPreviousState() {
-		switch(currentState) {
-		case ENTER_TEXT:
-			break;
-		case INSPECTOR:
-			switchToState(EditorState.PLACE_EXITS);
-			break;
-		case PLACE_BASELAYER:
-			switchToState(EditorState.INSPECTOR);
-			break;
-		case CHANGE_TILESET:
-			switchToState(EditorState.PLACE_BASELAYER);
-			break;
-		case PLACE_EXITS:
-			switchToState(EditorState.CHANGE_TILESET);
-			break;
-		}
-	}
-	
-	private void switchToNextState() {
-		switch(currentState) {
-		case ENTER_TEXT:
-			break;
-		case INSPECTOR:
-			switchToState(EditorState.PLACE_BASELAYER);
-			break;
-		case PLACE_BASELAYER:
-			switchToState(EditorState.CHANGE_TILESET);
-			break;
-		case CHANGE_TILESET:
-			switchToState(EditorState.PLACE_EXITS);
-			break;
-		case PLACE_EXITS:
-			switchToState(EditorState.INSPECTOR);
-			break;
-		}
 	}
 	
 	private String getTextInput() {
