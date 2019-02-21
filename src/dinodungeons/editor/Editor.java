@@ -113,7 +113,8 @@ public class Editor extends Game {
 					selectedTileY = y;
 					infoText = currentMap.getMapObjectForPosition(x, y).getEditorInfo();
 				}
-				if(InputManager.instance.getKeyState(KeyboardKey.KEY_BACKSPACE).equals(ButtonState.RELEASED)){
+				if(InputManager.instance.getKeyState(KeyboardKey.KEY_BACKSPACE).equals(ButtonState.RELEASED)
+						|| InputManager.instance.getKeyState(KeyboardKey.KEY_DELETE).equals(ButtonState.RELEASED)){
 					if(selectedTileX >= 0 && selectedTileY >= 0){
 						currentMap.setMapObjectForPosition(selectedTileX, selectedTileY, new EmptyMapObject());
 					}
