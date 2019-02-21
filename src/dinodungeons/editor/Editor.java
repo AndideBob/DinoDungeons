@@ -316,9 +316,11 @@ public class Editor extends Game {
 			break;
 		case LOAD:
 			infoText = "Enter File-id to load:";
+			enteredText = "";
 			break;
 		case SAVING:
 			infoText = "Enter File-id to save:";
+			enteredText = currentMap.getID();
 			break;
 		}
 	}
@@ -361,7 +363,6 @@ public class Editor extends Game {
 			}
 			break;
 		case ENTER_TEXT:
-			enteredText = "";
 			break;
 		case INSPECTOR:
 			infoText = "Select a tile on the map!";
