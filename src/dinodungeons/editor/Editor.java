@@ -8,6 +8,7 @@ import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
+import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
 import dinodungeons.gfx.tilesets.TileSet;
@@ -111,6 +112,11 @@ public class Editor extends Game {
 					selectedTileX = x;
 					selectedTileY = y;
 					infoText = currentMap.getMapObjectForPosition(x, y).getEditorInfo();
+				}
+				if(InputManager.instance.getKeyState(KeyboardKey.KEY_BACKSPACE).equals(ButtonState.RELEASED)){
+					if(selectedTileX >= 0 && selectedTileY >= 0){
+						currentMap.setMapObjectForPosition(selectedTileX, selectedTileY, new EmptyMapObject());
+					}
 				}
 			}
 			break;
