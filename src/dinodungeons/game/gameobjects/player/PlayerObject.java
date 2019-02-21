@@ -1,11 +1,7 @@
 package dinodungeons.game.gameobjects.player;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-
-import com.sun.org.apache.bcel.internal.generic.GOTO;
-import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
@@ -32,7 +28,6 @@ public class PlayerObject extends GameObject {
 	private float movementChangeY;
 	private float predictedPositionX;
 	private float predictedPositionY;
-	private boolean canMove;
 	private boolean hasMoved;
 	
 	public PlayerObject(GameObjectTag tag, int startX, int startY) {
@@ -41,7 +36,6 @@ public class PlayerObject extends GameObject {
 		positionY = startY;
 		predictedPositionX = positionX;
 		predictedPositionY = positionY;
-		canMove = false;
 		movementChangeX = 0;
 		movementChangeY = 0;
 		movementSpeed = 0.032f;
