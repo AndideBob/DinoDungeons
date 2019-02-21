@@ -10,6 +10,7 @@ import dinodungeons.game.data.map.ScreenMapUtil;
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
 import dinodungeons.game.gameobjects.player.PlayerObject;
+import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.tilesets.TileSet;
 import dinodungeons.gfx.tilesets.TilesetManager;
 import lwjgladapter.datatypes.LWJGLAdapterException;
@@ -19,7 +20,7 @@ import lwjgladapter.physics.collision.base.Collider;
 import lwjgladapter.physics.collision.exceptions.CollisionNotSupportedException;
 
 public class DinoDungeons extends Game {
-
+	
 	private MapManager mapManager;
 	private TilesetManager tileSetManager;
 	
@@ -56,6 +57,7 @@ public class DinoDungeons extends Game {
 
 	@Override
 	public void loadResources() throws LWJGLAdapterException{
+		SpriteManager.getInstance().loadSprites();
 		mapManager.loadMaps();
 		tileSetManager.loadResources();
 		loadInitialGameState();

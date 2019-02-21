@@ -5,6 +5,9 @@ import java.util.HashSet;
 
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
+import dinodungeons.gfx.sprites.SpriteID;
+import dinodungeons.gfx.sprites.SpriteManager;
+import lwjgladapter.gfx.TileMap;
 import lwjgladapter.input.ButtonState;
 import lwjgladapter.input.InputManager;
 import lwjgladapter.input.KeyboardKey;
@@ -28,7 +31,19 @@ public class PlayerObject extends GameObject {
 	private float movementChangeY;
 	private float predictedPositionX;
 	private float predictedPositionY;
-	private boolean hasMoved;
+	
+	//Graphics Releated Stuff
+	private static final long msBetweenFrames = 150;
+	private int msSinceLastFrame;
+	private boolean showEvenFrame;
+	private boolean hasMovedUp;
+	private boolean hasMovedDown;
+	private boolean hasMovedLeft;
+	private boolean hasMovedRight;
+	private int actionNumber;
+	private int directionNumber;
+	private int frameNumber;
+	private TileMap characterSprite;
 	
 	public PlayerObject(GameObjectTag tag, int startX, int startY) {
 		super(tag);
@@ -38,12 +53,13 @@ public class PlayerObject extends GameObject {
 		predictedPositionY = positionY;
 		movementChangeX = 0;
 		movementChangeY = 0;
-		movementSpeed = 0.032f;
+		movementSpeed = 0.05f;
 		colliderXAxis = new RectCollider(startX, startY, 16, 16);
 		colliderYAxis = new RectCollider(startX, startY, 16, 16);
 		colliders = new HashSet<>();
 		colliders.add(colliderXAxis);
 		colliders.add(colliderYAxis);
+		characterSprite = SpriteManager.getInstance().getSprite(SpriteID.PLAYER);
 	}
 
 	@Override
@@ -51,24 +67,27 @@ public class PlayerObject extends GameObject {
 		move();
 		updateControls(deltaTimeInMs);
 		updateColliders();
+		updateShownFrame(deltaTimeInMs);
 	}
 
 	private void move() {
-		hasMoved = false;
+		hasMovedUp = false;
+		hasMovedDown = false;
+		hasMovedLeft = false;
+		hasMovedRight = false;
 		if(predictedPositionX != positionX){
 			if(getCollisionTagForSpecificCollider(colliderXAxis.getKey()) != GameObjectTag.WALL){
+				hasMovedLeft = predictedPositionX < positionX;
+				hasMovedRight = !hasMovedLeft;
 				positionX = predictedPositionX;
-				hasMoved = true;
 			}
 		}
 		if(predictedPositionY != positionY){
 			if(getCollisionTagForSpecificCollider(colliderYAxis.getKey()) != GameObjectTag.WALL){
+				hasMovedDown = predictedPositionY < positionY;
+				hasMovedUp = !hasMovedLeft;
 				positionY = predictedPositionY;
-				hasMoved = true;
 			}
-		}
-		if(hasMoved){
-			Logger.logDebug("Moved to [" + positionX + "," + positionY + "]");
 		}
 	}
 
@@ -108,11 +127,37 @@ public class PlayerObject extends GameObject {
 		colliderYAxis.setPositionX(Math.round(positionX));
 		colliderYAxis.setPositionY(Math.round(predictedPositionY));
 	}
+	
+	private void updateShownFrame(long deltaTimeInMs){
+		actionNumber = 0;
+		if(hasMovedUp
+				|| hasMovedDown
+				|| hasMovedLeft
+				|| hasMovedRight){
+			if(hasMovedDown){
+				directionNumber = 0;
+			}
+			else if(hasMovedLeft){
+				directionNumber = 1;
+			}
+			else if(hasMovedUp){
+				directionNumber = 2;
+			}
+			else if(hasMovedRight){
+				directionNumber = 3;
+			}
+			msSinceLastFrame += deltaTimeInMs;
+			if(msSinceLastFrame >= msBetweenFrames){
+				msSinceLastFrame -= msBetweenFrames;
+				showEvenFrame = !showEvenFrame;
+			}
+		}		
+		frameNumber = (actionNumber * 8) + (directionNumber * 2) + (showEvenFrame ? 0 : 1);
+	}
 
 	@Override
 	public void draw() {
-		// TODO Auto-generated method stub
-
+		characterSprite.draw(frameNumber, Math.round(positionX), Math.round(positionY));
 	}
 
 	@Override
