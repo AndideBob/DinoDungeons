@@ -33,9 +33,9 @@ public class DinoDungeons extends Game {
 	}
 	
 	private void loadInitialGameState() throws InvalidMapIDException{
-		gameObjects.add(new PlayerObject(GameObjectTag.PLAYER, 32,32));
 		currentMap = mapManager.getMapById("0000");
 		gameObjects.addAll(ScreenMapUtil.createGameObjectsForMap(currentMap));
+		gameObjects.add(new PlayerObject(GameObjectTag.PLAYER, 36,36));
 	}
 
 	@Override
@@ -62,9 +62,11 @@ public class DinoDungeons extends Game {
 	}
 
 	@Override
-	public void update(long deltaTimeInMS) throws LWJGLAdapterException {
+	public void update(long deltaTimeInMs) throws LWJGLAdapterException {
 		updateCollisions();
-
+		for(GameObject o : gameObjects){
+			o.update(deltaTimeInMs);
+		}
 	}
 	
 	private void updateCollisions() throws CollisionNotSupportedException{

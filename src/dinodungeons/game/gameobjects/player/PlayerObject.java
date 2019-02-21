@@ -3,11 +3,14 @@ package dinodungeons.game.gameobjects.player;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
+
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
 import lwjgladapter.input.ButtonState;
 import lwjgladapter.input.InputManager;
 import lwjgladapter.input.KeyboardKey;
+import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
@@ -55,25 +58,33 @@ public class PlayerObject extends GameObject {
 	}
 
 	private void move() {
-		if(canMove){
+		if(canMove
+				&& predictedPositionX != positionX
+				&& predictedPositionY != positionY){
 			positionX = predictedPositionX;
 			positionY = predictedPositionY;
+			Logger.logDebug("Moved to [" + positionX + "," + positionY + "]");
 		}
 	}
 
 	private void updateControls(long deltaTimeInMs){
 		movementChangeX = 0;
 		movementChangeY = 0;
-		if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.DOWN)){
+		if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.PRESSED)
+				|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.DOWN)){
 			movementChangeY = 1;
 		}
-		else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.DOWN)){
+		else if(
+				InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.PRESSED)
+				|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.DOWN)){
 			movementChangeY = -1;
 		}
-		if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.DOWN)){
+		if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.PRESSED)
+				|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.DOWN)){
 			movementChangeX = -1;
 		}
-		else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.DOWN)){
+		else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.PRESSED)
+				|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.DOWN)){
 			movementChangeX = 1;
 		}
 		//Move diagonally at same speed
