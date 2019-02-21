@@ -2,7 +2,9 @@ package dinodungeons.game.gameobjects.player;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 
+import com.sun.org.apache.bcel.internal.generic.GOTO;
 import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 import dinodungeons.game.gameobjects.GameObject;
@@ -21,7 +23,9 @@ public class PlayerObject extends GameObject {
 	
 	private float movementSpeed;
 	
-	private RectCollider collider;
+	private RectCollider colliderXAxis;
+	private RectCollider colliderYAxis;
+	private HashSet<Collider> colliders; 
 	
 	//Movement based Variables
 	private float movementChangeX;
@@ -29,6 +33,7 @@ public class PlayerObject extends GameObject {
 	private float predictedPositionX;
 	private float predictedPositionY;
 	private boolean canMove;
+	private boolean hasMoved;
 	
 	public PlayerObject(GameObjectTag tag, int startX, int startY) {
 		super(tag);
@@ -40,29 +45,35 @@ public class PlayerObject extends GameObject {
 		movementChangeX = 0;
 		movementChangeY = 0;
 		movementSpeed = 0.032f;
-		collider = new RectCollider(startX, startY, 16, 16);
+		colliderXAxis = new RectCollider(startX, startY, 16, 16);
+		colliderYAxis = new RectCollider(startX, startY, 16, 16);
+		colliders = new HashSet<>();
+		colliders.add(colliderXAxis);
+		colliders.add(colliderYAxis);
 	}
 
 	@Override
 	public void update(long deltaTimeInMs) {
-		reactToCollisions();
 		move();
 		updateControls(deltaTimeInMs);
-	}
-	
-	private void reactToCollisions() {
-		canMove = true;
-		if(hasCollisionWithObjectWithTag(GameObjectTag.WALL)){
-			canMove = false;
-		}
+		updateColliders();
 	}
 
 	private void move() {
-		if(canMove
-				&& predictedPositionX != positionX
-				&& predictedPositionY != positionY){
-			positionX = predictedPositionX;
-			positionY = predictedPositionY;
+		hasMoved = false;
+		if(predictedPositionX != positionX){
+			if(getCollisionTagForSpecificCollider(colliderXAxis.getKey()) != GameObjectTag.WALL){
+				positionX = predictedPositionX;
+				hasMoved = true;
+			}
+		}
+		if(predictedPositionY != positionY){
+			if(getCollisionTagForSpecificCollider(colliderYAxis.getKey()) != GameObjectTag.WALL){
+				positionY = predictedPositionY;
+				hasMoved = true;
+			}
+		}
+		if(hasMoved){
 			Logger.logDebug("Moved to [" + positionX + "," + positionY + "]");
 		}
 	}
@@ -94,8 +105,14 @@ public class PlayerObject extends GameObject {
 		}
 		predictedPositionX = positionX + (movementChangeX * movementSpeed * deltaTimeInMs);
 		predictedPositionY = positionY + (movementChangeY * movementSpeed * deltaTimeInMs);
-		collider.setPositionX(Math.round(predictedPositionX));
-		collider.setPositionY(Math.round(predictedPositionY));
+		
+	}
+	
+	private void updateColliders(){
+		colliderXAxis.setPositionX(Math.round(predictedPositionX));
+		colliderXAxis.setPositionY(Math.round(positionY));
+		colliderYAxis.setPositionX(Math.round(positionX));
+		colliderYAxis.setPositionY(Math.round(predictedPositionY));
 	}
 
 	@Override
@@ -106,7 +123,7 @@ public class PlayerObject extends GameObject {
 
 	@Override
 	public Collection<Collider> getColliders() {
-		return Collections.singleton(collider);
+		return colliders;
 	}
 
 }

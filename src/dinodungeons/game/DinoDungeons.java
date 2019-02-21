@@ -75,20 +75,12 @@ public class DinoDungeons extends Game {
 			o1.clearCollisionTags();
 			for(GameObject o2 : gameObjects){
 				if(!o1.equals(o2)){
-					boolean collisionExists = false;
 					for(Collider c1 : o1.getColliders()){
 						for(Collider c2 : o2.getColliders()){
 							if(PhysicsHelper.getInstance().checkCollisionBetween(c1, c2)){
-								collisionExists = true;
-								break;
+								o1.addCollisionTag(c1.getKey(), o2.getTag());
 							}
 						}
-						if(collisionExists){
-							break;
-						}
-					}
-					if(collisionExists){
-						o1.addCollisionTag(o2.getTag());
 					}
 				}
 			}
