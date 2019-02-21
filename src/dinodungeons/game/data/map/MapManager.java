@@ -3,6 +3,7 @@ package dinodungeons.game.data.map;
 import java.io.File;
 import java.util.HashMap;
 
+import dinodungeons.game.data.exceptions.InvalidMapIDException;
 import lwjgladapter.logging.Logger;
 
 public class MapManager {
@@ -13,6 +14,13 @@ public class MapManager {
 	public MapManager() {
 		loader = new ScreenMapLoader();
 		maps = new HashMap<>();
+	}
+	
+	public ScreenMap getMapById(String id) throws InvalidMapIDException{
+		if(maps.containsKey(id)){
+			return maps.get(id);
+		}
+		throw new InvalidMapIDException("Map ID does not exist: " + id);
 	}
 	
 	public void loadMaps(){
