@@ -66,6 +66,7 @@ public class ScreenMapUtil {
 							}
 						}
 						if(loopBroken){
+							actualHeight = height - 1;
 							break;
 						}
 						else{
