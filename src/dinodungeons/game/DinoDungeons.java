@@ -21,7 +21,7 @@ import dinodungeons.gfx.tilesets.TilesetManager;
 import lwjgladapter.datatypes.LWJGLAdapterException;
 import lwjgladapter.game.Game;
 import lwjgladapter.logging.Logger;
-import lwjgladapter.physics.collision.PhysicsHelper;
+import lwjgladapter.physics.PhysicsHelper;
 import lwjgladapter.physics.collision.base.Collider;
 import lwjgladapter.physics.collision.exceptions.CollisionNotSupportedException;
 
