@@ -23,7 +23,7 @@ public class WallObject extends GameObject {
 	}
 
 	@Override
-	public void draw() {
+	public void draw(int anchorX, int anchorY) {
 		//Do nothing
 	}
 

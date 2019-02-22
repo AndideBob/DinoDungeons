@@ -29,7 +29,7 @@ public abstract class GameObject {
 
 	public abstract void update(long deltaTimeInMs);
 	
-	public abstract void draw();
+	public abstract void draw(int anchorX, int anchorY);
 	
 	public abstract Collection<Collider> getColliders();
 	

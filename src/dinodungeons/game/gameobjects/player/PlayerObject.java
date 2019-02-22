@@ -3,6 +3,8 @@ package dinodungeons.game.gameobjects.player;
 import java.util.Collection;
 import java.util.HashSet;
 
+import dinodungeons.game.data.DinoDungeonsConstants;
+import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
@@ -11,7 +13,6 @@ import lwjgladapter.gfx.TileMap;
 import lwjgladapter.input.ButtonState;
 import lwjgladapter.input.InputManager;
 import lwjgladapter.input.KeyboardKey;
-import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
@@ -75,6 +76,24 @@ public class PlayerObject extends GameObject {
 		hasMovedDown = false;
 		hasMovedLeft = false;
 		hasMovedRight = false;
+		//Change Y Position
+		if(predictedPositionY != positionY){
+			if(getCollisionTagForSpecificCollider(colliderYAxis.getKey()) != GameObjectTag.WALL){
+				hasMovedDown = predictedPositionY < positionY;
+				hasMovedUp = !hasMovedLeft;
+				positionY = predictedPositionY;
+			}
+		}
+		//Check for Y Transitions
+		if(positionY < DinoDungeonsConstants.scrollBoundryDown){
+			TransitionManager.getInstance().initiateScrollTransitionDown((int)positionX, (int)positionY);
+			predictedPositionX = positionX; //Reset XPosition to avoid double Scrolling
+		}
+		else if(positionY > DinoDungeonsConstants.scrollBoundryUp){
+			TransitionManager.getInstance().initiateScrollTransitionUp((int)positionX, (int)positionY);
+			predictedPositionX = positionX; //Reset XPosition to avoid double Scrolling
+		}
+		//Change X Position
 		if(predictedPositionX != positionX){
 			if(getCollisionTagForSpecificCollider(colliderXAxis.getKey()) != GameObjectTag.WALL){
 				hasMovedLeft = predictedPositionX < positionX;
@@ -82,12 +101,12 @@ public class PlayerObject extends GameObject {
 				positionX = predictedPositionX;
 			}
 		}
-		if(predictedPositionY != positionY){
-			if(getCollisionTagForSpecificCollider(colliderYAxis.getKey()) != GameObjectTag.WALL){
-				hasMovedDown = predictedPositionY < positionY;
-				hasMovedUp = !hasMovedLeft;
-				positionY = predictedPositionY;
-			}
+		//Check for X Transitions
+		if(positionX < DinoDungeonsConstants.scrollBoundryLeft){
+			TransitionManager.getInstance().initiateScrollTransitionLeft((int)positionX, (int)positionY);
+		}
+		else if(positionX > DinoDungeonsConstants.scrollBoundryRight){
+			TransitionManager.getInstance().initiateScrollTransitionRight((int)positionX, (int)positionY);
 		}
 	}
 
@@ -156,13 +175,20 @@ public class PlayerObject extends GameObject {
 	}
 
 	@Override
-	public void draw() {
-		characterSprite.draw(frameNumber, Math.round(positionX), Math.round(positionY));
+	public void draw(int anchorX, int anchorY) {
+		characterSprite.draw(frameNumber, anchorX + Math.round(positionX), anchorY + Math.round(positionY));
 	}
 
 	@Override
 	public Collection<Collider> getColliders() {
 		return colliders;
+	}
+	
+	public void setPosition(int x, int y){
+		positionX = x;
+		positionY = y;
+		predictedPositionX = positionX;
+		predictedPositionY = positionY;
 	}
 
 }

@@ -102,12 +102,9 @@ public class ScreenMapUtil {
 	}
 	
 	private static GameObject buildTransportGameObject(TransportMapObject transportMapObject, int posX, int posY){
-		if(gameHandle == null){
-			//TODO: Throw Exception here
-		}
 		switch(transportMapObject.getTransportationType()){
 		case INSTANT_TELEPORT:
-			return new InstantExitObject(GameObjectTag.TRANSPORT, posX, posY, gameHandle,
+			return new InstantExitObject(GameObjectTag.TRANSPORT, posX, posY,
 					transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());	
 		}
 		return null;

@@ -160,8 +160,18 @@ public class Editor extends Game {
 						switchToEnterTextMode(TextUsage.EXIT_MAP_Y);
 						break;
 					case EXIT_MAP_Y:
-						exitPosY = Integer.parseInt(enteredText);
-						switchToState(EditorState.PLACE_EXITS);
+						try{
+							exitPosY = Integer.parseInt(enteredText);
+						}
+						catch(NumberFormatException e){
+							exitPosY = 20;
+						}
+						if(exitPosY < 0 || exitPosY > 11){
+							infoText = "Valid Y-Position [0-11]";
+						}
+						else{
+							switchToState(EditorState.PLACE_EXITS);
+						}
 						break;
 					default:
 						Logger.logError("Text usage not defined!");
@@ -303,9 +313,20 @@ public class Editor extends Game {
 			enteredText = String.valueOf(exitPosX);
 			break;
 		case EXIT_MAP_Y:
-			infoText = "Enter Destination Y-Position:";
-			exitPosX = Integer.parseInt(enteredText);
-			enteredText = String.valueOf(exitPosY);
+			try{
+				exitPosX = Integer.parseInt(enteredText);
+			}
+			catch(NumberFormatException e){
+				exitPosX = 20;
+			}
+			if(exitPosX < 0 || exitPosX > 15){
+				textUsage = TextUsage.EXIT_MAP_X;
+				infoText = "Valid X-Position [0-15]";
+			}
+			else{
+				infoText = "Enter Destination Y-Position:";
+				enteredText = String.valueOf(exitPosY);
+			}
 			break;
 		case EXIT_NORTH:
 			infoText = "Enter Map-ID upwards:";
