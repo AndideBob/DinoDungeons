@@ -30,7 +30,6 @@ public class InstantExitObject extends GameObject {
 	@Override
 	public void update(long deltaTimeInMs) {
 		if(hasCollisionWithObjectWithTag(GameObjectTag.PLAYER)){
-			Logger.log("Teleporting Player to [" + targetMap + "] at [" + targetX + "," + targetY + "]");
 			TransitionManager.getInstance().initiateTransition(targetMap, targetX * 16, targetY * 16, TransitionType.INSTANT);
 		}
 	}

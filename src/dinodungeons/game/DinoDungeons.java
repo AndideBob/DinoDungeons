@@ -2,7 +2,6 @@ package dinodungeons.game;
 
 import java.util.ArrayList;
 
-import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
 import dinodungeons.game.data.map.BaseLayerTile;
@@ -15,6 +14,7 @@ import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
 import dinodungeons.game.gameobjects.player.PlayerObject;
+import dinodungeons.game.utils.ScreenScrollingHelper;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.tilesets.TileSet;
 import dinodungeons.gfx.tilesets.TilesetManager;
@@ -29,21 +29,20 @@ public class DinoDungeons extends Game {
 	
 	private MapManager mapManager;
 	private TilesetManager tileSetManager;
+	private ScreenScrollingHelper scrollHelper;
 	
 	private ArrayList<GameObject> gameObjects;
 	private PlayerObject player;
 	private ScreenMap currentMap;
 	private ScreenMap lastMap;
 	private ArrayList<GameObject> lastMapObjects;
-	private long scrollTimer = 0;
-	private int scrollX = 0;
-	private int scrollY = 0;
 	
 	private GameState gameState;
 	
 	public DinoDungeons() {
 		mapManager = new MapManager();
 		tileSetManager = new TilesetManager();
+		scrollHelper = new ScreenScrollingHelper();
 		gameObjects = new ArrayList<>();
 		lastMapObjects = new ArrayList<>();
 		ScreenMapUtil.setGameHandle(this);
@@ -74,11 +73,10 @@ public class DinoDungeons extends Game {
 			}
 			break;
 		case SCROLLING:
-			float scrollProgress = 1f - ((1f * scrollTimer) / DinoDungeonsConstants.scrollTransitionDurationInMs);
-			int offsetOldX = Math.round(scrollX * DinoDungeonsConstants.mapWidth * scrollProgress);
-			int offsetOldY = Math.round(scrollY * DinoDungeonsConstants.mapHeight * scrollProgress);
-			int offsetNewX = (scrollX > 0 ? -DinoDungeonsConstants.mapWidth : scrollX < 0 ? DinoDungeonsConstants.mapWidth : 0) + offsetOldX;
-			int offsetNewY = (scrollY > 0 ? -DinoDungeonsConstants.mapHeight : scrollY < 0 ? DinoDungeonsConstants.mapHeight : 0) + offsetOldY;
+			int offsetOldX = scrollHelper.getOffsetOldX();
+			int offsetOldY = scrollHelper.getOffsetOldY();
+			int offsetNewX = scrollHelper.getOffsetNewX();
+			int offsetNewY = scrollHelper.getOffsetNewY();
 			//Draw Maps
 			for(int x = 0; x < currentMap.getSizeX(); x++){
 				for(int y = 0; y < currentMap.getSizeY(); y++){
@@ -121,8 +119,8 @@ public class DinoDungeons extends Game {
 			}
 			break;
 		case SCROLLING:
-			scrollTimer -= deltaTimeInMs;
-			if(scrollTimer <= 0){
+			scrollHelper.update(deltaTimeInMs);
+			if(scrollHelper.scrollingFinished()){
 				gameState = GameState.DEFAULT;
 				lastMap = null;
 				lastMapObjects.clear();
@@ -138,33 +136,11 @@ public class DinoDungeons extends Game {
 			Logger.log(transition.getTransitionType().toString() + "-Transition to Map[" + transition.getDestinationMapID() + "] at [" +
 					transition.getDestinationXPosition() + "," + transition.getDestinationYPosition() + "]");
 			if(transition.getTransitionType().isScrollTransition()){
-				scrollTimer = DinoDungeonsConstants.scrollTransitionDurationInMs;
 				gameState = GameState.SCROLLING;
+				scrollHelper.startScrolling(transition.getTransitionType());
 				lastMap = currentMap;
 				gameObjects.remove(player);
 				lastMapObjects.addAll(gameObjects);
-				switch(transition.getTransitionType()){
-				case SCROLL_DOWN:
-					scrollX = 0;
-					scrollY = 1;
-					break;
-				case SCROLL_LEFT:
-					scrollX = 1;
-					scrollY = 0;
-					break;
-				case SCROLL_RIGHT:
-					scrollX = -1;
-					scrollY = 0;
-					break;
-				case SCROLL_UP:
-					scrollX = 0;
-					scrollY = -1;
-					break;
-				default:
-					scrollX = 0;
-					scrollY = 0;
-					break;
-				}
 			}
 			currentMap = mapManager.getMapById(transition.getDestinationMapID());
 			gameObjects.clear();
