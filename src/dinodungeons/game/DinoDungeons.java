@@ -1,7 +1,5 @@
 package dinodungeons.game;
 
-import java.util.ArrayList;
-
 import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
 import dinodungeons.game.data.map.BaseLayerTile;
@@ -12,8 +10,7 @@ import dinodungeons.game.data.transitions.ScreenTransition;
 import dinodungeons.game.data.transitions.TransitionType;
 import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObject;
-import dinodungeons.game.gameobjects.GameObjectTag;
-import dinodungeons.game.gameobjects.player.PlayerObject;
+import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.utils.ScreenScrollingHelper;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.tilesets.TileSet;
@@ -31,20 +28,20 @@ public class DinoDungeons extends Game {
 	private TilesetManager tileSetManager;
 	private ScreenScrollingHelper scrollHelper;
 	
-	private ArrayList<GameObject> gameObjects;
-	private PlayerObject player;
+	private GameObjectManager gameObjectManager;
+	
+	
 	private ScreenMap currentMap;
 	private ScreenMap lastMap;
-	private ArrayList<GameObject> lastMapObjects;
+	
 	
 	private GameState gameState;
 	
 	public DinoDungeons() {
+		gameObjectManager = new GameObjectManager();
 		mapManager = new MapManager();
 		tileSetManager = new TilesetManager();
 		scrollHelper = new ScreenScrollingHelper();
-		gameObjects = new ArrayList<>();
-		lastMapObjects = new ArrayList<>();
 		ScreenMapUtil.setGameHandle(this);
 		gameState = GameState.DEFAULT;
 	}
@@ -68,9 +65,7 @@ public class DinoDungeons extends Game {
 				}
 			}
 			//DrawGameObjects
-			for(GameObject o : gameObjects){
-				o.draw(0,0);
-			}
+			gameObjectManager.drawGameObjects(0, 0);
 			break;
 		case SCROLLING:
 			int offsetOldX = scrollHelper.getOffsetOldX();
@@ -89,12 +84,8 @@ public class DinoDungeons extends Game {
 				}
 			}
 			//DrawGameObjects
-			for(GameObject o : gameObjects){
-				o.draw(offsetNewX,offsetNewY);
-			}
-			for(GameObject o : lastMapObjects){
-				o.draw(offsetOldX,offsetOldY);
-			}
+			gameObjectManager.drawGameObjects(offsetNewX,offsetNewY);
+			gameObjectManager.drawLastGameObjects(offsetOldX,offsetOldY);
 			break;
 		}
 		
@@ -114,16 +105,14 @@ public class DinoDungeons extends Game {
 		case DEFAULT:
 			switchMapIfNecessary();
 			updateCollisions();
-			for(GameObject o : gameObjects){
-				o.update(deltaTimeInMs);
-			}
+			gameObjectManager.updateGameObjects(deltaTimeInMs);
 			break;
 		case SCROLLING:
 			scrollHelper.update(deltaTimeInMs);
 			if(scrollHelper.scrollingFinished()){
 				gameState = GameState.DEFAULT;
 				lastMap = null;
-				lastMapObjects.clear();
+				gameObjectManager.clearLastGameObjects();
 			}
 			break;
 		}
@@ -139,28 +128,20 @@ public class DinoDungeons extends Game {
 				gameState = GameState.SCROLLING;
 				scrollHelper.startScrolling(transition.getTransitionType());
 				lastMap = currentMap;
-				gameObjects.remove(player);
-				lastMapObjects.addAll(gameObjects);
+				gameObjectManager.storeCurrentGameObjects();
 			}
 			currentMap = mapManager.getMapById(transition.getDestinationMapID());
-			gameObjects.clear();
-			gameObjects.addAll(ScreenMapUtil.createGameObjectsForMap(currentMap));
-			if(player == null){
-				player = new PlayerObject(GameObjectTag.PLAYER, transition.getDestinationXPosition(), transition.getDestinationYPosition());
-			}
-			else{
-				player.setPosition(transition.getDestinationXPosition(), transition.getDestinationYPosition());
-			}
-			gameObjects.add(player);
+			gameObjectManager.initGameObjects(ScreenMapUtil.createGameObjectsForMap(currentMap));
+			gameObjectManager.setPlayerPosition(transition.getDestinationXPosition(), transition.getDestinationYPosition());
 			TransitionManager.getInstance().setCurrentMap(currentMap);
 		}
 	}
 	
 	private void updateCollisions() throws CollisionNotSupportedException{
 		PhysicsHelper.getInstance().resetCollisions();
-		for(GameObject o1 : gameObjects){
+		for(GameObject o1 : gameObjectManager.getGameObjects()){
 			o1.clearCollisionTags();
-			for(GameObject o2 : gameObjects){
+			for(GameObject o2 : gameObjectManager.getGameObjects()){
 				if(!o1.equals(o2)){
 					for(Collider c1 : o1.getColliders()){
 						for(Collider c2 : o2.getColliders()){
