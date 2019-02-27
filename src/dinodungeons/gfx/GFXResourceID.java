@@ -5,6 +5,7 @@ import java.io.File;
 import lwjgladapter.GameWindowConstants;
 
 public enum GFXResourceID {
+	UI_HEALTH(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderUI + File.separator + "health.png"),
 	EDITOR_SELECTOR(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderEDITOR + File.separator + "editorSelector.png"),
 	TEXT(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTEXT + File.separator + "letters.png"),
 	DUNGEON_TEST(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTILESETS + File.separator + "dungeonTest.png"),
@@ -17,6 +18,7 @@ public enum GFXResourceID {
 	private static final String folderCHARACTERS = "characters";
 	private static final String folderTILESETS = "tilesets";
 	private static final String folderEDITOR = "editor";
+	private static final String folderUI = "ui";
 
 	private String filePath;
 	

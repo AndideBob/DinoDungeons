@@ -2,6 +2,7 @@ package dinodungeons.game;
 
 import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
+import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.MapManager;
 import dinodungeons.game.data.map.ScreenMap;
@@ -15,6 +16,7 @@ import dinodungeons.game.utils.ScreenScrollingHelper;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.tilesets.TileSet;
 import dinodungeons.gfx.tilesets.TilesetManager;
+import dinodungeons.gfx.ui.UIManager;
 import lwjgladapter.datatypes.LWJGLAdapterException;
 import lwjgladapter.game.Game;
 import lwjgladapter.logging.Logger;
@@ -26,6 +28,7 @@ public class DinoDungeons extends Game {
 	
 	private MapManager mapManager;
 	private TilesetManager tileSetManager;
+	private UIManager uiManager;
 	private ScreenScrollingHelper scrollHelper;
 	
 	private GameObjectManager gameObjectManager;
@@ -41,6 +44,7 @@ public class DinoDungeons extends Game {
 		gameObjectManager = new GameObjectManager();
 		mapManager = new MapManager();
 		tileSetManager = new TilesetManager();
+		uiManager = new UIManager();
 		scrollHelper = new ScreenScrollingHelper();
 		ScreenMapUtil.setGameHandle(this);
 		gameState = GameState.DEFAULT;
@@ -88,7 +92,7 @@ public class DinoDungeons extends Game {
 			gameObjectManager.drawLastGameObjects(offsetOldX,offsetOldY);
 			break;
 		}
-		
+		uiManager.draw(192);
 	}
 
 	@Override
@@ -96,6 +100,7 @@ public class DinoDungeons extends Game {
 		SpriteManager.getInstance().loadSprites();
 		mapManager.loadMaps();
 		tileSetManager.loadResources();
+		uiManager.loadResources();
 		loadInitialGameState();
 	}
 
