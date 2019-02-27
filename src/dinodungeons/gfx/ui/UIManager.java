@@ -3,11 +3,10 @@ package dinodungeons.gfx.ui;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.gfx.GFXResourceID;
 import lwjgladapter.gfx.TileMap;
-import lwjgladapter.logging.Logger;
 
 public class UIManager {
 	
-	private static final int healthPerLine = 10;
+	private static final int healthPerLine = 12;
 
 	TileMap healthSprite;
 	

@@ -12,6 +12,7 @@ public class PlayerStatusManager {
 	}
 	
 	private static final int defaultHealth = 6;
+	private static final int totalMaxHealth = 48;
 	
 	private int maxHealth;
 	
