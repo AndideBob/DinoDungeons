@@ -3,6 +3,7 @@ package dinodungeons.game.gameobjects;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 import dinodungeons.game.gameobjects.player.PlayerObject;
 
@@ -25,8 +26,15 @@ public class GameObjectManager {
 	}
 	
 	public void updateGameObjects(long deltaTimeInMs){
-		for(GameObject o : gameObjects){
-			o.update(deltaTimeInMs);
+		Iterator<GameObject> iter = gameObjects.iterator();
+		while(iter.hasNext()){
+			GameObject o = iter.next();
+			if(o.shouldBeDeleted()){
+				iter.remove();
+			}
+			else{
+				o.update(deltaTimeInMs);
+			}
 		}
 	}
 	

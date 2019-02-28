@@ -1,5 +1,12 @@
 package dinodungeons.game.data.gameplay;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import dinodungeons.game.gameobjects.player.ItemID;
+
 public class PlayerStatusManager {
 	
 	private static PlayerStatusManager instance;
@@ -17,10 +24,21 @@ public class PlayerStatusManager {
 	private int maxHealth;
 	
 	private int currentHealth;
+	
+	private Set<ItemID> collectedItems;
 
 	private PlayerStatusManager() {
 		maxHealth = defaultHealth;
 		currentHealth = maxHealth;
+		collectedItems = new HashSet<>();
+	}
+	
+	public Collection<ItemID> getCollectedItems(){
+		return Collections.unmodifiableSet(collectedItems);
+	}
+	
+	public void collectItem(ItemID itemID){
+		collectedItems.add(itemID);
 	}
 
 	public int getMaxHealth() {

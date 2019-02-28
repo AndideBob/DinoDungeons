@@ -3,6 +3,7 @@ package dinodungeons.game.gameobjects.collectable;
 import java.util.Collection;
 import java.util.Collections;
 
+import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
 import dinodungeons.game.gameobjects.player.ItemID;
@@ -23,8 +24,8 @@ public class CollectableItemObject extends GameObject {
 	
 	private boolean isValid;
 	
-	public CollectableItemObject(GameObjectTag tag, int positionX, int positionY, ItemID itemID) {
-		super(tag);
+	public CollectableItemObject(int positionX, int positionY, ItemID itemID) {
+		super(getGameObjectTagForItemID(itemID));
 		collider = new RectCollider(positionX, positionY, 16, 16);
 		//TODO: If player already owns the item don't spawn again
 		isValid = true;
@@ -33,9 +34,47 @@ public class CollectableItemObject extends GameObject {
 		this.itemID = itemID;
 	}
 
+	private static GameObjectTag getGameObjectTagForItemID(ItemID itemID) {
+		switch (itemID) {
+		case CLUB:
+			return GameObjectTag.COLLECTABLE_ITEM_CLUB;
+		case ITEM_1:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_1;
+		case ITEM_2:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_2;
+		case ITEM_3:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_3;
+		case ITEM_4:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_4;
+		case ITEM_5:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_5;
+		case ITEM_6:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_6;
+		case ITEM_7:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_7;
+		case ITEM_8:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_8;
+		case ITEM_9:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_9;
+		case ITEM_A:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_A;
+		case ITEM_B:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_B;
+		case ITEM_D:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_D;
+		case ITEM_E:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_E;
+		case ITEM_F:
+			return GameObjectTag.COLLECTABLE_ITEM_ITEM_F;
+		case MIRROR:
+			return GameObjectTag.COLLECTABLE_ITEM_MIRROR;
+		}
+		return GameObjectTag.COLLECTABLE_ITEM_CLUB;
+	}
+
 	@Override
 	public void update(long deltaTimeInMs) {
-		//TODO: Actually collecting the item
+		isValid = PlayerStatusManager.getInstance().getCollectedItems().contains(itemID);
 	}
 
 	@Override
@@ -52,7 +91,7 @@ public class CollectableItemObject extends GameObject {
 
 	@Override
 	public Collection<Collider> getColliders() {
-		return Collections.singleton(collider);
+		return isValid ? Collections.singleton(collider) : Collections.emptyList();
 	}
 
 }

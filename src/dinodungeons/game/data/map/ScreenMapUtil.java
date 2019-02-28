@@ -108,7 +108,7 @@ public class ScreenMapUtil {
 	}
 	
 	private static GameObject buildItemGameObject(ItemMapObject itemMapObject, int posX, int posY) {
-		return new CollectableItemObject(GameObjectTag.COLLECTABLE_ITEM, posX, posY, itemMapObject.getItemID());
+		return new CollectableItemObject(posX, posY, itemMapObject.getItemID());
 	}
 
 	private static GameObject buildTransportGameObject(TransportMapObject transportMapObject, int posX, int posY){

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
+import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
@@ -41,10 +42,12 @@ public class PlayerObject extends GameObject {
 	private boolean hasMovedDown;
 	private boolean hasMovedLeft;
 	private boolean hasMovedRight;
-	private int actionNumber;
-	private int directionNumber;
 	private int frameNumber;
 	private TileMap characterSprite;
+	
+	private PlayerState playerState;
+	
+	private ItemID justCollectedItem;
 	
 	public PlayerObject(GameObjectTag tag, int startX, int startY) {
 		super(tag);
@@ -61,14 +64,92 @@ public class PlayerObject extends GameObject {
 		colliders.add(colliderXAxis);
 		colliders.add(colliderYAxis);
 		characterSprite = SpriteManager.getInstance().getSprite(SpriteID.PLAYER);
+		playerState = PlayerState.DEFAULT;
 	}
 
 	@Override
 	public void update(long deltaTimeInMs) {
-		move();
-		updateControls(deltaTimeInMs);
+		handleCollisions();
+		switch (playerState) {
+		case DEFAULT:
+			move();
+			updateControls(deltaTimeInMs);
+			break;
+		case ITEM_COLLECTED:
+			if(msSinceLastFrame >= DinoDungeonsConstants.itemCollectionCharacterFreeze){
+				msSinceLastFrame = 0;
+				playerState = PlayerState.DEFAULT;
+			}
+			break;
+		}
 		updateColliders();
 		updateShownFrame(deltaTimeInMs);
+	}
+
+	private void handleCollisions() {
+		for(GameObjectTag tag : GameObjectTag.collectableItems){
+			if(hasCollisionWithObjectWithTag(tag)){
+				boolean itemAdded = true;
+				switch(tag){
+				case COLLECTABLE_ITEM_CLUB:
+					justCollectedItem = ItemID.CLUB;
+					break;
+				case COLLECTABLE_ITEM_ITEM_1:
+					justCollectedItem = ItemID.ITEM_1;
+					break;
+				case COLLECTABLE_ITEM_ITEM_2:
+					justCollectedItem = ItemID.ITEM_2;
+					break;
+				case COLLECTABLE_ITEM_ITEM_3:
+					justCollectedItem = ItemID.ITEM_3;
+					break;
+				case COLLECTABLE_ITEM_ITEM_4:
+					justCollectedItem = ItemID.ITEM_4;
+					break;
+				case COLLECTABLE_ITEM_ITEM_5:
+					justCollectedItem = ItemID.ITEM_5;
+					break;
+				case COLLECTABLE_ITEM_ITEM_6:
+					justCollectedItem = ItemID.ITEM_6;
+					break;
+				case COLLECTABLE_ITEM_ITEM_7:
+					justCollectedItem = ItemID.ITEM_7;
+					break;
+				case COLLECTABLE_ITEM_ITEM_8:
+					justCollectedItem = ItemID.ITEM_8;
+					break;
+				case COLLECTABLE_ITEM_ITEM_9:
+					justCollectedItem = ItemID.ITEM_9;
+					break;
+				case COLLECTABLE_ITEM_ITEM_A:
+					justCollectedItem = ItemID.ITEM_A;
+					break;
+				case COLLECTABLE_ITEM_ITEM_B:
+					justCollectedItem = ItemID.ITEM_B;
+					break;
+				case COLLECTABLE_ITEM_MIRROR:
+					justCollectedItem = ItemID.MIRROR;
+					break;
+				case COLLECTABLE_ITEM_ITEM_D:
+					justCollectedItem = ItemID.ITEM_D;
+					break;
+				case COLLECTABLE_ITEM_ITEM_E:
+					justCollectedItem = ItemID.ITEM_E;
+					break;
+				case COLLECTABLE_ITEM_ITEM_F:
+					justCollectedItem = ItemID.ITEM_F;
+					break;
+				default:
+					itemAdded = false;
+					break;
+				}
+				if(itemAdded){
+					playerState = PlayerState.ITEM_COLLECTED;
+					PlayerStatusManager.getInstance().collectItem(justCollectedItem);
+					msSinceLastFrame = 0;
+				}
+			}
+		}
 	}
 
 	private void move() {
@@ -148,35 +229,53 @@ public class PlayerObject extends GameObject {
 	}
 	
 	private void updateShownFrame(long deltaTimeInMs){
-		actionNumber = 0;
-		if(hasMovedUp
-				|| hasMovedDown
-				|| hasMovedLeft
-				|| hasMovedRight){
-			if(hasMovedDown){
-				directionNumber = 0;
-			}
-			else if(hasMovedLeft){
-				directionNumber = 1;
-			}
-			else if(hasMovedUp){
-				directionNumber = 2;
-			}
-			else if(hasMovedRight){
-				directionNumber = 3;
-			}
-			msSinceLastFrame += deltaTimeInMs;
-			if(msSinceLastFrame >= msBetweenFrames){
-				msSinceLastFrame -= msBetweenFrames;
-				showEvenFrame = !showEvenFrame;
-			}
-		}		
+		int actionNumber = 0;
+		int directionNumber = 0;
+		msSinceLastFrame += deltaTimeInMs;
+		switch(playerState){
+		case DEFAULT:
+			if(hasMovedUp
+					|| hasMovedDown
+					|| hasMovedLeft
+					|| hasMovedRight){
+				if(hasMovedDown){
+					directionNumber = 0;
+				}
+				else if(hasMovedLeft){
+					directionNumber = 1;
+				}
+				else if(hasMovedUp){
+					directionNumber = 2;
+				}
+				else if(hasMovedRight){
+					directionNumber = 3;
+				}
+				if(msSinceLastFrame >= msBetweenFrames){
+					msSinceLastFrame -= msBetweenFrames;
+					showEvenFrame = !showEvenFrame;
+				}
+			}		
+			break;
+		case ITEM_COLLECTED:
+			actionNumber = 3;
+			directionNumber = 0;
+			showEvenFrame = false;
+			break;
+		}
 		frameNumber = (actionNumber * 8) + (directionNumber * 2) + (showEvenFrame ? 0 : 1);
 	}
 
 	@Override
 	public void draw(int anchorX, int anchorY) {
-		characterSprite.draw(frameNumber, anchorX + Math.round(positionX), anchorY + Math.round(positionY));
+		int x = anchorX + Math.round(positionX);
+		int y = anchorY + Math.round(positionY);
+		characterSprite.draw(frameNumber, x, y);
+		switch (playerState) {
+		case ITEM_COLLECTED:
+			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(justCollectedItem.getSpriteSheetPosition(), x, y + 16);
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -191,4 +290,8 @@ public class PlayerObject extends GameObject {
 		predictedPositionY = positionY;
 	}
 
+	private enum PlayerState{
+		DEFAULT,
+		ITEM_COLLECTED;
+	}
 }
