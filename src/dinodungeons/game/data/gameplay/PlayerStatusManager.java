@@ -26,6 +26,11 @@ public class PlayerStatusManager {
 	public int getMaxHealth() {
 		return maxHealth;
 	}
+	
+	public void setMaxHealth(int value){
+		int actualValue = Math.max(1, Math.min(value, totalMaxHealth));
+		maxHealth = actualValue;
+	}
 
 	public void heal(int amount) {
 		if(amount > 0){

@@ -22,7 +22,7 @@ public class EditorDrawManager {
 	
 	public void loadTextures(){
 		tileSetManager.loadResources();
-		textManager = new DrawTextManager(GFXResourceID.TEXT.getFilePath());
+		textManager = new DrawTextManager(GFXResourceID.TEXT_WHITE.getFilePath());
 		selectorTexture = new Texture(GFXResourceID.EDITOR_SELECTOR.getFilePath());
 	}
 	

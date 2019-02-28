@@ -2,7 +2,6 @@ package dinodungeons.game;
 
 import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
-import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.MapManager;
 import dinodungeons.game.data.map.ScreenMap;
@@ -92,7 +91,7 @@ public class DinoDungeons extends Game {
 			gameObjectManager.drawLastGameObjects(offsetOldX,offsetOldY);
 			break;
 		}
-		uiManager.draw(192);
+		uiManager.draw(192, false);
 	}
 
 	@Override
