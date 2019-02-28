@@ -13,6 +13,7 @@ import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
+import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.tilesets.TileSet;
 import lwjgladapter.game.Game;
@@ -133,7 +134,7 @@ public class Editor extends Game {
 					case LOAD:
 						currentMap = loader.loadMap(enteredText);
 						infoText = "Load successfull!";
-						switchToState(EditorState.PLACE_BASELAYER);
+						switchToState(EditorState.INSPECTOR);
 						break;
 					case SAVING:
 						if(saver.saveMap(enteredText, currentMap)) {
@@ -142,7 +143,7 @@ public class Editor extends Game {
 						else {
 							infoText = "An error occured during saving!";
 						}
-						switchToState(EditorState.PLACE_BASELAYER);
+						switchToState(EditorState.INSPECTOR);
 						break;
 					case EXIT_EAST:
 						switchToEnterTextMode(TextUsage.EXIT_SOUTH);
@@ -224,7 +225,7 @@ public class Editor extends Game {
 					int x = currentMousePosition[0] / 16;
 					int y = currentMousePosition[1] / 16;
 					ItemMapObject item = new ItemMapObject();
-					item.setItemID(currentSelection);
+					item.setItemID(ItemID.values()[currentSelection]);
 					currentMap.setMapObjectForPosition(x, y, item);
 				}
 			}

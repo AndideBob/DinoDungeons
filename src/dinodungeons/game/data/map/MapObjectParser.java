@@ -5,6 +5,7 @@ import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
+import dinodungeons.game.gameobjects.player.ItemID;
 
 public class MapObjectParser {
 	
@@ -33,7 +34,7 @@ public class MapObjectParser {
 		String result = "(";
 		result += itemMapObjectID;
 		result += internalSplitter;
-		result += itemMapObject.getItemID();
+		result += itemMapObject.getItemID().getSaveRepresentation();
 		result += ")";
 		return result;
 	}
@@ -69,7 +70,7 @@ public class MapObjectParser {
 		}
 		else if(stringParts[0].equals(itemMapObjectID)){
 			ItemMapObject itemMapObject = new ItemMapObject();
-			itemMapObject.setItemID(Integer.parseInt(stringParts[1]));
+			itemMapObject.setItemID(ItemID.getItemIDBySaveRepresentation(stringParts[1]));
 			return itemMapObject;
 		}
 		return new EmptyMapObject();

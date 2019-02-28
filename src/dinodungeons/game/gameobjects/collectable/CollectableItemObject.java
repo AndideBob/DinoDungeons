@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
+import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import lwjgladapter.physics.collision.RectCollider;
@@ -16,19 +17,20 @@ public class CollectableItemObject extends GameObject {
 	
 	private int positionY;
 	
-	private int itemID;
+	private ItemID itemID;
 	
 	private RectCollider collider;
 	
 	private boolean isValid;
 	
-	public CollectableItemObject(GameObjectTag tag, int positionX, int positionY, int itemID) {
+	public CollectableItemObject(GameObjectTag tag, int positionX, int positionY, ItemID itemID) {
 		super(tag);
 		collider = new RectCollider(positionX, positionY, 16, 16);
 		//TODO: If player already owns the item don't spawn again
 		isValid = true;
 		this.positionX = positionX;
 		this.positionY = positionY;
+		this.itemID = itemID;
 	}
 
 	@Override
@@ -39,7 +41,7 @@ public class CollectableItemObject extends GameObject {
 	@Override
 	public void draw(int anchorX, int anchorY) {
 		if(isValid){
-			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(itemID, anchorX + positionX, anchorY + positionY);
+			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(itemID.getSpriteSheetPosition(), anchorX + positionX, anchorY + positionY);
 		}
 	}
 	
