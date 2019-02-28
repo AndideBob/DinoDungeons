@@ -88,7 +88,7 @@ public class ScreenMapUtil {
 		ArrayList<GameObject> objects = new ArrayList<>();
 		for(int y = 0; y < map.getSizeY(); y++){
 			for(int x = 0; x < map.getSizeX(); x++){
-				GameObject object = convertMapObjectToGameObject(map.getMapObjectForPosition(x, y), x, y);
+				GameObject object = convertMapObjectToGameObject(map.getMapObjectForPosition(x, y), x * 16, y * 16);
 				if(object != null){
 					objects.add(object);
 				}

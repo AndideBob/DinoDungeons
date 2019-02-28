@@ -21,7 +21,7 @@ public class InstantExitObject extends GameObject {
 	
 	public InstantExitObject(GameObjectTag tag, int positionX, int positionY, String targetMap, int targetX, int targetY) {
 		super(tag);
-		collider = new RectCollider(positionX * 16 + 6, positionY * 16 + 6, 4, 4);
+		collider = new RectCollider(positionX + 6, positionY + 6, 4, 4);
 		this.targetMap = targetMap;
 		this.targetX = targetX;
 		this.targetY = targetY;

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import dinodungeons.game.gameobjects.player.ItemID;
+import lwjgladapter.logging.Logger;
 
 public class PlayerStatusManager {
 	
@@ -38,6 +39,7 @@ public class PlayerStatusManager {
 	}
 	
 	public void collectItem(ItemID itemID){
+		Logger.logDebug("Item collected: " + itemID.toString());
 		collectedItems.add(itemID);
 	}
 

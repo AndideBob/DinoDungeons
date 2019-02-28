@@ -74,7 +74,7 @@ public class CollectableItemObject extends GameObject {
 
 	@Override
 	public void update(long deltaTimeInMs) {
-		isValid = PlayerStatusManager.getInstance().getCollectedItems().contains(itemID);
+		isValid = !PlayerStatusManager.getInstance().getCollectedItems().contains(itemID);
 	}
 
 	@Override

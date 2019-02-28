@@ -42,6 +42,7 @@ public class PlayerObject extends GameObject {
 	private boolean hasMovedDown;
 	private boolean hasMovedLeft;
 	private boolean hasMovedRight;
+	private int lastDirection;
 	private int frameNumber;
 	private TileMap characterSprite;
 	
@@ -230,7 +231,7 @@ public class PlayerObject extends GameObject {
 	
 	private void updateShownFrame(long deltaTimeInMs){
 		int actionNumber = 0;
-		int directionNumber = 0;
+		int directionNumber = lastDirection;
 		msSinceLastFrame += deltaTimeInMs;
 		switch(playerState){
 		case DEFAULT:
@@ -250,6 +251,7 @@ public class PlayerObject extends GameObject {
 				else if(hasMovedRight){
 					directionNumber = 3;
 				}
+				lastDirection = directionNumber;
 				if(msSinceLastFrame >= msBetweenFrames){
 					msSinceLastFrame -= msBetweenFrames;
 					showEvenFrame = !showEvenFrame;
