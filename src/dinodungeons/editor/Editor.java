@@ -13,6 +13,7 @@ import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
+import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.tilesets.TileSet;
 import lwjgladapter.game.Game;
 import lwjgladapter.input.ButtonState;
@@ -68,7 +69,8 @@ public class Editor extends Game {
 		drawManager.drawMap();
 		//DrawExitLayer
 		if(currentState == EditorState.PLACE_EXITS ||
-				currentState == EditorState.INSPECTOR){
+				currentState == EditorState.INSPECTOR ||
+				currentState == EditorState.PLACE_ITEMS){
 			drawManager.drawObjectsLayer();
 		}
 		//DrawPointer
@@ -94,6 +96,7 @@ public class Editor extends Game {
 
 	@Override
 	public void loadResources() {
+		SpriteManager.getInstance().loadSprites();
 		drawManager.loadTextures();
 	}
 

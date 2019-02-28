@@ -1,5 +1,6 @@
 package dinodungeons.editor;
 
+import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapConstants;
@@ -205,6 +206,68 @@ public class EditorDrawManager {
 				}
 				
 				textManager.DrawText(126, 211 + 9*optionsShown, text, 16);
+				optionsShown--;
+			}
+			break;
+		case PLACE_ITEMS:
+			textManager.DrawText(146, 247, "Items", 10);
+			optionsShown = 3;
+			lowest = Math.max(0, currentSelection-optionsShown);
+			highest = Math.min(DinoDungeonsConstants.numberOfItems -1, lowest+optionsShown);
+			for(int i = lowest; i <= highest; i++) {
+				String text = i == currentSelection ? ">" : " ";
+				text += "[" + i + "]";
+				switch(i) {
+				case 0:
+					text += "Item 0";
+					break;
+				case 1:
+					text += "Item 1";
+					break;
+				case 2:
+					text += "Item 2";
+					break;
+				case 3:
+					text += "Item 3";
+					break;
+				case 4:
+					text += "Item 4";
+					break;
+				case 5:
+					text += "Item 5";
+					break;
+				case 6:
+					text += "Mirror";
+					break;
+				case 7:
+					text += "Item 7";
+					break;
+				case 8:
+					text += "Item 8";
+					break;
+				case 9:
+					text += "Item 9";
+					break;
+				case 10:
+					text += "Item A";
+					break;
+				case 11:
+					text += "Item B";
+					break;
+				case 12:
+					text += "Item C";
+					break;
+				case 13:
+					text += "Item D";
+					break;
+				case 14:
+					text += "Item E";
+					break;
+				case 15:
+					text += "Item F";
+					break;
+				}
+				textManager.DrawText(136, 211 + 9*optionsShown, text, 16);
 				optionsShown--;
 			}
 			break;
