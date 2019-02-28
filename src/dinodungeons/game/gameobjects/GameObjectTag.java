@@ -4,5 +4,6 @@ public enum GameObjectTag {
 	NONE,
 	PLAYER,
 	WALL,
-	TRANSPORT;
+	TRANSPORT,
+	COLLECTABLE_ITEM;
 }

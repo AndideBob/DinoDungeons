@@ -5,5 +5,6 @@ public enum EditorState {
 	PLACE_BASELAYER,
 	CHANGE_TILESET,
 	PLACE_EXITS,
+	PLACE_ITEMS,
 	ENTER_TEXT
 }

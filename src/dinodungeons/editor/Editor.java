@@ -3,12 +3,14 @@ package dinodungeons.editor;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.exceptions.ScreenMapIndexOutOfBounds;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
+import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
 import dinodungeons.gfx.tilesets.TileSet;
@@ -210,6 +212,20 @@ public class Editor extends Game {
 				}
 			}
 			break;
+		case PLACE_ITEMS:
+			//Selection
+			switchSelection(DinoDungeonsConstants.numberOfItems);
+			//Placing Tiles
+			if(isMouseOnMap()) {
+				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
+					int x = currentMousePosition[0] / 16;
+					int y = currentMousePosition[1] / 16;
+					ItemMapObject item = new ItemMapObject();
+					item.setItemID(currentSelection);
+					currentMap.setMapObjectForPosition(x, y, item);
+				}
+			}
+			break;
 		case CHANGE_TILESET:
 			//Selection
 			int oldTileSetSelection = currentSelection;
@@ -401,6 +417,9 @@ public class Editor extends Game {
 			break;
 		case PLACE_EXITS:
 			infoText = "[F5]Map:" + exitMapID + " X:" + exitPosX + " Y:" + exitPosY;
+			break;
+		case PLACE_ITEMS:
+			infoText = "Click to place item!";
 			break;
 		default:
 			break;

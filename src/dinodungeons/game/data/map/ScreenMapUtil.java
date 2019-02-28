@@ -5,10 +5,12 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import dinodungeons.game.DinoDungeons;
+import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
+import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
 import dinodungeons.game.gameobjects.general.WallObject;
 import lwjgladapter.logging.Logger;
@@ -99,9 +101,16 @@ public class ScreenMapUtil {
 		if(object instanceof TransportMapObject){
 			return buildTransportGameObject((TransportMapObject) object, posX, posY);
 		}
+		else if(object instanceof ItemMapObject){
+			return buildItemGameObject((ItemMapObject) object, posX, posY);
+		}
 		return null;
 	}
 	
+	private static GameObject buildItemGameObject(ItemMapObject itemMapObject, int posX, int posY) {
+		return new CollectableItemObject(GameObjectTag.COLLECTABLE_ITEM, posX, posY, itemMapObject.getItemID());
+	}
+
 	private static GameObject buildTransportGameObject(TransportMapObject transportMapObject, int posX, int posY){
 		switch(transportMapObject.getTransportationType()){
 		case INSTANT_TELEPORT:

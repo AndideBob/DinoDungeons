@@ -15,5 +15,7 @@ public class DinoDungeonsConstants {
 	public static final int scrollPositionChangeX = scrollBoundryRight - scrollBoundryLeft;
 	
 	public static final long scrollTransitionDurationInMs = 1000;
+	
+	public static final int numberOfItems = 16;
 
 }

@@ -51,6 +51,10 @@ public abstract class GameObject {
 	public final void addCollisionTag(Long colliderID, GameObjectTag tag){
 		collisionTags.put(colliderID, tag);
 	}
+	
+	public boolean shouldBeDeleted(){
+		return false;
+	}
 
 	@Override
 	public int hashCode() {

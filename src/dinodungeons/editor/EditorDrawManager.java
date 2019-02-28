@@ -4,9 +4,12 @@ import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
+import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.gfx.GFXResourceID;
+import dinodungeons.gfx.sprites.SpriteID;
+import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.text.DrawTextManager;
 import dinodungeons.gfx.tilesets.TileSet;
 import dinodungeons.gfx.tilesets.TilesetManager;
@@ -112,6 +115,10 @@ public class EditorDrawManager {
 			textManager.DrawText(x * 16 - 1, y * 16, txtLowL, 1);
 			textManager.DrawText(x * 16 + 7, y * 16, txtLowR, 1);
 			return;
+		}
+		else if(mapObject instanceof ItemMapObject){
+			ItemMapObject item = (ItemMapObject) mapObject;
+			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(item.getItemID(), x * 16, y * 16);
 		}
 	}
 

@@ -1,6 +1,7 @@
 package dinodungeons.game.data.map;
 
 import dinodungeons.game.data.map.objects.EmptyMapObject;
+import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
@@ -12,6 +13,8 @@ public class MapObjectParser {
 	private static final String internalSplitter = ",";
 	
 	private static final String transportMapObjectID = "T";
+	
+	private static final String itemMapObjectID = "I";
 
 	public String parseMapObjectToString(MapObject mapObject){
 		if(mapObject instanceof EmptyMapObject){
@@ -20,9 +23,21 @@ public class MapObjectParser {
 		if(mapObject instanceof TransportMapObject){
 			return parseTransportMapObject((TransportMapObject)mapObject);
 		}
+		else if(mapObject instanceof ItemMapObject){
+			return parseItemMapObject((ItemMapObject)mapObject);
+		}
 		return emptyMapObjectString;
 	}
 	
+	private String parseItemMapObject(ItemMapObject itemMapObject) {
+		String result = "(";
+		result += itemMapObjectID;
+		result += internalSplitter;
+		result += itemMapObject.getItemID();
+		result += ")";
+		return result;
+	}
+
 	private String parseTransportMapObject(TransportMapObject transportMapObject) {
 		String result = "(";
 		result += transportMapObjectID;
@@ -51,6 +66,11 @@ public class MapObjectParser {
 			transportMapObject.setY(Integer.parseInt(stringParts[3]));
 			transportMapObject.setTransportationType(TransportationType.getTransportationTypeBySaveRepresentation(stringParts[4]));
 			return transportMapObject;
+		}
+		else if(stringParts[0].equals(itemMapObjectID)){
+			ItemMapObject itemMapObject = new ItemMapObject();
+			itemMapObject.setItemID(Integer.parseInt(stringParts[1]));
+			return itemMapObject;
 		}
 		return new EmptyMapObject();
 	}
