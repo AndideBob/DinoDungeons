@@ -10,7 +10,7 @@ import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
-import lwjgladapter.gfx.TileMap;
+import lwjgladapter.gfx.SpriteMap;
 import lwjgladapter.input.ButtonState;
 import lwjgladapter.input.InputManager;
 import lwjgladapter.input.KeyboardKey;
@@ -44,7 +44,7 @@ public class PlayerObject extends GameObject {
 	private boolean hasMovedRight;
 	private int lastDirection;
 	private int frameNumber;
-	private TileMap characterSprite;
+	private SpriteMap characterSprite;
 	
 	private PlayerState playerState;
 	

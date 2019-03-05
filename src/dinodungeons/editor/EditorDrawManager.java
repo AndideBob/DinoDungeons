@@ -15,20 +15,20 @@ import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.text.DrawTextManager;
 import dinodungeons.gfx.tilesets.TileSet;
 import dinodungeons.gfx.tilesets.TilesetManager;
-import lwjgladapter.gfx.Texture;
+import lwjgladapter.gfx.Sprite;
 
 public class EditorDrawManager {
 	
 	private DrawTextManager textManager;
 	private TilesetManager tileSetManager = new TilesetManager();
-	private Texture selectorTexture;
+	private Sprite selectorTexture;
 	
 	private ScreenMap currentMap;
 	
 	public void loadTextures(){
 		tileSetManager.loadResources();
 		textManager = new DrawTextManager(GFXResourceID.TEXT_WHITE.getFilePath());
-		selectorTexture = new Texture(GFXResourceID.EDITOR_SELECTOR.getFilePath());
+		selectorTexture = new Sprite(GFXResourceID.EDITOR_SELECTOR.getFilePath());
 	}
 	
 	public void setCurrentMap(ScreenMap currentMap) {

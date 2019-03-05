@@ -1,8 +1,8 @@
 package dinodungeons.gfx.text;
 
-import lwjgladapter.gfx.TileMap;
+import lwjgladapter.gfx.SpriteMap;
 
-public class LetterTileMap extends TileMap {
+public class LetterTileMap extends SpriteMap {
 
 	public LetterTileMap(String filename, int tileSizeX, int tileSizeY) {
 		super(filename, tileSizeX, tileSizeY);

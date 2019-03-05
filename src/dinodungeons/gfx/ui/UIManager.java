@@ -6,15 +6,15 @@ import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.text.DrawTextManager;
 import lwjgladapter.GameWindowConstants;
-import lwjgladapter.gfx.TileMap;
+import lwjgladapter.gfx.SpriteMap;
 
 public class UIManager {
 	
 	private static final int healthPerLine = 12;
 
-	TileMap healthSprite;
-	TileMap borderSprite;
-	TileMap backgroundSprite;
+	SpriteMap healthSprite;
+	SpriteMap borderSprite;
+	SpriteMap backgroundSprite;
 	DrawTextManager textManager;
 	
 	public UIManager() {
@@ -22,9 +22,9 @@ public class UIManager {
 	}
 	
 	public void loadResources(){
-		backgroundSprite = new TileMap(GFXResourceID.UI_BACKGROUND.getFilePath(), 1, 1);
-		healthSprite = new TileMap(GFXResourceID.UI_HEALTH.getFilePath(), 8, 8);
-		borderSprite = new TileMap(GFXResourceID.UI_BORDERS.getFilePath(), 8, 8);
+		backgroundSprite = new SpriteMap(GFXResourceID.UI_BACKGROUND.getFilePath(), 1, 1);
+		healthSprite = new SpriteMap(GFXResourceID.UI_HEALTH.getFilePath(), 8, 8);
+		borderSprite = new SpriteMap(GFXResourceID.UI_BORDERS.getFilePath(), 8, 8);
 		textManager = new DrawTextManager(GFXResourceID.TEXT_BLACK.getFilePath());
 	}
 	

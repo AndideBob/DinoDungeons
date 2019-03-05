@@ -2,13 +2,13 @@ package dinodungeons.gfx.sprites;
 
 import java.util.HashMap;
 
-import lwjgladapter.gfx.TileMap;
+import lwjgladapter.gfx.SpriteMap;
 
 public class SpriteManager {
 	
 	private static SpriteManager instance;
 
-	private HashMap<SpriteID, TileMap> sprites;
+	private HashMap<SpriteID, SpriteMap> sprites;
 	
 	private SpriteManager() {
 		instance = this;
@@ -24,12 +24,12 @@ public class SpriteManager {
 
 	public void loadSprites(){
 		for(SpriteID id : SpriteID.values()){
-			TileMap sprite = new TileMap(id.getGfxResourceID().getFilePath(), id.getWidth(), id.getHeight());
+			SpriteMap sprite = new SpriteMap(id.getGfxResourceID().getFilePath(), id.getWidth(), id.getHeight());
 			sprites.put(id, sprite);
 		}
 	}
 	
-	public TileMap getSprite(SpriteID id){
+	public SpriteMap getSprite(SpriteID id){
 		return sprites.get(id);
 	}
 }
