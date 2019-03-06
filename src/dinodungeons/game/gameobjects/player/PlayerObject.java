@@ -44,6 +44,8 @@ public class PlayerObject extends GameObject {
 	private boolean hasMovedRight;
 	private int lastDirection;
 	private int frameNumber;
+	private boolean blinking;
+	private boolean wasBlinking;
 	private SpriteMap characterSprite;
 	
 	private PlayerState playerState;
@@ -72,6 +74,15 @@ public class PlayerObject extends GameObject {
 	public void update(long deltaTimeInMs) {
 		handleCollisions();
 		switch (playerState) {
+		case DAMAGE_TAKEN:
+			if(msSinceLastFrame >= DinoDungeonsConstants.itemCollectionCharacterFreeze){
+				msSinceLastFrame = 0;
+				playerState = PlayerState.DEFAULT;
+				characterSprite.setColorValues(1f, 1f, 1f, 1f);
+				wasBlinking = false;
+				blinking = false;
+			}
+			//VVVV Fall through VVVV
 		case DEFAULT:
 			move();
 			updateControls(deltaTimeInMs);
@@ -90,66 +101,77 @@ public class PlayerObject extends GameObject {
 	private void handleCollisions() {
 		for(GameObjectTag tag : GameObjectTag.collectableItems){
 			if(hasCollisionWithObjectWithTag(tag)){
-				boolean itemAdded = true;
 				switch(tag){
 				case COLLECTABLE_ITEM_CLUB:
-					justCollectedItem = ItemID.CLUB;
+					collectItem(ItemID.CLUB);
 					break;
 				case COLLECTABLE_ITEM_ITEM_1:
-					justCollectedItem = ItemID.ITEM_1;
+					collectItem(ItemID.ITEM_1);
 					break;
 				case COLLECTABLE_ITEM_ITEM_2:
-					justCollectedItem = ItemID.ITEM_2;
+					collectItem(ItemID.ITEM_2);
 					break;
 				case COLLECTABLE_ITEM_ITEM_3:
-					justCollectedItem = ItemID.ITEM_3;
+					collectItem(ItemID.ITEM_3);
 					break;
 				case COLLECTABLE_ITEM_ITEM_4:
-					justCollectedItem = ItemID.ITEM_4;
+					collectItem(ItemID.ITEM_4);
 					break;
 				case COLLECTABLE_ITEM_ITEM_5:
-					justCollectedItem = ItemID.ITEM_5;
+					collectItem(ItemID.ITEM_5);
 					break;
 				case COLLECTABLE_ITEM_ITEM_6:
-					justCollectedItem = ItemID.ITEM_6;
+					collectItem(ItemID.ITEM_6);
 					break;
 				case COLLECTABLE_ITEM_ITEM_7:
-					justCollectedItem = ItemID.ITEM_7;
+					collectItem(ItemID.ITEM_7);
 					break;
 				case COLLECTABLE_ITEM_ITEM_8:
-					justCollectedItem = ItemID.ITEM_8;
+					collectItem(ItemID.ITEM_8);
 					break;
 				case COLLECTABLE_ITEM_ITEM_9:
-					justCollectedItem = ItemID.ITEM_9;
+					collectItem(ItemID.ITEM_9);
 					break;
 				case COLLECTABLE_ITEM_ITEM_A:
-					justCollectedItem = ItemID.ITEM_A;
+					collectItem(ItemID.ITEM_A);
 					break;
 				case COLLECTABLE_ITEM_ITEM_B:
-					justCollectedItem = ItemID.ITEM_B;
+					collectItem(ItemID.ITEM_B);
 					break;
 				case COLLECTABLE_ITEM_MIRROR:
-					justCollectedItem = ItemID.MIRROR;
+					collectItem(ItemID.MIRROR);
 					break;
 				case COLLECTABLE_ITEM_ITEM_D:
-					justCollectedItem = ItemID.ITEM_D;
+					collectItem(ItemID.ITEM_D);
 					break;
 				case COLLECTABLE_ITEM_ITEM_E:
-					justCollectedItem = ItemID.ITEM_E;
+					collectItem(ItemID.ITEM_E);
 					break;
 				case COLLECTABLE_ITEM_ITEM_F:
-					justCollectedItem = ItemID.ITEM_F;
+					collectItem(ItemID.ITEM_F);
+					break;
+				case DAMAGING_IMMOVABLE:
+					takeDamage(1);
 					break;
 				default:
-					itemAdded = false;
 					break;
 				}
-				if(itemAdded){
-					playerState = PlayerState.ITEM_COLLECTED;
-					PlayerStatusManager.getInstance().collectItem(justCollectedItem);
-					msSinceLastFrame = 0;
-				}
 			}
+		}
+	}
+
+	private void collectItem(ItemID itemID){
+		justCollectedItem = itemID;
+		playerState = PlayerState.ITEM_COLLECTED;
+		PlayerStatusManager.getInstance().collectItem(justCollectedItem);
+		msSinceLastFrame = 0;
+	}
+	
+	private void takeDamage(int amount) {
+		if(playerState != PlayerState.DAMAGE_TAKEN){
+			PlayerStatusManager.getInstance().damage(amount);
+			playerState = PlayerState.DAMAGE_TAKEN;
+			msSinceLastFrame = 0;
 		}
 	}
 
@@ -160,7 +182,7 @@ public class PlayerObject extends GameObject {
 		hasMovedRight = false;
 		//Change Y Position
 		if(predictedPositionY != positionY){
-			if(getCollisionTagForSpecificCollider(colliderYAxis.getKey()) != GameObjectTag.WALL){
+			if(GameObjectTag.movementBlockers.contains(getCollisionTagForSpecificCollider(colliderYAxis.getKey()))){
 				hasMovedDown = predictedPositionY < positionY;
 				hasMovedUp = !hasMovedLeft;
 				positionY = predictedPositionY;
@@ -177,7 +199,7 @@ public class PlayerObject extends GameObject {
 		}
 		//Change X Position
 		if(predictedPositionX != positionX){
-			if(getCollisionTagForSpecificCollider(colliderXAxis.getKey()) != GameObjectTag.WALL){
+			if(GameObjectTag.movementBlockers.contains(getCollisionTagForSpecificCollider(colliderXAxis.getKey()))){
 				hasMovedLeft = predictedPositionX < positionX;
 				hasMovedRight = !hasMovedLeft;
 				positionX = predictedPositionX;
@@ -233,30 +255,39 @@ public class PlayerObject extends GameObject {
 		int actionNumber = 0;
 		int directionNumber = lastDirection;
 		msSinceLastFrame += deltaTimeInMs;
+		if(hasMovedUp
+				|| hasMovedDown
+				|| hasMovedLeft
+				|| hasMovedRight){
+			if(hasMovedDown){
+				directionNumber = 0;
+			}
+			else if(hasMovedLeft){
+				directionNumber = 1;
+			}
+			else if(hasMovedUp){
+				directionNumber = 2;
+			}
+			else if(hasMovedRight){
+				directionNumber = 3;
+			}
+			lastDirection = directionNumber;
+		}	
 		switch(playerState){
 		case DEFAULT:
-			if(hasMovedUp
-					|| hasMovedDown
-					|| hasMovedLeft
-					|| hasMovedRight){
-				if(hasMovedDown){
-					directionNumber = 0;
-				}
-				else if(hasMovedLeft){
-					directionNumber = 1;
-				}
-				else if(hasMovedUp){
-					directionNumber = 2;
-				}
-				else if(hasMovedRight){
-					directionNumber = 3;
-				}
-				lastDirection = directionNumber;
-				if(msSinceLastFrame >= msBetweenFrames){
-					msSinceLastFrame -= msBetweenFrames;
-					showEvenFrame = !showEvenFrame;
-				}
-			}		
+			if(msSinceLastFrame >= msBetweenFrames){
+				msSinceLastFrame -= msBetweenFrames;
+				showEvenFrame = !showEvenFrame;
+			}
+			break;
+		case DAMAGE_TAKEN:
+			showEvenFrame = ((int) Math.floor(msSinceLastFrame / msBetweenFrames)) % 2 == 0;
+			blinking = ((int) Math.floor(msSinceLastFrame / 60)) % 2 == 0;
+			if(blinking != wasBlinking){
+				float value = blinking ? 0f : 1f;
+				characterSprite.setColorValues(1f, value, value, 1f);
+				wasBlinking = blinking;
+			}
 			break;
 		case ITEM_COLLECTED:
 			actionNumber = 3;
@@ -294,6 +325,7 @@ public class PlayerObject extends GameObject {
 
 	private enum PlayerState{
 		DEFAULT,
-		ITEM_COLLECTED;
+		ITEM_COLLECTED,
+		DAMAGE_TAKEN;
 	}
 }
