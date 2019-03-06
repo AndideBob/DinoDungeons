@@ -3,6 +3,7 @@ package dinodungeons.game.data.map;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
+import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
 import dinodungeons.game.gameobjects.player.ItemID;
@@ -16,6 +17,8 @@ public class MapObjectParser {
 	private static final String transportMapObjectID = "T";
 	
 	private static final String itemMapObjectID = "I";
+	
+	private static final String spikeMapObjectID = "I";
 
 	public String parseMapObjectToString(MapObject mapObject){
 		if(mapObject instanceof EmptyMapObject){
@@ -27,9 +30,21 @@ public class MapObjectParser {
 		else if(mapObject instanceof ItemMapObject){
 			return parseItemMapObject((ItemMapObject)mapObject);
 		}
+		else if(mapObject instanceof SpikeMapObject){
+			return parseSpikeMapObject((SpikeMapObject)mapObject);
+		}
 		return emptyMapObjectString;
 	}
 	
+	private String parseSpikeMapObject(SpikeMapObject spikeMapObject) {
+		String result = "(";
+		result += spikeMapObjectID;
+		result += internalSplitter;
+		result += spikeMapObject.getSpikeType();
+		result += ")";
+		return result;
+	}
+
 	private String parseItemMapObject(ItemMapObject itemMapObject) {
 		String result = "(";
 		result += itemMapObjectID;
@@ -72,6 +87,11 @@ public class MapObjectParser {
 			ItemMapObject itemMapObject = new ItemMapObject();
 			itemMapObject.setItemID(ItemID.getItemIDBySaveRepresentation(stringParts[1]));
 			return itemMapObject;
+		}
+		else if(stringParts[0].equals(spikeMapObjectID)){
+			SpikeMapObject spikeMapObject = new SpikeMapObject();
+			spikeMapObject.setSpikeType(Integer.parseInt(stringParts[1]));
+			return spikeMapObject;
 		}
 		return new EmptyMapObject();
 	}

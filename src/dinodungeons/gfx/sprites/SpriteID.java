@@ -4,7 +4,8 @@ import dinodungeons.gfx.GFXResourceID;
 
 public enum SpriteID {
 	PLAYER(GFXResourceID.CHARACTER, 16, 16),
-	ITEMS(GFXResourceID.ITEMS, 16, 16);
+	ITEMS(GFXResourceID.ITEMS, 16, 16),
+	SPIKES(GFXResourceID.SPRITE_SPIKES, 16, 16);
 	
 	private GFXResourceID gfxResourceID;
 	

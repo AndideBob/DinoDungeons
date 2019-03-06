@@ -7,6 +7,7 @@ import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
+import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.gfx.GFXResourceID;
@@ -121,6 +122,10 @@ public class EditorDrawManager {
 		else if(mapObject instanceof ItemMapObject){
 			ItemMapObject item = (ItemMapObject) mapObject;
 			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(item.getItemID().getSpriteSheetPosition(), x * 16, y * 16);
+		}
+		else if(mapObject instanceof SpikeMapObject){
+			SpikeMapObject spike = (SpikeMapObject) mapObject;
+			SpriteManager.getInstance().getSprite(SpriteID.SPIKES).draw(spike.getSpikeType() * 2, x * 16, y * 16);
 		}
 	}
 

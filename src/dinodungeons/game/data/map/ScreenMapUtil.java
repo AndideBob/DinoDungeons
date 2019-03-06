@@ -7,12 +7,15 @@ import java.util.HashSet;
 import dinodungeons.game.DinoDungeons;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
+import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
 import dinodungeons.game.gameobjects.general.WallObject;
+import dinodungeons.game.gameobjects.immovable.MetalSpikeObject;
+import dinodungeons.game.gameobjects.immovable.WoodenSpikeObject;
 import lwjgladapter.logging.Logger;
 
 public class ScreenMapUtil {
@@ -104,9 +107,22 @@ public class ScreenMapUtil {
 		else if(object instanceof ItemMapObject){
 			return buildItemGameObject((ItemMapObject) object, posX, posY);
 		}
+		else if(object instanceof SpikeMapObject){
+			return buildSpikeGameObject((SpikeMapObject) object, posX, posY);
+		}
 		return null;
 	}
 	
+	private static GameObject buildSpikeGameObject(SpikeMapObject spikeMapObject, int posX, int posY) {
+		switch (spikeMapObject.getSpikeType()) {
+		case 0:
+			return new MetalSpikeObject(posX, posY);
+		case 1:
+			return new WoodenSpikeObject(posX, posY);
+		}
+		return null;
+	}
+
 	private static GameObject buildItemGameObject(ItemMapObject itemMapObject, int posX, int posY) {
 		return new CollectableItemObject(posX, posY, itemMapObject.getItemID());
 	}

@@ -14,13 +14,15 @@ public enum GFXResourceID {
 	DUNGEON_TEST(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTILESETS + File.separator + "dungeonTest.png"),
 	DUNGEON_RED(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTILESETS + File.separator + "dungeonRed.png"),
 	CHARACTER(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderCHARACTERS + File.separator + "character.png"),
-	ITEMS(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + "items.png");
+	ITEMS(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + "items.png"),
+	SPRITE_SPIKES(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + GFXResourceID.folderIMMOVABLE + File.separator + "spikes.png");
 	
 	
 	private static final String folderGFX = "gfx";
 	private static final String folderTEXT = "text";
 	private static final String folderCHARACTERS = "characters";
 	private static final String folderTILESETS = "tilesets";
+	private static final String folderIMMOVABLE = "immovable";
 	private static final String folderEDITOR = "editor";
 	private static final String folderSPRITES = "sprites";
 	private static final String folderUI = "ui";
