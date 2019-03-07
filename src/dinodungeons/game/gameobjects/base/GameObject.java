@@ -47,10 +47,10 @@ public abstract class GameObject {
 	}
 	
 	public final boolean hasCollisionWithObjectWithTag(GameObjectTag tag){
-		return !getCollisionWithObjectWithTag(tag).isEmpty();
+		return !getCollisionsWithObjectsWithTag(tag).isEmpty();
 	}
 	
-	public final Collection<Collision> getCollisionWithObjectWithTag(GameObjectTag tag){
+	public final Collection<Collision> getCollisionsWithObjectsWithTag(GameObjectTag tag){
 		HashSet<Collision> collisions = new HashSet<>();
 		for(ArrayList<CollisionInformation> aL : collisionInformation.values()){
 			for(CollisionInformation info : aL){

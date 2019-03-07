@@ -26,6 +26,8 @@ public enum GameObjectTag {
 	COLLECTABLE_ITEM_ITEM_F,
 	DAMAGING_IMMOVABLE;
 	
+	public static final Collection<GameObjectTag> damagingObjects = Arrays.asList(DAMAGING_IMMOVABLE);
+	
 	public static final Collection<GameObjectTag> movementBlockers = Arrays.asList(WALL, DAMAGING_IMMOVABLE);
 	
 	public static final Collection<GameObjectTag> collectableItems = Arrays.asList(COLLECTABLE_ITEM_CLUB, COLLECTABLE_ITEM_ITEM_1,

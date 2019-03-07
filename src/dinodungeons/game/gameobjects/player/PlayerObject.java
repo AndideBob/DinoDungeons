@@ -3,8 +3,6 @@ package dinodungeons.game.gameobjects.player;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
-
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.data.transitions.TransitionManager;
@@ -19,6 +17,7 @@ import lwjgladapter.input.KeyboardKey;
 import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
+import lwjgladapter.physics.collision.base.Collision;
 
 public class PlayerObject extends GameObject {
 
@@ -104,7 +103,6 @@ public class PlayerObject extends GameObject {
 	private void handleCollisions() {
 		for(GameObjectTag tag : GameObjectTag.collectableItems){
 			if(hasCollisionWithObjectWithTag(tag)){
-				Logger.logDebug("Player collided with: " + tag.toString());
 				switch(tag){
 				case COLLECTABLE_ITEM_CLUB:
 					collectItem(ItemID.CLUB);
@@ -154,13 +152,26 @@ public class PlayerObject extends GameObject {
 				case COLLECTABLE_ITEM_ITEM_F:
 					collectItem(ItemID.ITEM_F);
 					break;
-				case DAMAGING_IMMOVABLE:
-					takeDamage(1);
-					break;
 				default:
 					break;
 				}
 			}
+		}
+		//Handle DamageTaking
+		Collision damageCollision = null;
+		GameObjectTag firstDamageObjectTag = GameObjectTag.NONE;
+		for(GameObjectTag tag : GameObjectTag.damagingObjects){
+			for(Collision collision : getCollisionsWithObjectsWithTag(tag)){
+				damageCollision = collision;
+				firstDamageObjectTag = tag;
+				break;
+			}
+			if(damageCollision != null){
+				break;
+			}
+		}
+		if(damageCollision != null){
+			takeDamage(getDamageByTag(firstDamageObjectTag), damageCollision.getPositionX(), damageCollision.getPositionY());
 		}
 	}
 
@@ -171,11 +182,24 @@ public class PlayerObject extends GameObject {
 		msSinceLastFrame = 0;
 	}
 	
-	private void takeDamage(int amount) {
+	private int getDamageByTag(GameObjectTag tag){
+		switch(tag){
+		case DAMAGING_IMMOVABLE:
+			return 1;
+		default:
+			return 0;
+		}
+	}
+	
+	private void takeDamage(int amount, int sourceX, int sourceY) {
 		if(playerState != PlayerState.DAMAGE_TAKEN){
 			PlayerStatusManager.getInstance().damage(amount);
 			playerState = PlayerState.DAMAGE_TAKEN;
 			msSinceLastFrame = 0;
+			float x = sourceX - positionX;
+			movementChangeX = x > 0 ? -1f : (x > 0 ? 1f : 0f);
+			float y = sourceY - positionY;
+			movementChangeY = y > 0 ? -1f : (y > 0 ? 1f : 0f);
 		}
 	}
 
@@ -231,24 +255,26 @@ public class PlayerObject extends GameObject {
 	}
 
 	private void updateControls(long deltaTimeInMs){
-		movementChangeX = 0;
-		movementChangeY = 0;
-		if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.PRESSED)
-				|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.DOWN)){
-			movementChangeY = 1;
-		}
-		else if(
-				InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.PRESSED)
-				|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.DOWN)){
-			movementChangeY = -1;
-		}
-		if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.PRESSED)
-				|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.DOWN)){
-			movementChangeX = -1;
-		}
-		else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.PRESSED)
-				|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.DOWN)){
-			movementChangeX = 1;
+		if(playerState == PlayerState.DEFAULT){
+			movementChangeX = 0;
+			movementChangeY = 0;
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.PRESSED)
+					|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.DOWN)){
+				movementChangeY = 1;
+			}
+			else if(
+					InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.PRESSED)
+					|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.DOWN)){
+				movementChangeY = -1;
+			}
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.PRESSED)
+					|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.DOWN)){
+				movementChangeX = -1;
+			}
+			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.PRESSED)
+					|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.DOWN)){
+				movementChangeX = 1;
+			}
 		}
 		//Move diagonally at same speed
 		if(movementChangeX != 0 && movementChangeY != 0){
@@ -271,29 +297,29 @@ public class PlayerObject extends GameObject {
 		int actionNumber = 0;
 		int directionNumber = lastDirection;
 		msSinceLastFrame += deltaTimeInMs;
-		if(hasMovedUp
-				|| hasMovedDown
-				|| hasMovedLeft
-				|| hasMovedRight){
-			if(hasMovedDown){
-				directionNumber = 0;
-			}
-			else if(hasMovedLeft){
-				directionNumber = 1;
-			}
-			else if(hasMovedUp){
-				directionNumber = 2;
-			}
-			else if(hasMovedRight){
-				directionNumber = 3;
-			}
-			lastDirection = directionNumber;
-		}	
+		if(hasMovedDown){
+			directionNumber = 0;
+		}
+		else if(hasMovedLeft){
+			directionNumber = 1;
+		}
+		else if(hasMovedUp){
+			directionNumber = 2;
+		}
+		else if(hasMovedRight){
+			directionNumber = 3;
+		}
+		lastDirection = directionNumber;
 		switch(playerState){
 		case DEFAULT:
-			if(msSinceLastFrame >= msBetweenFrames){
-				msSinceLastFrame -= msBetweenFrames;
-				showEvenFrame = !showEvenFrame;
+			if(hasMovedUp
+					|| hasMovedDown
+					|| hasMovedLeft
+					|| hasMovedRight){
+				if(msSinceLastFrame >= msBetweenFrames){
+					msSinceLastFrame -= msBetweenFrames;
+					showEvenFrame = !showEvenFrame;
+				}
 			}
 			break;
 		case DAMAGE_TAKEN:
