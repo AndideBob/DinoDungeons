@@ -86,9 +86,6 @@ public class PlayerObject extends GameObject {
 			if(msSinceLastFrame >= DinoDungeonsConstants.damageTime){
 				msSinceLastFrame = 0;
 				playerState = PlayerState.DEFAULT;
-				characterSprite.setColorValues(1f, 1f, 1f, 1f);
-				wasBlinking = false;
-				blinking = false;
 			}
 			//VVVV Fall through VVVV
 		case DEFAULT:
@@ -308,7 +305,6 @@ public class PlayerObject extends GameObject {
 		int actionNumber = 0;
 		int directionNumber = lastDirection;
 		msSinceLastFrame += deltaTimeInMs;
-		lastDirection = directionNumber;
 		switch(playerState){
 		case DEFAULT:
 			if(hasMovedUp
@@ -343,6 +339,7 @@ public class PlayerObject extends GameObject {
 			showEvenFrame = false;
 			break;
 		}
+		lastDirection = directionNumber;
 		frameNumber = (actionNumber * 8) + (directionNumber * 2) + (showEvenFrame ? 0 : 1);
 	}
 	
