@@ -77,7 +77,7 @@ public class PlayerObject extends GameObject {
 		handleCollisions();
 		switch (playerState) {
 		case DAMAGE_TAKEN:
-			if(msSinceLastFrame >= DinoDungeonsConstants.itemCollectionCharacterFreeze){
+			if(msSinceLastFrame >= DinoDungeonsConstants.invulnerabilityTime){
 				msSinceLastFrame = 0;
 				playerState = PlayerState.DEFAULT;
 				characterSprite.setColorValues(1f, 1f, 1f, 1f);
@@ -196,10 +196,8 @@ public class PlayerObject extends GameObject {
 			PlayerStatusManager.getInstance().damage(amount);
 			playerState = PlayerState.DAMAGE_TAKEN;
 			msSinceLastFrame = 0;
-			float x = sourceX - positionX;
-			movementChangeX = x > 0 ? -1f : (x > 0 ? 1f : 0f);
-			float y = sourceY - positionY;
-			movementChangeY = y > 0 ? -1f : (y > 0 ? 1f : 0f);
+			movementChangeX = positionX + 8 - sourceX;
+			movementChangeY = positionY + 8 - sourceY;
 		}
 	}
 
@@ -277,13 +275,18 @@ public class PlayerObject extends GameObject {
 			}
 		}
 		//Move diagonally at same speed
-		if(movementChangeX != 0 && movementChangeY != 0){
-			movementChangeX *= 0.7f;
-			movementChangeY *= 0.7f;
+		if(movementChangeX != 0 || movementChangeY != 0){
+			normalizeMovementChange();
 		}
 		predictedPositionX = positionX + (movementChangeX * movementSpeed * deltaTimeInMs);
 		predictedPositionY = positionY + (movementChangeY * movementSpeed * deltaTimeInMs);
-		
+	}
+	
+	private void normalizeMovementChange(){
+		double vectorLength = Math.sqrt(Math.pow(movementChangeX, 2) + Math.pow(movementChangeY, 2));
+		double lengthFactor = 1 / vectorLength;
+		movementChangeX *= lengthFactor;
+		movementChangeY *= lengthFactor;
 	}
 	
 	private void updateColliders(){
@@ -297,18 +300,6 @@ public class PlayerObject extends GameObject {
 		int actionNumber = 0;
 		int directionNumber = lastDirection;
 		msSinceLastFrame += deltaTimeInMs;
-		if(hasMovedDown){
-			directionNumber = 0;
-		}
-		else if(hasMovedLeft){
-			directionNumber = 1;
-		}
-		else if(hasMovedUp){
-			directionNumber = 2;
-		}
-		else if(hasMovedRight){
-			directionNumber = 3;
-		}
 		lastDirection = directionNumber;
 		switch(playerState){
 		case DEFAULT:
@@ -316,6 +307,18 @@ public class PlayerObject extends GameObject {
 					|| hasMovedDown
 					|| hasMovedLeft
 					|| hasMovedRight){
+				if(hasMovedDown){
+					directionNumber = 0;
+				}
+				else if(hasMovedLeft){
+					directionNumber = 1;
+				}
+				else if(hasMovedUp){
+					directionNumber = 2;
+				}
+				else if(hasMovedRight){
+					directionNumber = 3;
+				}
 				if(msSinceLastFrame >= msBetweenFrames){
 					msSinceLastFrame -= msBetweenFrames;
 					showEvenFrame = !showEvenFrame;
