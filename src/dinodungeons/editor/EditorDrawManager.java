@@ -229,6 +229,19 @@ public class EditorDrawManager {
 				optionsShown--;
 			}
 			break;
+		case PLACE_SPIKES:
+			textManager.DrawText(146, 247, "Spikes", 10);
+			optionsShown = 3;
+			lowest = Math.max(0, currentSelection-optionsShown);
+			highest = Math.min(DinoDungeonsConstants.numberOfSpikes -1, lowest+optionsShown);
+			for(int i = lowest; i <= highest; i++) {
+				String text = i == currentSelection ? ">" : " ";
+				text += "[" + i + "]";
+				text += SpikeMapObject.getSpikeName(i);
+				textManager.DrawText(136, 211 + 9*optionsShown, text, 16);
+				optionsShown--;
+			}
+			break;
 		case ENTER_TEXT:
 		default:
 			break;

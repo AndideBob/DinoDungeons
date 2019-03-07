@@ -6,5 +6,6 @@ public enum EditorState {
 	CHANGE_TILESET,
 	PLACE_EXITS,
 	PLACE_ITEMS,
+	PLACE_SPIKES,
 	ENTER_TEXT
 }

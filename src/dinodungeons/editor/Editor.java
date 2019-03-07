@@ -11,6 +11,7 @@ import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
+import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
 import dinodungeons.game.gameobjects.player.ItemID;
@@ -71,7 +72,8 @@ public class Editor extends Game {
 		//DrawExitLayer
 		if(currentState == EditorState.PLACE_EXITS ||
 				currentState == EditorState.INSPECTOR ||
-				currentState == EditorState.PLACE_ITEMS){
+				currentState == EditorState.PLACE_ITEMS ||
+				currentState == EditorState.PLACE_SPIKES){
 			drawManager.drawObjectsLayer();
 		}
 		//DrawPointer
@@ -219,7 +221,7 @@ public class Editor extends Game {
 		case PLACE_ITEMS:
 			//Selection
 			switchSelection(DinoDungeonsConstants.numberOfItems);
-			//Placing Tiles
+			//Placing Item
 			if(isMouseOnMap()) {
 				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
 					int x = currentMousePosition[0] / 16;
@@ -227,6 +229,20 @@ public class Editor extends Game {
 					ItemMapObject item = new ItemMapObject();
 					item.setItemID(ItemID.values()[currentSelection]);
 					currentMap.setMapObjectForPosition(x, y, item);
+				}
+			}
+			break;
+		case PLACE_SPIKES:
+			//Selection
+			switchSelection(DinoDungeonsConstants.numberOfSpikes);
+			//Placing Spike
+			if(isMouseOnMap()) {
+				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
+					int x = currentMousePosition[0] / 16;
+					int y = currentMousePosition[1] / 16;
+					SpikeMapObject spike = new SpikeMapObject();
+					spike.setSpikeType(currentSelection);
+					currentMap.setMapObjectForPosition(x, y, spike);
 				}
 			}
 			break;

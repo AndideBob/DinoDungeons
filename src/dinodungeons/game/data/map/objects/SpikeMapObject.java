@@ -27,6 +27,8 @@ public class SpikeMapObject extends MapObject {
 			return "MetalSpikes";
 		case 1:
 			return "WoodenSpikes";
+		case 2:
+			return "Cactus";
 		}
 		return "Other Spikes";
 	}

@@ -18,7 +18,7 @@ public class MapObjectParser {
 	
 	private static final String itemMapObjectID = "I";
 	
-	private static final String spikeMapObjectID = "I";
+	private static final String spikeMapObjectID = "S";
 
 	public String parseMapObjectToString(MapObject mapObject){
 		if(mapObject instanceof EmptyMapObject){

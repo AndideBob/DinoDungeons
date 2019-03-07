@@ -22,5 +22,6 @@ public class DinoDungeonsConstants {
 	
 	// GAMEPLAY-RELEATED CONSTANTS 
 	public static final int numberOfItems = 16;
+	public static final int numberOfSpikes = 3;
 
 }
