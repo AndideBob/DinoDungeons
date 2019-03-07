@@ -18,7 +18,8 @@ public class DinoDungeonsConstants {
 	// TIMING-RELEATED CONSTANTS 
 	public static final long scrollTransitionDurationInMs = 1000;
 	public static final long itemCollectionCharacterFreeze = 2000;
-	public static final long invulnerabilityTime = 200;
+	public static final long damageTime = 200;
+	public static final long invulnerabilityTime = 500;
 	
 	// GAMEPLAY-RELEATED CONSTANTS 
 	public static final int numberOfItems = 16;

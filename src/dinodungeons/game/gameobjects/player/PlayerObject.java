@@ -36,6 +36,9 @@ public class PlayerObject extends GameObject {
 	private float predictedPositionX;
 	private float predictedPositionY;
 	
+	//Combat base Variables
+	private long invulTimer;
+	
 	//Graphics Releated Stuff
 	private static final long msBetweenFrames = 150;
 	private int msSinceLastFrame;
@@ -74,10 +77,13 @@ public class PlayerObject extends GameObject {
 
 	@Override
 	public void update(long deltaTimeInMs) {
+		if(invulTimer > 0){
+			invulTimer -= deltaTimeInMs;
+		}
 		handleCollisions();
 		switch (playerState) {
 		case DAMAGE_TAKEN:
-			if(msSinceLastFrame >= DinoDungeonsConstants.invulnerabilityTime){
+			if(msSinceLastFrame >= DinoDungeonsConstants.damageTime){
 				msSinceLastFrame = 0;
 				playerState = PlayerState.DEFAULT;
 				characterSprite.setColorValues(1f, 1f, 1f, 1f);
@@ -98,6 +104,7 @@ public class PlayerObject extends GameObject {
 		}
 		updateColliders();
 		updateShownFrame(deltaTimeInMs);
+		updateColors();
 	}
 
 	private void handleCollisions() {
@@ -192,12 +199,13 @@ public class PlayerObject extends GameObject {
 	}
 	
 	private void takeDamage(int amount, int sourceX, int sourceY) {
-		if(playerState != PlayerState.DAMAGE_TAKEN){
+		if(playerState != PlayerState.DAMAGE_TAKEN && invulTimer <= 0){
 			PlayerStatusManager.getInstance().damage(amount);
 			playerState = PlayerState.DAMAGE_TAKEN;
 			msSinceLastFrame = 0;
 			movementChangeX = positionX + 8 - sourceX;
 			movementChangeY = positionY + 8 - sourceY;
+			invulTimer = DinoDungeonsConstants.invulnerabilityTime;
 		}
 	}
 
@@ -325,22 +333,33 @@ public class PlayerObject extends GameObject {
 				}
 			}
 			break;
+		case ITEM_COLLECTED:
+			actionNumber = 3;
+			directionNumber = 0;
+			showEvenFrame = false;
+			break;
 		case DAMAGE_TAKEN:
-			showEvenFrame = ((int) Math.floor(msSinceLastFrame / msBetweenFrames)) % 2 == 0;
+			actionNumber = 0;
+			showEvenFrame = false;
+			break;
+		}
+		frameNumber = (actionNumber * 8) + (directionNumber * 2) + (showEvenFrame ? 0 : 1);
+	}
+	
+	private void updateColors(){
+		if(invulTimer > 0){
 			blinking = ((int) Math.floor(msSinceLastFrame / 60)) % 2 == 0;
 			if(blinking != wasBlinking){
 				float value = blinking ? 0f : 1f;
 				characterSprite.setColorValues(1f, value, value, 1f);
 				wasBlinking = blinking;
 			}
-			break;
-		case ITEM_COLLECTED:
-			actionNumber = 3;
-			directionNumber = 0;
-			showEvenFrame = false;
-			break;
 		}
-		frameNumber = (actionNumber * 8) + (directionNumber * 2) + (showEvenFrame ? 0 : 1);
+		else if(wasBlinking){
+			characterSprite.setColorValues(1f, 1f, 1f, 1f);
+			blinking = false;
+			wasBlinking = false;
+		}
 	}
 
 	@Override
