@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import dinodungeons.game.gameobjects.base.GameObject;
+import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.player.PlayerObject;
 
 public class GameObjectManager {
@@ -30,6 +32,7 @@ public class GameObjectManager {
 		while(iter.hasNext()){
 			GameObject o = iter.next();
 			if(o.shouldBeDeleted()){
+				o.delete();
 				iter.remove();
 			}
 			else{

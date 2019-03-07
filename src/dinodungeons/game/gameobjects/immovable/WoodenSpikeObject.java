@@ -3,8 +3,8 @@ package dinodungeons.game.gameobjects.immovable;
 import java.util.Collection;
 import java.util.Collections;
 
-import dinodungeons.game.gameobjects.GameObject;
-import dinodungeons.game.gameobjects.GameObjectTag;
+import dinodungeons.game.gameobjects.base.GameObject;
+import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import lwjgladapter.physics.collision.RectCollider;

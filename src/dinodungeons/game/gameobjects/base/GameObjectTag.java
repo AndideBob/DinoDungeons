@@ -1,4 +1,4 @@
-package dinodungeons.game.gameobjects;
+package dinodungeons.game.gameobjects.base;
 
 import java.util.Arrays;
 import java.util.Collection;

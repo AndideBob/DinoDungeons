@@ -9,8 +9,9 @@ import dinodungeons.game.data.map.ScreenMapUtil;
 import dinodungeons.game.data.transitions.ScreenTransition;
 import dinodungeons.game.data.transitions.TransitionType;
 import dinodungeons.game.data.transitions.TransitionManager;
-import dinodungeons.game.gameobjects.GameObject;
 import dinodungeons.game.gameobjects.GameObjectManager;
+import dinodungeons.game.gameobjects.base.CollisionInformation;
+import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.utils.ScreenScrollingHelper;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.tilesets.TileSet;
@@ -21,6 +22,7 @@ import lwjgladapter.game.Game;
 import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.PhysicsHelper;
 import lwjgladapter.physics.collision.base.Collider;
+import lwjgladapter.physics.collision.base.Collision;
 import lwjgladapter.physics.collision.exceptions.CollisionNotSupportedException;
 
 public class DinoDungeons extends Game {
@@ -126,7 +128,7 @@ public class DinoDungeons extends Game {
 	private void switchMapIfNecessary() throws InvalidMapIDException {
 		if(TransitionManager.getInstance().shouldTransition()){
 			ScreenTransition transition = TransitionManager.getInstance().getNextTransition();
-			Logger.log(transition.getTransitionType().toString() + "-Transition to Map[" + transition.getDestinationMapID() + "] at [" +
+			Logger.logDebug(transition.getTransitionType().toString() + "-Transition to Map[" + transition.getDestinationMapID() + "] at [" +
 					transition.getDestinationXPosition() + "," + transition.getDestinationYPosition() + "]");
 			if(transition.getTransitionType().isScrollTransition()){
 				gameState = GameState.SCROLLING;
@@ -143,14 +145,17 @@ public class DinoDungeons extends Game {
 	
 	private void updateCollisions() throws CollisionNotSupportedException{
 		PhysicsHelper.getInstance().resetCollisions();
+		PhysicsHelper.getInstance().checkCollisions();
 		for(GameObject o1 : gameObjectManager.getGameObjects()){
-			o1.clearCollisionTags();
+			o1.clearCollisionInformation();
 			for(GameObject o2 : gameObjectManager.getGameObjects()){
 				if(!o1.equals(o2)){
 					for(Collider c1 : o1.getColliders()){
 						for(Collider c2 : o2.getColliders()){
-							if(PhysicsHelper.getInstance().checkCollisionBetween(c1, c2)){
-								o1.addCollisionTag(c1.getKey(), o2.getTag());
+							Collision collision = PhysicsHelper.getInstance().checkCollisionBetween(c1, c2);
+							if(collision != null){
+								CollisionInformation collisionInformation = new CollisionInformation(o2.getTag(), collision);
+								o1.addCollisionInformation(c1.getID(), collisionInformation);
 							}
 						}
 					}

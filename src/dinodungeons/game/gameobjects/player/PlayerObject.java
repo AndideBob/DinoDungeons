@@ -3,17 +3,20 @@ package dinodungeons.game.gameobjects.player;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
+
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.data.transitions.TransitionManager;
-import dinodungeons.game.gameobjects.GameObject;
-import dinodungeons.game.gameobjects.GameObjectTag;
+import dinodungeons.game.gameobjects.base.GameObject;
+import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import lwjgladapter.gfx.SpriteMap;
 import lwjgladapter.input.ButtonState;
 import lwjgladapter.input.InputManager;
 import lwjgladapter.input.KeyboardKey;
+import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
@@ -101,6 +104,7 @@ public class PlayerObject extends GameObject {
 	private void handleCollisions() {
 		for(GameObjectTag tag : GameObjectTag.collectableItems){
 			if(hasCollisionWithObjectWithTag(tag)){
+				Logger.logDebug("Player collided with: " + tag.toString());
 				switch(tag){
 				case COLLECTABLE_ITEM_CLUB:
 					collectItem(ItemID.CLUB);
@@ -182,7 +186,13 @@ public class PlayerObject extends GameObject {
 		hasMovedRight = false;
 		//Change Y Position
 		if(predictedPositionY != positionY){
-			if(GameObjectTag.movementBlockers.contains(getCollisionTagForSpecificCollider(colliderYAxis.getKey()))){
+			boolean movementBlocked = false;
+			for(GameObjectTag tag : getCollisionTagsForSpecificCollider(colliderYAxis.getID())){
+				if(GameObjectTag.movementBlockers.contains(tag)){
+					movementBlocked = true;
+				}
+			}
+			if(!movementBlocked){
 				hasMovedDown = predictedPositionY < positionY;
 				hasMovedUp = !hasMovedLeft;
 				positionY = predictedPositionY;
@@ -199,7 +209,13 @@ public class PlayerObject extends GameObject {
 		}
 		//Change X Position
 		if(predictedPositionX != positionX){
-			if(GameObjectTag.movementBlockers.contains(getCollisionTagForSpecificCollider(colliderXAxis.getKey()))){
+			boolean movementBlocked = false;
+			for(GameObjectTag tag : getCollisionTagsForSpecificCollider(colliderXAxis.getID())){
+				if(GameObjectTag.movementBlockers.contains(tag)){
+					movementBlocked = true;
+				}
+			}
+			if(!movementBlocked){
 				hasMovedLeft = predictedPositionX < positionX;
 				hasMovedRight = !hasMovedLeft;
 				positionX = predictedPositionX;

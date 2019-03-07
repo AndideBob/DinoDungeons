@@ -9,8 +9,8 @@ import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
-import dinodungeons.game.gameobjects.GameObject;
-import dinodungeons.game.gameobjects.GameObjectTag;
+import dinodungeons.game.gameobjects.base.GameObject;
+import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
 import dinodungeons.game.gameobjects.general.WallObject;
@@ -79,7 +79,7 @@ public class ScreenMapUtil {
 							actualHeight = height;
 						}
 					}
-					Logger.logDebug("Wall Created:(" + posX + "," + posY + "," + (posX + actualWidth) + "," + (posY + actualHeight) + ")");
+					//Logger.logDebug("Wall Created:(" + posX + "," + posY + "," + (posX + actualWidth) + "," + (posY + actualHeight) + ")");
 					walls.add(new WallObject(GameObjectTag.WALL, posX * 16, posY * 16, (actualWidth + 1) * 16, (actualHeight + 1) * 16));
 				}
 			}

@@ -35,7 +35,7 @@ public class MapManager {
 					String mapId = fileName.substring(0, fileName.lastIndexOf('.'));
 					ScreenMap map = loader.loadMap(mapId);
 					if(map != null){
-						Logger.log("Map(" + mapId + ") loaded!");
+						Logger.logDebug("Map(" + mapId + ") loaded!");
 						maps.put(mapId, map);
 					}
 					else{

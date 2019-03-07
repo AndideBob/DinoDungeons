@@ -5,8 +5,8 @@ import java.util.Collections;
 
 import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.data.transitions.TransitionType;
-import dinodungeons.game.gameobjects.GameObject;
-import dinodungeons.game.gameobjects.GameObjectTag;
+import dinodungeons.game.gameobjects.base.GameObject;
+import dinodungeons.game.gameobjects.base.GameObjectTag;
 import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;

@@ -3,8 +3,8 @@ package dinodungeons.game.gameobjects.general;
 import java.util.Collection;
 import java.util.Collections;
 
-import dinodungeons.game.gameobjects.GameObject;
-import dinodungeons.game.gameobjects.GameObjectTag;
+import dinodungeons.game.gameobjects.base.GameObject;
+import dinodungeons.game.gameobjects.base.GameObjectTag;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
