@@ -52,7 +52,7 @@ public class DinoDungeons extends Game {
 	}
 	
 	private void loadInitialGameState() throws InvalidMapIDException{
-		TransitionManager.getInstance().initiateTransition("0000", 32, 32, TransitionType.INSTANT);
+		TransitionManager.getInstance().initiateTransition("0000", 116, 104, TransitionType.INSTANT);
 	}
 
 	@Override

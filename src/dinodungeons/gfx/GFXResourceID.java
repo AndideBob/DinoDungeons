@@ -11,8 +11,8 @@ public enum GFXResourceID {
 	EDITOR_SELECTOR(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderEDITOR + File.separator + "editorSelector.png"),
 	TEXT_WHITE(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTEXT + File.separator + "letters_white.png"),
 	TEXT_BLACK(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTEXT + File.separator + "letters_black.png"),
-	DUNGEON_TEST(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTILESETS + File.separator + "dungeonTest.png"),
-	DUNGEON_RED(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTILESETS + File.separator + "dungeonRed.png"),
+	TILESET_CAVE_GREEN(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTILESETS + File.separator + "caveGreen.png"),
+	TILESET_CAVE_RED(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTILESETS + File.separator + "caveRed.png"),
 	CHARACTER(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderCHARACTERS + File.separator + "character.png"),
 	ITEMS(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + "items.png"),
 	SPRITE_SPIKES(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + GFXResourceID.folderIMMOVABLE + File.separator + "spikes.png");

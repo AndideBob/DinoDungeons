@@ -324,7 +324,7 @@ public class PlayerObject extends GameObject {
 					directionNumber = 3;
 				}
 				if(msSinceLastFrame >= msBetweenFrames){
-					msSinceLastFrame -= msBetweenFrames;
+					msSinceLastFrame = 0;
 					showEvenFrame = !showEvenFrame;
 				}
 			}

@@ -30,7 +30,13 @@ public enum BaseLayerTile {
 	BORDER_BOTTOM_LEFT_OUT(22),
 	BORDER_BOTTOM_RIGHT_OUT(23),
 	BORDER_FULL(27),
-	STAIRS(26);
+	STAIRS(26),
+	ENTRANCE_LEFT(30),
+	ENTRANCE_RIGHT(31),
+	DOOR_DOWN(32),
+	DOOR_UP(33),
+	DOOR_RIGHT(36),
+	DOOR_LEFT(37);
 	
 	private int tileSetPosition;
 	

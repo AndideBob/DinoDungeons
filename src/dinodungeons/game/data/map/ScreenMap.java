@@ -39,7 +39,7 @@ public class ScreenMap {
 		transitionRightID = "0000";
 		transitionUpID = "0000";
 		//TileSet
-		tileSet = TileSet.NONE;
+		tileSet = TileSet.CAVE_GREEN;
 	}
 	
 	public void updateBaseLayerTiles(){
@@ -53,6 +53,24 @@ public class ScreenMap {
 				}
 				else if(baseLayer[x][y] == ScreenMapConstants.BASE_LAYER_STAIRS){
 					baseLayerTiles[x][y] = BaseLayerTile.STAIRS;
+				}
+				else if(baseLayer[x][y] == ScreenMapConstants.BASE_LAYER_ENTRANCE_LEFT){
+					baseLayerTiles[x][y] = BaseLayerTile.ENTRANCE_LEFT;
+				}
+				else if(baseLayer[x][y] == ScreenMapConstants.BASE_LAYER_ENTRANCE_RIGHT){
+					baseLayerTiles[x][y] = BaseLayerTile.ENTRANCE_RIGHT;
+				}
+				else if(baseLayer[x][y] == ScreenMapConstants.BASE_LAYER_DOOR_DOWN){
+					baseLayerTiles[x][y] = BaseLayerTile.DOOR_DOWN;
+				}
+				else if(baseLayer[x][y] == ScreenMapConstants.BASE_LAYER_DOOR_UP){
+					baseLayerTiles[x][y] = BaseLayerTile.DOOR_UP;
+				}
+				else if(baseLayer[x][y] == ScreenMapConstants.BASE_LAYER_DOOR_LEFT){
+					baseLayerTiles[x][y] = BaseLayerTile.DOOR_LEFT;
+				}
+				else if(baseLayer[x][y] == ScreenMapConstants.BASE_LAYER_DOOR_RIGHT){
+					baseLayerTiles[x][y] = BaseLayerTile.DOOR_RIGHT;
 				}
 				else{
 					baseLayerTiles[x][y] = getWallBaseLayerTile(x, y);
