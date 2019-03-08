@@ -20,7 +20,7 @@ public class GameObjectManager {
 		lastGameObjects = new ArrayList<>();
 	}
 	
-	private PlayerObject getPlayerObject(){
+	public PlayerObject getPlayerObject(){
 		if(player == null){
 			player = new PlayerObject(GameObjectTag.PLAYER, 0, 0);
 		}

@@ -3,6 +3,7 @@ package dinodungeons.gfx.sprites;
 import dinodungeons.gfx.GFXResourceID;
 
 public enum SpriteID {
+	BACKGROUNDS(GFXResourceID.UI_BACKGROUND, 1, 1),
 	PLAYER(GFXResourceID.CHARACTER, 16, 16),
 	ITEMS(GFXResourceID.ITEMS, 16, 16),
 	SPIKES(GFXResourceID.SPRITE_SPIKES, 16, 16);

@@ -383,6 +383,14 @@ public class PlayerObject extends GameObject {
 		predictedPositionX = positionX;
 		predictedPositionY = positionY;
 	}
+	
+	public int getPositionX() {
+		return (int)Math.round(positionX);
+	}
+	
+	public int getPositionY() {
+		return (int)Math.round(positionY);
+	}
 
 	private enum PlayerState{
 		DEFAULT,

@@ -14,7 +14,6 @@ public class UIManager {
 
 	SpriteMap healthSprite;
 	SpriteMap borderSprite;
-	SpriteMap backgroundSprite;
 	DrawTextManager textManager;
 	
 	public UIManager() {
@@ -22,7 +21,6 @@ public class UIManager {
 	}
 	
 	public void loadResources(){
-		backgroundSprite = new SpriteMap(GFXResourceID.UI_BACKGROUND.getFilePath(), 1, 1);
 		healthSprite = new SpriteMap(GFXResourceID.UI_HEALTH.getFilePath(), 8, 8);
 		borderSprite = new SpriteMap(GFXResourceID.UI_BORDERS.getFilePath(), 8, 8);
 		textManager = new DrawTextManager(GFXResourceID.TEXT_BLACK.getFilePath());
@@ -37,7 +35,7 @@ public class UIManager {
 	}
 	
 	private void drawOnscreenUI(int yPosition, PlayerStatusManager playerStatus){
-		backgroundSprite.draw(0, 0, yPosition, GameWindowConstants.DEFAULT_SCREEN_WIDTH, 64f);
+		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(0, 0, yPosition, GameWindowConstants.DEFAULT_SCREEN_WIDTH, 64f);
 		drawBorders(yPosition);
 		//Draw Items
 		drawItems(yPosition);

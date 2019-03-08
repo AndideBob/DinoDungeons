@@ -12,6 +12,7 @@ import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.CollisionInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
+import dinodungeons.game.utils.ScreenFadingHelper;
 import dinodungeons.game.utils.ScreenScrollingHelper;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.tilesets.TileSet;
@@ -31,6 +32,7 @@ public class DinoDungeons extends Game {
 	private TilesetManager tileSetManager;
 	private UIManager uiManager;
 	private ScreenScrollingHelper scrollHelper;
+	private ScreenFadingHelper fadingHelper;
 	
 	private GameObjectManager gameObjectManager;
 	
@@ -71,6 +73,24 @@ public class DinoDungeons extends Game {
 			}
 			//DrawGameObjects
 			gameObjectManager.drawGameObjects(0, 0);
+			break;
+		case FADING:
+			//Draw Map
+			for(int x = 0; x < currentMap.getSizeX(); x++){
+				for(int y = 0; y < currentMap.getSizeY(); y++){
+					ScreenMap relevantMap = fadingHelper.fadingIn() ? lastMap : currentMap;
+					BaseLayerTile tile = relevantMap.getBaseLayerTileForPosition(x, y);
+					TileSet tileSet = relevantMap.getTileSet();
+					tileSetManager.drawTile(tile, tileSet, x * 16, y * 16);
+				}
+			}
+			if(fadingHelper.fadingIn()) {
+				gameObjectManager.drawLastGameObjects(0,0);
+			}
+			else {
+				gameObjectManager.drawGameObjects(0,0);
+			}
+			fadingHelper.drawFade();
 			break;
 		case SCROLLING:
 			int offsetOldX = scrollHelper.getOffsetOldX();
@@ -113,6 +133,14 @@ public class DinoDungeons extends Game {
 			updateCollisions();
 			gameObjectManager.updateGameObjects(deltaTimeInMs);
 			break;
+		case FADING:
+			fadingHelper.update(deltaTimeInMs);
+			if(fadingHelper.fadeFinished()){
+				gameState = GameState.DEFAULT;
+				lastMap = null;
+				gameObjectManager.clearLastGameObjects();
+			}
+			break;
 		case SCROLLING:
 			scrollHelper.update(deltaTimeInMs);
 			if(scrollHelper.scrollingFinished()){
@@ -133,6 +161,12 @@ public class DinoDungeons extends Game {
 			if(transition.getTransitionType().isScrollTransition()){
 				gameState = GameState.SCROLLING;
 				scrollHelper.startScrolling(transition.getTransitionType());
+				lastMap = currentMap;
+				gameObjectManager.storeCurrentGameObjects();
+			}
+			else if(transition.getTransitionType() == TransitionType.TELEPORT) {
+				gameState = GameState.FADING;
+				fadingHelper.startFading(transition.getTransitionType(), gameObjectManager.getPlayerObject().getPositionX() + 8, gameObjectManager.getPlayerObject().getPositionY() + 8);
 				lastMap = currentMap;
 				gameObjectManager.storeCurrentGameObjects();
 			}
