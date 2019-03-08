@@ -16,7 +16,7 @@ public class DinoDungeonsConstants {
 	public static final int scrollPositionChangeX = scrollBoundryRight - scrollBoundryLeft;
 	
 	// TIMING-RELEATED CONSTANTS
-	public static final long fadeTransitionDurationInMs = 500;
+	public static final long fadeTransitionDurationInMs = 750;
 	public static final long scrollTransitionDurationInMs = 1000;
 	public static final long itemCollectionCharacterFreeze = 2000;
 	public static final long damageTime = 200;

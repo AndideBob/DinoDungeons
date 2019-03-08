@@ -21,8 +21,8 @@ public class ScreenFadingHelper {
 	}
 	
 	public void update(long deltaTimeInMs) {
-		if(fadeTimer > 0) {
-			fadeTimer += fadeIn ? deltaTimeInMs : -deltaTimeInMs;
+		if((fadeTimer > 0 && fadeIn) || (fadeTimer < DinoDungeonsConstants.fadeTransitionDurationInMs && !fadeIn)) {
+			fadeTimer += fadeIn ? -deltaTimeInMs : deltaTimeInMs;
 			fadeProgress = 1f - ((1f * fadeTimer) / DinoDungeonsConstants.fadeTransitionDurationInMs);
 		}
 		else {
@@ -38,17 +38,17 @@ public class ScreenFadingHelper {
 	
 	public void drawFade() {
 		float bottomProgress = fadeCenterY * fadeProgress;
-		int topProgress = DinoDungeonsConstants.mapHeight - (int)bottomProgress;
+		float topProgress = (DinoDungeonsConstants.mapHeight - fadeCenterY) * fadeProgress;
 		float leftProgress = fadeCenterX * fadeProgress;
-		int rightProgress = DinoDungeonsConstants.mapWidth - (int)leftProgress;
+		float rightProgress = (DinoDungeonsConstants.mapWidth - fadeCenterX) * fadeProgress;
 		//Bottom Bar
 		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(2, 0, 0, DinoDungeonsConstants.mapWidth, bottomProgress);
 		//Top Bar
-		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(2, 0, topProgress, DinoDungeonsConstants.mapWidth, bottomProgress);
+		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(2, 0, DinoDungeonsConstants.mapHeight - (int)topProgress, DinoDungeonsConstants.mapWidth, topProgress);
 		//Left Bar
 		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(2, 0, 0, leftProgress, DinoDungeonsConstants.mapHeight);
 		//Top Bar
-		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(2, 0, rightProgress, leftProgress, DinoDungeonsConstants.mapHeight);
+		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(2, DinoDungeonsConstants.mapWidth - (int)rightProgress, 0, rightProgress, DinoDungeonsConstants.mapHeight);
 	}
 	
 	public boolean fadingIn() {
@@ -56,7 +56,7 @@ public class ScreenFadingHelper {
 	}
 	
 	public boolean fadeFinished() {
-		return !fadeIn && fadeProgress >= 1f;
+		return !fadeIn && fadeTimer >= DinoDungeonsConstants.fadeTransitionDurationInMs;
 	}
 
 	public void startFading(TransitionType transitionType, int playerCenterX, int playerCenterY) {

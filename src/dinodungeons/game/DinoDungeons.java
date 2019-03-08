@@ -49,6 +49,7 @@ public class DinoDungeons extends Game {
 		tileSetManager = new TilesetManager();
 		uiManager = new UIManager();
 		scrollHelper = new ScreenScrollingHelper();
+		fadingHelper = new ScreenFadingHelper();
 		ScreenMapUtil.setGameHandle(this);
 		gameState = GameState.DEFAULT;
 	}

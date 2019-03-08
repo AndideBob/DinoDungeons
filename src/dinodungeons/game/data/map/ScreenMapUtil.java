@@ -13,6 +13,7 @@ import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
+import dinodungeons.game.gameobjects.exits.TransitionExitObject;
 import dinodungeons.game.gameobjects.general.WallObject;
 import dinodungeons.game.gameobjects.immovable.MetalSpikeObject;
 import dinodungeons.game.gameobjects.immovable.WoodenSpikeObject;
@@ -129,6 +130,11 @@ public class ScreenMapUtil {
 
 	private static GameObject buildTransportGameObject(TransportMapObject transportMapObject, int posX, int posY){
 		switch(transportMapObject.getTransportationType()){
+		case CAVE_ENTRY:
+		case CAVE_EXIT:
+		case DUNGEON_EXIT:
+			return new TransitionExitObject(GameObjectTag.TRANSPORT, posX, posY,
+					transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());	
 		case INSTANT_TELEPORT:
 			return new InstantExitObject(GameObjectTag.TRANSPORT, posX, posY,
 					transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());	
