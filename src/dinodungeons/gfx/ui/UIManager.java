@@ -1,5 +1,6 @@
 package dinodungeons.gfx.ui;
 
+import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.gfx.GFXResourceID;
 import dinodungeons.gfx.sprites.SpriteID;
@@ -11,13 +12,58 @@ import lwjgladapter.gfx.SpriteMap;
 public class UIManager {
 	
 	private static final int healthPerLine = 12;
+	private static final int defaultYPosition = 192;
 
-	SpriteMap healthSprite;
-	SpriteMap borderSprite;
-	DrawTextManager textManager;
+	private SpriteMap healthSprite;
+	private SpriteMap borderSprite;
+	private DrawTextManager textManager;
+	
+	private int internalYPosition;
+	
+	private long transitionTimer;
+	private boolean scrollingIn;
 	
 	public UIManager() {
-
+		scrollingIn = false;
+		transitionTimer = 0;
+		internalYPosition = defaultYPosition;
+	}
+	
+	public void update(long deltaTimeInMs) {
+		if(!isDoneTransitioning()) {
+			transitionTimer -= deltaTimeInMs;
+			float transitionProgress = 1f - (1f * transitionTimer / DinoDungeonsConstants.menuTransitionDurationInMs);
+			if(transitionProgress <= 0) {
+				transitionProgress = 0;
+			}
+			if(scrollingIn) {
+				internalYPosition = defaultYPosition - (int)Math.round(transitionProgress * defaultYPosition);
+			}
+			else {
+				internalYPosition = (int)Math.round(transitionProgress * defaultYPosition);
+			}
+		}
+		else {
+			internalYPosition = scrollingIn ? 0 : defaultYPosition;
+		}
+	}
+	
+	public boolean isDoneTransitioning() {
+		return transitionTimer <= 0;
+	}
+	
+	public boolean wasTransitioningIn() {
+		return scrollingIn;
+	}
+	
+	public void startTransitionIn() {
+		scrollingIn = true;
+		transitionTimer = DinoDungeonsConstants.menuTransitionDurationInMs;
+	}
+	
+	public void startTransitionOut() {
+		scrollingIn = false;
+		transitionTimer = DinoDungeonsConstants.menuTransitionDurationInMs;
 	}
 	
 	public void loadResources(){
@@ -26,11 +72,11 @@ public class UIManager {
 		textManager = new DrawTextManager(GFXResourceID.TEXT_BLACK.getFilePath());
 	}
 	
-	public void draw(int yPosition, boolean drawMenuUI){
+	public void draw(){
 		PlayerStatusManager playerStatus = PlayerStatusManager.getInstance();
-		drawOnscreenUI(yPosition, playerStatus);
-		if(drawMenuUI){
-			drawMenuUI(yPosition, playerStatus);
+		drawOnscreenUI(internalYPosition, playerStatus);
+		if(internalYPosition < defaultYPosition){
+			drawMenuUI(internalYPosition, playerStatus);
 		}
 	}
 	
@@ -107,7 +153,7 @@ public class UIManager {
 	}
 	
 	private void drawMenuUI(int yPosition, PlayerStatusManager playerStatus){
-		
+		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(0, 0, yPosition + 64, GameWindowConstants.DEFAULT_SCREEN_WIDTH, 192f);
 	}
 
 }

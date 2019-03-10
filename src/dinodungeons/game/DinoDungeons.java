@@ -20,6 +20,9 @@ import dinodungeons.gfx.tilesets.TilesetManager;
 import dinodungeons.gfx.ui.UIManager;
 import lwjgladapter.datatypes.LWJGLAdapterException;
 import lwjgladapter.game.Game;
+import lwjgladapter.input.ButtonState;
+import lwjgladapter.input.InputManager;
+import lwjgladapter.input.KeyboardKey;
 import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.PhysicsHelper;
 import lwjgladapter.physics.collision.base.Collider;
@@ -61,6 +64,7 @@ public class DinoDungeons extends Game {
 	@Override
 	public void draw() {
 		switch(gameState){
+		case MENU_TRANSITION:
 		case DEFAULT:
 			//DrawMap
 			if(currentMap != null){
@@ -114,7 +118,7 @@ public class DinoDungeons extends Game {
 			gameObjectManager.drawLastGameObjects(offsetOldX,offsetOldY);
 			break;
 		}
-		uiManager.draw(192, false);
+		uiManager.draw();
 	}
 
 	@Override
@@ -133,6 +137,21 @@ public class DinoDungeons extends Game {
 			switchMapIfNecessary();
 			updateCollisions();
 			gameObjectManager.updateGameObjects(deltaTimeInMs);
+			checkMenuStatusChange();
+			break;
+		case MENU_TRANSITION:
+			uiManager.update(deltaTimeInMs);
+			if(uiManager.isDoneTransitioning()) {
+				if(uiManager.wasTransitioningIn()) {
+					gameState = GameState.MENU;
+				}
+				else {
+					gameState = GameState.DEFAULT;
+				}
+			}
+			break;
+		case MENU:
+			checkMenuStatusChange();
 			break;
 		case FADING:
 			fadingHelper.update(deltaTimeInMs);
@@ -195,6 +214,19 @@ public class DinoDungeons extends Game {
 						}
 					}
 				}
+			}
+		}
+	}
+	
+	private void checkMenuStatusChange() {
+		if(InputManager.instance.getKeyState(KeyboardKey.KEY_ESCAPE).equals(ButtonState.RELEASED)) {
+			if(gameState == GameState.MENU) {
+				uiManager.startTransitionOut();
+				gameState = GameState.MENU_TRANSITION;
+			}
+			else if(gameState == GameState.DEFAULT) {
+				uiManager.startTransitionIn();
+				gameState = GameState.MENU_TRANSITION;
 			}
 		}
 	}
