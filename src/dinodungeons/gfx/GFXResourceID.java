@@ -15,7 +15,8 @@ public enum GFXResourceID {
 	TILESET_CAVE_RED(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTILESETS + File.separator + "caveRed.png"),
 	CHARACTER(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderCHARACTERS + File.separator + "character.png"),
 	ITEMS(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + "items.png"),
-	SPRITE_SPIKES(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + GFXResourceID.folderIMMOVABLE + File.separator + "spikes.png");
+	SPRITE_SPIKES(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + GFXResourceID.folderIMMOVABLE + File.separator + "spikes.png"),
+	COLLECTABLES(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + "collectables.png");
 	
 	
 	private static final String folderGFX = "gfx";

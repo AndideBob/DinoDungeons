@@ -12,12 +12,13 @@ import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.CollisionInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
+import dinodungeons.game.utils.MenuManager;
 import dinodungeons.game.utils.ScreenFadingHelper;
 import dinodungeons.game.utils.ScreenScrollingHelper;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.tilesets.TileSet;
 import dinodungeons.gfx.tilesets.TilesetManager;
-import dinodungeons.gfx.ui.UIManager;
+import dinodungeons.gfx.ui.DrawUIManager;
 import lwjgladapter.datatypes.LWJGLAdapterException;
 import lwjgladapter.game.Game;
 import lwjgladapter.input.ButtonState;
@@ -33,11 +34,12 @@ public class DinoDungeons extends Game {
 	
 	private MapManager mapManager;
 	private TilesetManager tileSetManager;
-	private UIManager uiManager;
+	private DrawUIManager drawUiManager;
 	private ScreenScrollingHelper scrollHelper;
 	private ScreenFadingHelper fadingHelper;
 	
 	private GameObjectManager gameObjectManager;
+	private MenuManager menuManager;
 	
 	
 	private ScreenMap currentMap;
@@ -50,7 +52,8 @@ public class DinoDungeons extends Game {
 		gameObjectManager = new GameObjectManager();
 		mapManager = new MapManager();
 		tileSetManager = new TilesetManager();
-		uiManager = new UIManager();
+		drawUiManager = new DrawUIManager();
+		menuManager = new MenuManager();
 		scrollHelper = new ScreenScrollingHelper();
 		fadingHelper = new ScreenFadingHelper();
 		ScreenMapUtil.setGameHandle(this);
@@ -117,8 +120,11 @@ public class DinoDungeons extends Game {
 			gameObjectManager.drawGameObjects(offsetNewX,offsetNewY);
 			gameObjectManager.drawLastGameObjects(offsetOldX,offsetOldY);
 			break;
+		case MENU:
+			//Menu will be drawn either way!
+			break;
 		}
-		uiManager.draw();
+		drawUiManager.draw(menuManager);
 	}
 
 	@Override
@@ -126,7 +132,7 @@ public class DinoDungeons extends Game {
 		SpriteManager.getInstance().loadSprites();
 		mapManager.loadMaps();
 		tileSetManager.loadResources();
-		uiManager.loadResources();
+		drawUiManager.loadResources();
 		loadInitialGameState();
 	}
 
@@ -137,12 +143,13 @@ public class DinoDungeons extends Game {
 			switchMapIfNecessary();
 			updateCollisions();
 			gameObjectManager.updateGameObjects(deltaTimeInMs);
+			menuManager.update(deltaTimeInMs);
 			checkMenuStatusChange();
 			break;
 		case MENU_TRANSITION:
-			uiManager.update(deltaTimeInMs);
-			if(uiManager.isDoneTransitioning()) {
-				if(uiManager.wasTransitioningIn()) {
+			menuManager.update(deltaTimeInMs);
+			if(!menuManager.isInTransition()) {
+				if(menuManager.isInMenu()) {
 					gameState = GameState.MENU;
 				}
 				else {
@@ -151,6 +158,7 @@ public class DinoDungeons extends Game {
 			}
 			break;
 		case MENU:
+			menuManager.update(deltaTimeInMs);
 			checkMenuStatusChange();
 			break;
 		case FADING:
@@ -219,15 +227,8 @@ public class DinoDungeons extends Game {
 	}
 	
 	private void checkMenuStatusChange() {
-		if(InputManager.instance.getKeyState(KeyboardKey.KEY_ESCAPE).equals(ButtonState.RELEASED)) {
-			if(gameState == GameState.MENU) {
-				uiManager.startTransitionOut();
-				gameState = GameState.MENU_TRANSITION;
-			}
-			else if(gameState == GameState.DEFAULT) {
-				uiManager.startTransitionIn();
-				gameState = GameState.MENU_TRANSITION;
-			}
+		if(menuManager.isInTransition()){
+			gameState = GameState.MENU_TRANSITION;
 		}
 	}
 

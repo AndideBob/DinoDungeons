@@ -1,6 +1,10 @@
 package dinodungeons.game.data;
 
+import java.util.Random;
+
 public class DinoDungeonsConstants {
+	
+	public static final Random random = new Random(System.nanoTime());
 	
 	// SCREEN-RELEATED CONSTANTS 
 	public static final int mapWidth = 256;
