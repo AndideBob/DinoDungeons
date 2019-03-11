@@ -24,6 +24,8 @@ import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.tilesets.TileSet;
 import dinodungeons.gfx.tilesets.TilesetManager;
 import dinodungeons.gfx.ui.DrawUIManager;
+import dinodungeons.sfx.sound.Song;
+import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.datatypes.LWJGLAdapterException;
 import lwjgladapter.game.Game;
 import lwjgladapter.input.ButtonState;
@@ -64,6 +66,7 @@ public class DinoDungeons extends Game {
 	
 	private void loadInitialGameState() throws InvalidMapIDException{
 		TransitionManager.getInstance().initiateTransition("0000", 116, 104, TransitionType.INSTANT);
+		SoundManager.getInstance().playMusic(Song.MAIN_THEME);
 	}
 
 	@Override
@@ -135,6 +138,7 @@ public class DinoDungeons extends Game {
 	@Override
 	public void loadResources() throws LWJGLAdapterException{
 		SpriteManager.getInstance().loadSprites();
+		SoundManager.getInstance().loadSounds();
 		mapManager.loadMaps();
 		tileSetManager.loadResources();
 		drawUiManager.loadResources();

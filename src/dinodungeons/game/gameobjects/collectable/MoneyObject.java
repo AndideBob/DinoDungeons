@@ -9,6 +9,8 @@ import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
+import dinodungeons.sfx.sound.SoundEffect;
+import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.gfx.SpriteMap;
 import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
@@ -33,7 +35,7 @@ public class MoneyObject extends GameObject {
 		sprite = SpriteManager.getInstance().getSprite(SpriteID.COLLECTABLES);
 		positionX = posX;
 		positionY = posY;
-		collider = new RectCollider(posX, posY, 10, 10);
+		collider = new RectCollider(posX + 3, posY + 3, 4, 4);
 		wasCollected = false;
 	}
 
@@ -45,6 +47,7 @@ public class MoneyObject extends GameObject {
 				resetAnimationTimer();
 			}
 			if(hasCollisionWithObjectWithTag(GameObjectTag.PLAYER)){
+				SoundManager.getInstance().playSoundEffect(SoundEffect.PICKUP_COIN);
 				wasCollected = true;
 				switch(tag){
 				case COLLECTABLE_MONEY_OBJECT_VALUE_ONE:
