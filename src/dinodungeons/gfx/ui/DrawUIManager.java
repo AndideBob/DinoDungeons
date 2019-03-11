@@ -50,7 +50,9 @@ public class DrawUIManager {
 	private void drawCollectables(int yPosition) {
 		//24 pixels on Y axis
 		//Money
+		collectableSprites.setColorValues(0f, 0.8f, 1f, 1f);
 		collectableSprites.draw(0, 0, yPosition + 13);
+		collectableSprites.setColorValues(1f, 1f, 1f, 1f);
 		int moneyAmount = PlayerStatusManager.getInstance().getCurrentMoney();
 		String money = String.format("%03d", moneyAmount);
 		textManager.DrawText(10, yPosition + 14, money, 3);

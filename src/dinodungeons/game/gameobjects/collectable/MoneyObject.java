@@ -9,7 +9,6 @@ import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
-import lwjgladapter.gfx.Sprite;
 import lwjgladapter.gfx.SpriteMap;
 import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
@@ -107,6 +106,7 @@ public class MoneyObject extends GameObject {
 			break;
 		}
 		sprite.draw(currentFrame, anchorX + positionX, anchorY + positionY);
+		sprite.setColorValues(1f, 1f, 1f, 1f);
 	}
 
 	@Override
