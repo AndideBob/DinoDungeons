@@ -1,7 +1,7 @@
 package dinodungeons.gfx.ui;
 
-import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
+import dinodungeons.game.utils.MenuManager;
 import dinodungeons.gfx.GFXResourceID;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -9,73 +9,27 @@ import dinodungeons.gfx.text.DrawTextManager;
 import lwjgladapter.GameWindowConstants;
 import lwjgladapter.gfx.SpriteMap;
 
-public class UIManager {
+public class DrawUIManager {
 	
 	private static final int healthPerLine = 12;
-	private static final int defaultYPosition = 192;
 
 	private SpriteMap healthSprite;
 	private SpriteMap borderSprite;
+	private SpriteMap collectableSprites;
 	private DrawTextManager textManager;
-	
-	private int internalYPosition;
-	
-	private long transitionTimer;
-	private boolean scrollingIn;
-	
-	public UIManager() {
-		scrollingIn = false;
-		transitionTimer = 0;
-		internalYPosition = defaultYPosition;
-	}
-	
-	public void update(long deltaTimeInMs) {
-		if(!isDoneTransitioning()) {
-			transitionTimer -= deltaTimeInMs;
-			float transitionProgress = 1f - (1f * transitionTimer / DinoDungeonsConstants.menuTransitionDurationInMs);
-			if(transitionProgress <= 0) {
-				transitionProgress = 0;
-			}
-			if(scrollingIn) {
-				internalYPosition = defaultYPosition - (int)Math.round(transitionProgress * defaultYPosition);
-			}
-			else {
-				internalYPosition = (int)Math.round(transitionProgress * defaultYPosition);
-			}
-		}
-		else {
-			internalYPosition = scrollingIn ? 0 : defaultYPosition;
-		}
-	}
-	
-	public boolean isDoneTransitioning() {
-		return transitionTimer <= 0;
-	}
-	
-	public boolean wasTransitioningIn() {
-		return scrollingIn;
-	}
-	
-	public void startTransitionIn() {
-		scrollingIn = true;
-		transitionTimer = DinoDungeonsConstants.menuTransitionDurationInMs;
-	}
-	
-	public void startTransitionOut() {
-		scrollingIn = false;
-		transitionTimer = DinoDungeonsConstants.menuTransitionDurationInMs;
-	}
 	
 	public void loadResources(){
 		healthSprite = new SpriteMap(GFXResourceID.UI_HEALTH.getFilePath(), 8, 8);
 		borderSprite = new SpriteMap(GFXResourceID.UI_BORDERS.getFilePath(), 8, 8);
 		textManager = new DrawTextManager(GFXResourceID.TEXT_BLACK.getFilePath());
+		collectableSprites = SpriteManager.getInstance().getSprite(SpriteID.COLLECTABLES);
 	}
 	
-	public void draw(){
+	public void draw(MenuManager menuManager){
 		PlayerStatusManager playerStatus = PlayerStatusManager.getInstance();
+		int internalYPosition = menuManager.getInternalYPosition();
 		drawOnscreenUI(internalYPosition, playerStatus);
-		if(internalYPosition < defaultYPosition){
+		if(internalYPosition < MenuManager.defaultYPosition){
 			drawMenuUI(internalYPosition, playerStatus);
 		}
 	}
@@ -89,8 +43,26 @@ public class UIManager {
 		drawBubbles(yPosition + 32, playerStatus.getMaxHealth(), playerStatus.getCurrentHealth(), 0);
 		//Mana
 		drawBubbles(yPosition + 16, 0, 0, 1);
+		//Collectables
+		drawCollectables(yPosition + 40);
 	}
 	
+	private void drawCollectables(int yPosition) {
+		//24 pixels on Y axis
+		//Money
+		collectableSprites.setColorValues(0f, 0.8f, 1f, 1f);
+		collectableSprites.draw(0, 0, yPosition + 13);
+		collectableSprites.setColorValues(1f, 1f, 1f, 1f);
+		int moneyAmount = PlayerStatusManager.getInstance().getCurrentMoney();
+		String money = String.format("%03d", moneyAmount);
+		textManager.DrawText(10, yPosition + 14, money, 3);
+		//Bombs
+		collectableSprites.draw(4, 0, yPosition + 1);
+		int bombAmount = 0;
+		String bombs = String.format("%02d", bombAmount);
+		textManager.DrawText(20, yPosition + 2, bombs, 2);
+	}
+
 	private void drawBorders(int yPosition){
 		//Bottom Border
 		borderSprite.draw(0, 0, yPosition);
