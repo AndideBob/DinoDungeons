@@ -1,14 +1,18 @@
 package dinodungeons.game.gameobjects.collectable;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
+import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import lwjgladapter.gfx.Sprite;
 import lwjgladapter.gfx.SpriteMap;
+import lwjgladapter.logging.Logger;
+import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
 public class MoneyObject extends GameObject {
@@ -20,20 +24,53 @@ public class MoneyObject extends GameObject {
 	private int positionX;
 	private int positionY;
 	
+	private boolean wasCollected;
+	
+	private RectCollider collider;
+	
 	public MoneyObject(GameObjectTag tag, int posX, int posY) {
 		super(tag);
 		resetAnimationTimer();
 		sprite = SpriteManager.getInstance().getSprite(SpriteID.COLLECTABLES);
 		positionX = posX;
 		positionY = posY;
+		collider = new RectCollider(posX, posY, 10, 10);
+		wasCollected = false;
 	}
 
 	@Override
 	public void update(long deltaTimeInMs) {
-		animationTimer -= deltaTimeInMs;
-		if(animationTimer <= 0){
-			resetAnimationTimer();
+		if(!wasCollected){
+			animationTimer -= deltaTimeInMs;
+			if(animationTimer <= 0){
+				resetAnimationTimer();
+			}
+			if(hasCollisionWithObjectWithTag(GameObjectTag.PLAYER)){
+				wasCollected = true;
+				switch(tag){
+				case COLLECTABLE_MONEY_OBJECT_VALUE_ONE:
+					PlayerStatusManager.getInstance().addMoney(1);
+					break;
+				case COLLECTABLE_MONEY_OBJECT_VALUE_FIVE:
+					PlayerStatusManager.getInstance().addMoney(5);
+					break;
+				case COLLECTABLE_MONEY_OBJECT_VALUE_TEN:
+					PlayerStatusManager.getInstance().addMoney(10);
+					break;
+				case COLLECTABLE_MONEY_OBJECT_VALUE_TWENTYFIVE:
+					PlayerStatusManager.getInstance().addMoney(25);
+					break;
+				default:
+					Logger.logError("Money was incorrectly tagged: " + tag.toString());
+					break;
+				}
+			}
 		}
+	}
+	
+	@Override
+	public boolean shouldBeDeleted() {
+		return wasCollected;
 	}
 	
 	private void resetAnimationTimer(){
@@ -74,8 +111,7 @@ public class MoneyObject extends GameObject {
 
 	@Override
 	public Collection<Collider> getColliders() {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.singleton(collider);
 	}
 
 }
