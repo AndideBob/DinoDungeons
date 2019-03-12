@@ -2,6 +2,8 @@ package dinodungeons.game.utils;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.gameplay.PlayerStatusManager;
+import dinodungeons.game.gameobjects.player.ItemID;
 import lwjgladapter.input.ButtonState;
 
 public class MenuManager {
@@ -38,43 +40,110 @@ public class MenuManager {
 		}
 		else if(isInMenu()){
 			internalYPosition = 0;
+			//START
 			if(inputInformation.getStart().equals(ButtonState.RELEASED)) {
 				startTransitionOut();
 			}
-			if(inputInformation.getDown().equals(ButtonState.RELEASED)){
-				currentSelection += 3;
-				if(currentSelection > 11){
-					currentSelection = currentSelection % 12;
-				}
-			}
-			if(inputInformation.getUp().equals(ButtonState.RELEASED)){
-				currentSelection -= 3;
-				if(currentSelection < 0){
-					currentSelection += 12;
-				}
-			}
-			if(inputInformation.getLeft().equals(ButtonState.RELEASED)){
-				if(currentSelection % 3 == 0){
-					currentSelection += 2;
-				}
-				else{
-					currentSelection -= 1;
-				}
-			}
-			if(inputInformation.getRight().equals(ButtonState.RELEASED)){
-				if(currentSelection % 3 == 2){
-					currentSelection -= 2;
-				}
-				else{
-					currentSelection += 1;
-				}
-			}
+			//NAVIGATE
+			switchSelection(inputInformation);
+			//SELECT
+			selectItem(inputInformation);
 		}
 		else{
 			internalYPosition = defaultYPosition;
 			if(inputInformation.getStart().equals(ButtonState.RELEASED)) {
 				startTransitionIn();
 			}
+		}
+	}
+	
+	private void switchSelection(InputInformation inputInformation){
+		if(inputInformation.getDown().equals(ButtonState.RELEASED)){
+			currentSelection += 3;
+			if(currentSelection > 11){
+				currentSelection = currentSelection % 12;
+			}
+		}
+		else if(inputInformation.getUp().equals(ButtonState.RELEASED)){
+			currentSelection -= 3;
+			if(currentSelection < 0){
+				currentSelection += 12;
+			}
+		}
+		if(inputInformation.getLeft().equals(ButtonState.RELEASED)){
+			if(currentSelection % 3 == 0){
+				currentSelection += 2;
+			}
+			else{
+				currentSelection -= 1;
+			}
+		}
+		else if(inputInformation.getRight().equals(ButtonState.RELEASED)){
+			if(currentSelection % 3 == 2){
+				currentSelection -= 2;
+			}
+			else{
+				currentSelection += 1;
+			}
+		}
+	}
+	
+	private void selectItem(InputInformation inputInformation){
+		if(inputInformation.getA().equals(ButtonState.RELEASED)){
+			ItemID selectedItem = getItemBySelection();
+			if(selectedItem != null && PlayerStatusManager.getInstance().getCollectedItems().contains(selectedItem)){
+				if(PlayerStatusManager.getInstance().getItemB().equals(selectedItem)){
+					PlayerStatusManager.getInstance().setItemB(PlayerStatusManager.getInstance().getItemA());
+				}
+				PlayerStatusManager.getInstance().setItemA(selectedItem);
+			}
+			else{
+				PlayerStatusManager.getInstance().setItemA(null);
+			}
+		}
+		if(inputInformation.getB().equals(ButtonState.RELEASED)){
+			ItemID selectedItem = getItemBySelection();
+			if(selectedItem != null && PlayerStatusManager.getInstance().getCollectedItems().contains(selectedItem)){
+				if(PlayerStatusManager.getInstance().getItemA().equals(selectedItem)){
+					PlayerStatusManager.getInstance().setItemA(PlayerStatusManager.getInstance().getItemB());
+				}
+				PlayerStatusManager.getInstance().setItemB(selectedItem);
+			}
+			else{
+				PlayerStatusManager.getInstance().setItemB(null);
+			}
+		}
+	}
+	
+	private ItemID getItemBySelection()
+	{
+		switch (currentSelection) {
+		case 0:
+			return ItemID.CLUB;
+		case 1:
+			return ItemID.ITEM_1;
+		case 2:
+			return ItemID.ITEM_2;
+		case 3:
+			return ItemID.ITEM_3;
+		case 4:
+			return ItemID.ITEM_4;
+		case 5:
+			return ItemID.ITEM_5;
+		case 6:
+			return ItemID.ITEM_6;
+		case 7:
+			return ItemID.ITEM_7;
+		case 8:
+			return ItemID.ITEM_8;
+		case 9:
+			return ItemID.ITEM_9;
+		case 10:
+			return ItemID.ITEM_A;
+		case 11:
+			return ItemID.ITEM_B;
+		default:
+			return null;
 		}
 	}
 	

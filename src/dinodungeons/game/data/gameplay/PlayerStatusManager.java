@@ -30,11 +30,33 @@ public class PlayerStatusManager {
 	private int currentMoney;
 	
 	private Set<ItemID> collectedItems;
+	
+	private ItemID itemA;
+	
+	private ItemID itemB;
 
 	private PlayerStatusManager() {
 		maxHealth = defaultHealth;
 		currentHealth = maxHealth;
 		collectedItems = new HashSet<>();
+		itemA = null;
+		itemB = null;
+	}
+	
+	public void setItemA(ItemID item){
+		itemA = item;
+	}
+	
+	public void setItemB(ItemID item){
+		itemB = item;
+	}
+	
+	public ItemID getItemA(){
+		return itemA;
+	}
+	
+	public ItemID getItemB(){
+		return itemB;
 	}
 	
 	public Collection<ItemID> getCollectedItems(){

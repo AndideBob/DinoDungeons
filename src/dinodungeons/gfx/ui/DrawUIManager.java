@@ -39,7 +39,7 @@ public class DrawUIManager {
 		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(0, 0, yPosition, GameWindowConstants.DEFAULT_SCREEN_WIDTH, 64f);
 		drawBorders(yPosition);
 		//Draw Items
-		drawItems(yPosition);
+		drawItems(yPosition, playerStatus);
 		//Health
 		drawBubbles(yPosition + 32, playerStatus.getMaxHealth(), playerStatus.getCurrentHealth(), 0);
 		//Mana
@@ -73,16 +73,21 @@ public class DrawUIManager {
 		}
 	}
 	
-	private void drawItems(int yPosition){ //TODO: Add ItemIDA and ItemIDB
+	private void drawItems(int yPosition, PlayerStatusManager playerStatus){
 		//Item Borders
 		int healthEnding = healthPerLine * 8;
 		drawItemBorder(healthEnding, yPosition + 8);
 		textManager.DrawText(healthEnding + 32, yPosition + 24, "A", 1);
-		SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(6, healthEnding + 8, yPosition + 16);
+		if(playerStatus.getItemA() != null){
+			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(playerStatus.getItemA().getSpriteSheetPosition(), healthEnding + 8, yPosition + 16);
+		}
 		drawItemBorder(healthEnding + 48, yPosition + 8);
 		textManager.DrawText(healthEnding + 80, yPosition + 24, "B", 1);
-		SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(0, healthEnding + 56, yPosition + 16);
+		if(playerStatus.getItemB() != null){
+			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(playerStatus.getItemB().getSpriteSheetPosition(), healthEnding + 56, yPosition + 16);
+		}
 	}
+	
 	private void drawItemBorder(int x, int y){
 		//Bottom
 		borderSprite.draw(6, x, y);
@@ -137,52 +142,75 @@ public class DrawUIManager {
 			if(!playerStatus.getCollectedItems().contains(item)){
 				continue;
 			}
+			int x = 0;
+			int y = 0;
 			switch(item){
 			case CLUB:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(0, 16, yPosition+184);
+				x = 16;
+				y = yPosition+184;
 				break;
 			case ITEM_1:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(1, 48, yPosition+184);
+				x = 48;
+				y = yPosition+184;
 				break;
 			case ITEM_2:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(2, 80, yPosition+184);
+				x = 80;
+				y = yPosition+184;
 				break;
 			case ITEM_3:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(3, 16, yPosition+152);
+				x = 16;
+				y = yPosition+152;
 				break;
 			case ITEM_4:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(4, 48, yPosition+152);
+				x = 48;
+				y = yPosition+152;
 				break;
 			case ITEM_5:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(5, 80, yPosition+152);
+				x = 80;
+				y = yPosition+152;
 				break;
 			case ITEM_6:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(6, 16, yPosition+120);
+				x = 16;
+				y = yPosition+120;
 				break;
 			case ITEM_7:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(7, 48, yPosition+120);
+				x = 48;
+				y = yPosition+120;
 				break;
 			case ITEM_8:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(8, 80, yPosition+120);
+				x = 80;
+				y = yPosition+120;
 				break;
 			case ITEM_9:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(9, 16, yPosition+88);
+				x = 16;
+				y = yPosition+88;
 				break;
 			case ITEM_A:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(10, 48, yPosition+88);
+				x = 48;
+				y = yPosition+88;
 				break;
 			case ITEM_B:
-				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(11, 80, yPosition+88);
-				break;
-			case ITEM_D:
-				break;
-			case ITEM_E:
-				break;
-			case ITEM_F:
+				x = 80;
+				y = yPosition+88;
 				break;
 			case MIRROR:
+				x = 128;
+				y = yPosition+184;
+				break;
+			case ITEM_D:
+				x = 160;
+				y = yPosition+184;
+				break;
+			case ITEM_E:
+				x = 192;
+				y = yPosition+184;
+				break;
+			case ITEM_F:
+				x = 224;
+				y = yPosition+184;
 				break;
 			}
+			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(item.getSpriteSheetPosition(), x, y);
 		}
 		int selectionX = 8 + (menuManager.getCurrentMenuSelection() % 3) * 32;
 		int selectionY = yPosition + 176 - ((int)Math.floor(menuManager.getCurrentMenuSelection() / 3)) * 32;
