@@ -13,10 +13,13 @@ public class MenuManager {
 	private long transitionTimer;
 	private boolean scrollingIn;
 	
+	private int currentSelection;
+	
 	public MenuManager() {
 		scrollingIn = false;
 		transitionTimer = 0;
 		internalYPosition = defaultYPosition;
+		currentSelection = 0;
 	}
 	
 	public void update(long deltaTimeInMs, InputInformation inputInformation) {
@@ -33,15 +36,44 @@ public class MenuManager {
 				internalYPosition = (int)Math.round(transitionProgress * defaultYPosition);
 			}
 		}
-		else {
-			internalYPosition = scrollingIn ? 0 : defaultYPosition;
+		else if(isInMenu()){
+			internalYPosition = 0;
 			if(inputInformation.getStart().equals(ButtonState.RELEASED)) {
-				if(isInMenu()) {
-					startTransitionOut();
+				startTransitionOut();
+			}
+			if(inputInformation.getDown().equals(ButtonState.RELEASED)){
+				currentSelection += 3;
+				if(currentSelection > 11){
+					currentSelection = currentSelection % 12;
 				}
-				else {
-					startTransitionIn();
+			}
+			if(inputInformation.getUp().equals(ButtonState.RELEASED)){
+				currentSelection -= 3;
+				if(currentSelection < 0){
+					currentSelection += 12;
 				}
+			}
+			if(inputInformation.getLeft().equals(ButtonState.RELEASED)){
+				if(currentSelection % 3 == 0){
+					currentSelection += 2;
+				}
+				else{
+					currentSelection -= 1;
+				}
+			}
+			if(inputInformation.getRight().equals(ButtonState.RELEASED)){
+				if(currentSelection % 3 == 2){
+					currentSelection -= 2;
+				}
+				else{
+					currentSelection += 1;
+				}
+			}
+		}
+		else{
+			internalYPosition = defaultYPosition;
+			if(inputInformation.getStart().equals(ButtonState.RELEASED)) {
+				startTransitionIn();
 			}
 		}
 	}
@@ -66,5 +98,9 @@ public class MenuManager {
 
 	public boolean isInMenu() {
 		return scrollingIn;
+	}
+
+	public int getCurrentMenuSelection() {
+		return currentSelection;
 	}
 }

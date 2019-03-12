@@ -1,6 +1,7 @@
 package dinodungeons.gfx.ui;
 
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
+import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.game.utils.MenuManager;
 import dinodungeons.gfx.GFXResourceID;
 import dinodungeons.gfx.sprites.SpriteID;
@@ -30,7 +31,7 @@ public class DrawUIManager {
 		int internalYPosition = menuManager.getInternalYPosition();
 		drawOnscreenUI(internalYPosition, playerStatus);
 		if(internalYPosition < MenuManager.defaultYPosition){
-			drawMenuUI(internalYPosition, playerStatus);
+			drawMenuUI(internalYPosition, playerStatus, menuManager);
 		}
 	}
 	
@@ -124,8 +125,68 @@ public class DrawUIManager {
 		}
 	}
 	
-	private void drawMenuUI(int yPosition, PlayerStatusManager playerStatus){
+	private void drawMenuUI(int yPosition, PlayerStatusManager playerStatus, MenuManager menuManager){
 		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(0, 0, yPosition + 64, GameWindowConstants.DEFAULT_SCREEN_WIDTH, 192f);
+		drawBorders(yPosition+64);
+		drawBorders(yPosition+248);
+		drawItemSelection(yPosition, playerStatus, menuManager);
+	}
+	
+	private void drawItemSelection(int yPosition, PlayerStatusManager playerStatus, MenuManager menuManager){
+		for(ItemID item : ItemID.values()){
+			if(!playerStatus.getCollectedItems().contains(item)){
+				continue;
+			}
+			switch(item){
+			case CLUB:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(0, 16, yPosition+184);
+				break;
+			case ITEM_1:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(1, 48, yPosition+184);
+				break;
+			case ITEM_2:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(2, 80, yPosition+184);
+				break;
+			case ITEM_3:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(3, 16, yPosition+152);
+				break;
+			case ITEM_4:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(4, 48, yPosition+152);
+				break;
+			case ITEM_5:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(5, 80, yPosition+152);
+				break;
+			case ITEM_6:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(6, 16, yPosition+120);
+				break;
+			case ITEM_7:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(7, 48, yPosition+120);
+				break;
+			case ITEM_8:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(8, 80, yPosition+120);
+				break;
+			case ITEM_9:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(9, 16, yPosition+88);
+				break;
+			case ITEM_A:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(10, 48, yPosition+88);
+				break;
+			case ITEM_B:
+				SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(11, 80, yPosition+88);
+				break;
+			case ITEM_D:
+				break;
+			case ITEM_E:
+				break;
+			case ITEM_F:
+				break;
+			case MIRROR:
+				break;
+			}
+		}
+		int selectionX = 8 + (menuManager.getCurrentMenuSelection() % 3) * 32;
+		int selectionY = yPosition + 176 - ((int)Math.floor(menuManager.getCurrentMenuSelection() / 3)) * 32;
+		drawItemBorder(selectionX, selectionY);
 	}
 
 }
