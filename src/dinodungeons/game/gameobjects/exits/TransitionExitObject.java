@@ -3,6 +3,7 @@ package dinodungeons.game.gameobjects.exits;
 import java.util.Collection;
 import java.util.Collections;
 
+import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.data.transitions.TransitionType;
 import dinodungeons.game.gameobjects.base.GameObject;
@@ -28,7 +29,7 @@ public class TransitionExitObject extends GameObject {
 	}
 
 	@Override
-	public void update(long deltaTimeInMs) {
+	public void update(long deltaTimeInMs, InputInformation inputInformation) {
 		if(hasCollisionWithObjectWithTag(GameObjectTag.PLAYER)){
 			TransitionManager.getInstance().initiateTransition(targetMap, targetX * 16, targetY * 16, TransitionType.TELEPORT);
 		}

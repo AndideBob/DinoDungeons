@@ -5,6 +5,7 @@ import java.util.Collection;
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
+import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.MapManager;
 import dinodungeons.game.data.map.ScreenMap;
@@ -46,6 +47,8 @@ public class DinoDungeons extends Game {
 	private ScreenFadingHelper fadingHelper;
 	private MenuManager menuManager;
 	
+	private InputInformation inputInformation;
+	
 	
 	private ScreenMap currentMap;
 	private ScreenMap lastMap;
@@ -60,6 +63,7 @@ public class DinoDungeons extends Game {
 		menuManager = new MenuManager();
 		scrollHelper = new ScreenScrollingHelper();
 		fadingHelper = new ScreenFadingHelper();
+		inputInformation = new InputInformation();
 		ScreenMapUtil.setGameHandle(this);
 		gameState = GameState.DEFAULT;
 	}
@@ -148,16 +152,17 @@ public class DinoDungeons extends Game {
 	@Override
 	public void update(long deltaTimeInMs) throws LWJGLAdapterException {
 		updateDebug();
+		inputInformation.update();
 		switch(gameState){
 		case DEFAULT:
 			switchMapIfNecessary();
 			updateCollisions();
-			GameObjectManager.getInstance().updateCurrentGameObjects(deltaTimeInMs);
-			menuManager.update(deltaTimeInMs);
+			GameObjectManager.getInstance().updateCurrentGameObjects(deltaTimeInMs, inputInformation);
+			menuManager.update(deltaTimeInMs, inputInformation);
 			checkMenuStatusChange();
 			break;
 		case MENU_TRANSITION:
-			menuManager.update(deltaTimeInMs);
+			menuManager.update(deltaTimeInMs, inputInformation);
 			if(!menuManager.isInTransition()) {
 				if(menuManager.isInMenu()) {
 					gameState = GameState.MENU;
@@ -168,7 +173,7 @@ public class DinoDungeons extends Game {
 			}
 			break;
 		case MENU:
-			menuManager.update(deltaTimeInMs);
+			menuManager.update(deltaTimeInMs, inputInformation);
 			checkMenuStatusChange();
 			break;
 		case FADING:

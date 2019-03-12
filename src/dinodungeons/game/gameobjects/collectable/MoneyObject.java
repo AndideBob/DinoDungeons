@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
+import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
@@ -40,7 +41,7 @@ public class MoneyObject extends GameObject {
 	}
 
 	@Override
-	public void update(long deltaTimeInMs) {
+	public void update(long deltaTimeInMs, InputInformation inputInformation) {
 		if(!wasCollected){
 			animationTimer -= deltaTimeInMs;
 			if(animationTimer <= 0){

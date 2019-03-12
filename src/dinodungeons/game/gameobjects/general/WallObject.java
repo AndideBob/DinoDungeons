@@ -3,6 +3,7 @@ package dinodungeons.game.gameobjects.general;
 import java.util.Collection;
 import java.util.Collections;
 
+import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import lwjgladapter.physics.collision.RectCollider;
@@ -18,7 +19,7 @@ public class WallObject extends GameObject {
 	}
 
 	@Override
-	public void update(long deltaTimeInMs) {
+	public void update(long deltaTimeInMs, InputInformation inputInformation) {
 		//Do nothing
 	}
 

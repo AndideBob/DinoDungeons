@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import dinodungeons.game.data.gameplay.InputInformation;
 import lwjgladapter.physics.collision.base.Collider;
 import lwjgladapter.physics.collision.base.Collision;
 
@@ -30,7 +31,7 @@ public abstract class GameObject {
 		return tag;
 	}
 
-	public abstract void update(long deltaTimeInMs);
+	public abstract void update(long deltaTimeInMs, InputInformation inputInformation);
 	
 	public abstract void draw(int anchorX, int anchorY);
 	

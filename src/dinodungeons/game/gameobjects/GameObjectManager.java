@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import dinodungeons.game.data.gameplay.PlayerStatusManager;
+import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapUtil;
 import dinodungeons.game.gameobjects.base.GameObject;
@@ -42,7 +42,7 @@ public class GameObjectManager {
 		return player;
 	}
 	
-	public void updateCurrentGameObjects(long deltaTimeInMs){
+	public void updateCurrentGameObjects(long deltaTimeInMs, InputInformation inputInformation){
 		if(currentMapID != null){
 			Iterator<GameObject> iter = gameObjects.get(currentMapID).iterator();
 			while(iter.hasNext()){
@@ -52,10 +52,10 @@ public class GameObjectManager {
 					iter.remove();
 				}
 				else{
-					o.update(deltaTimeInMs);
+					o.update(deltaTimeInMs, inputInformation);
 				}
 			}
-			player.update(deltaTimeInMs);
+			player.update(deltaTimeInMs, inputInformation);
 		}
 	}
 	

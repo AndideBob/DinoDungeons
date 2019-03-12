@@ -1,9 +1,8 @@
 package dinodungeons.game.utils;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
+import dinodungeons.game.data.gameplay.InputInformation;
 import lwjgladapter.input.ButtonState;
-import lwjgladapter.input.InputManager;
-import lwjgladapter.input.KeyboardKey;
 
 public class MenuManager {
 
@@ -20,7 +19,7 @@ public class MenuManager {
 		internalYPosition = defaultYPosition;
 	}
 	
-	public void update(long deltaTimeInMs) {
+	public void update(long deltaTimeInMs, InputInformation inputInformation) {
 		if(isInTransition()) {
 			transitionTimer -= deltaTimeInMs;
 			float transitionProgress = 1f - (1f * transitionTimer / DinoDungeonsConstants.menuTransitionDurationInMs);
@@ -36,7 +35,7 @@ public class MenuManager {
 		}
 		else {
 			internalYPosition = scrollingIn ? 0 : defaultYPosition;
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ESCAPE).equals(ButtonState.RELEASED)) {
+			if(inputInformation.getStart().equals(ButtonState.RELEASED)) {
 				if(isInMenu()) {
 					startTransitionOut();
 				}

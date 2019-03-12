@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
+import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.base.GameObject;
@@ -12,8 +13,6 @@ import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import lwjgladapter.gfx.SpriteMap;
 import lwjgladapter.input.ButtonState;
-import lwjgladapter.input.InputManager;
-import lwjgladapter.input.KeyboardKey;
 import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
@@ -76,7 +75,7 @@ public class PlayerObject extends GameObject {
 	}
 
 	@Override
-	public void update(long deltaTimeInMs) {
+	public void update(long deltaTimeInMs, InputInformation inputInformation) {
 		if(invulTimer > 0){
 			invulTimer -= deltaTimeInMs;
 		}
@@ -90,7 +89,7 @@ public class PlayerObject extends GameObject {
 			//VVVV Fall through VVVV
 		case DEFAULT:
 			move();
-			updateControls(deltaTimeInMs);
+			updateControls(deltaTimeInMs, inputInformation);
 			break;
 		case ITEM_COLLECTED:
 			if(msSinceLastFrame >= DinoDungeonsConstants.itemCollectionCharacterFreeze){
@@ -257,25 +256,25 @@ public class PlayerObject extends GameObject {
 		}
 	}
 
-	private void updateControls(long deltaTimeInMs){
+	private void updateControls(long deltaTimeInMs, InputInformation inputInformation){
 		if(playerState == PlayerState.DEFAULT){
 			movementChangeX = 0;
 			movementChangeY = 0;
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.PRESSED)
-					|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_UP).equals(ButtonState.DOWN)){
+			if(inputInformation.getUp().equals(ButtonState.PRESSED)
+					|| inputInformation.getUp().equals(ButtonState.DOWN)){
 				movementChangeY = 1;
 			}
 			else if(
-					InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.PRESSED)
-					|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_DOWN).equals(ButtonState.DOWN)){
+					inputInformation.getDown().equals(ButtonState.PRESSED)
+					|| inputInformation.getDown().equals(ButtonState.DOWN)){
 				movementChangeY = -1;
 			}
-			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.PRESSED)
-					|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_LEFT).equals(ButtonState.DOWN)){
+			if(inputInformation.getLeft().equals(ButtonState.PRESSED)
+					|| inputInformation.getLeft().equals(ButtonState.DOWN)){
 				movementChangeX = -1;
 			}
-			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.PRESSED)
-					|| InputManager.instance.getKeyState(KeyboardKey.KEY_ARROW_RIGHT).equals(ButtonState.DOWN)){
+			else if(inputInformation.getRight().equals(ButtonState.PRESSED)
+					|| inputInformation.getRight().equals(ButtonState.DOWN)){
 				movementChangeX = 1;
 			}
 		}

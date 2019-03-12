@@ -3,6 +3,7 @@ package dinodungeons.game.gameobjects.immovable;
 import java.util.Collection;
 import java.util.Collections;
 
+import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
@@ -30,7 +31,7 @@ public class MetalSpikeObject extends GameObject{
 	}
 
 	@Override
-	public void update(long deltaTimeInMs) {
+	public void update(long deltaTimeInMs, InputInformation inputInformation) {
 		frameTimer = (frameTimer + deltaTimeInMs) % 1000;
 		currentFrame = (frameTimer < 500) ? 0 : 1;
 	}
