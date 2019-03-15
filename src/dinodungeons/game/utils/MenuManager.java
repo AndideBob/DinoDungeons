@@ -92,7 +92,7 @@ public class MenuManager {
 		if(inputInformation.getA().equals(ButtonState.RELEASED)){
 			ItemID selectedItem = getItemBySelection();
 			if(selectedItem != null && PlayerStatusManager.getInstance().getCollectedItems().contains(selectedItem)){
-				if(PlayerStatusManager.getInstance().getItemB().equals(selectedItem)){
+				if(PlayerStatusManager.getInstance().getItemB() != null && PlayerStatusManager.getInstance().getItemB().equals(selectedItem)){
 					PlayerStatusManager.getInstance().setItemB(PlayerStatusManager.getInstance().getItemA());
 				}
 				PlayerStatusManager.getInstance().setItemA(selectedItem);
@@ -104,7 +104,7 @@ public class MenuManager {
 		if(inputInformation.getB().equals(ButtonState.RELEASED)){
 			ItemID selectedItem = getItemBySelection();
 			if(selectedItem != null && PlayerStatusManager.getInstance().getCollectedItems().contains(selectedItem)){
-				if(PlayerStatusManager.getInstance().getItemA().equals(selectedItem)){
+				if(PlayerStatusManager.getInstance().getItemA() != null && PlayerStatusManager.getInstance().getItemA().equals(selectedItem)){
 					PlayerStatusManager.getInstance().setItemA(PlayerStatusManager.getInstance().getItemB());
 				}
 				PlayerStatusManager.getInstance().setItemB(selectedItem);

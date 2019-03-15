@@ -7,10 +7,14 @@ import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.data.transitions.TransitionManager;
+import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import dinodungeons.game.gameobjects.item.ItemClubObject;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
+import dinodungeons.sfx.sound.SoundEffect;
+import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.gfx.SpriteMap;
 import lwjgladapter.input.ButtonState;
 import lwjgladapter.logging.Logger;
@@ -35,17 +39,17 @@ public class PlayerObject extends GameObject {
 	private float predictedPositionX;
 	private float predictedPositionY;
 	
+	private int movementDirection;
+	
 	//Combat base Variables
 	private long invulTimer;
+	private GameObject weaponObject;
 	
 	//Graphics Releated Stuff
 	private static final long msBetweenFrames = 150;
 	private int msSinceLastFrame;
 	private boolean showEvenFrame;
-	private boolean hasMovedUp;
-	private boolean hasMovedDown;
-	private boolean hasMovedLeft;
-	private boolean hasMovedRight;
+	private boolean hasMoved;
 	private int lastDirection;
 	private int frameNumber;
 	private boolean blinking;
@@ -62,9 +66,11 @@ public class PlayerObject extends GameObject {
 		positionY = startY;
 		predictedPositionX = positionX;
 		predictedPositionY = positionY;
+		movementDirection = DinoDungeonsConstants.directionDown;
 		movementChangeX = 0;
 		movementChangeY = 0;
 		movementSpeed = 0.05f;
+		weaponObject = null;
 		colliderXAxis = new RectCollider(startX, startY, 14, 14);
 		colliderYAxis = new RectCollider(startX, startY, 14, 14);
 		colliders = new HashSet<>();
@@ -95,6 +101,13 @@ public class PlayerObject extends GameObject {
 			if(msSinceLastFrame >= DinoDungeonsConstants.itemCollectionCharacterFreeze){
 				msSinceLastFrame = 0;
 				playerState = PlayerState.DEFAULT;
+			}
+			break;
+		case USING_ITEM:
+			if(weaponObject.shouldBeDeleted()) {
+				weaponObject = null;
+				playerState = PlayerState.DEFAULT;
+				msSinceLastFrame = 0;
 			}
 			break;
 		}
@@ -198,6 +211,10 @@ public class PlayerObject extends GameObject {
 		if(playerState != PlayerState.DAMAGE_TAKEN && invulTimer <= 0){
 			PlayerStatusManager.getInstance().damage(amount);
 			playerState = PlayerState.DAMAGE_TAKEN;
+			if(weaponObject != null) {
+				GameObjectManager.getInstance().destroyGameObjectImmediately(weaponObject);
+				weaponObject = null;
+			}
 			msSinceLastFrame = 0;
 			movementChangeX = positionX + 8 - sourceX;
 			movementChangeY = positionY + 8 - sourceY;
@@ -206,10 +223,7 @@ public class PlayerObject extends GameObject {
 	}
 
 	private void move() {
-		hasMovedUp = false;
-		hasMovedDown = false;
-		hasMovedLeft = false;
-		hasMovedRight = false;
+		hasMoved = false;
 		//Change Y Position
 		if(predictedPositionY != positionY){
 			boolean movementBlocked = false;
@@ -219,8 +233,13 @@ public class PlayerObject extends GameObject {
 				}
 			}
 			if(!movementBlocked){
-				hasMovedDown = predictedPositionY < positionY;
-				hasMovedUp = !hasMovedLeft;
+				if(predictedPositionY < positionY) {
+					movementDirection = DinoDungeonsConstants.directionDown;
+				}
+				else {
+					movementDirection = DinoDungeonsConstants.directionUp;
+				}
+				hasMoved = true;
 				positionY = predictedPositionY;
 			}
 		}
@@ -242,8 +261,13 @@ public class PlayerObject extends GameObject {
 				}
 			}
 			if(!movementBlocked){
-				hasMovedLeft = predictedPositionX < positionX;
-				hasMovedRight = !hasMovedLeft;
+				if(predictedPositionX < positionX) {
+					movementDirection = DinoDungeonsConstants.directionLeft;
+				}
+				else {
+					movementDirection = DinoDungeonsConstants.directionRight;
+				}
+				hasMoved = true;
 				positionX = predictedPositionX;
 			}
 		}
@@ -260,22 +284,31 @@ public class PlayerObject extends GameObject {
 		if(playerState == PlayerState.DEFAULT){
 			movementChangeX = 0;
 			movementChangeY = 0;
-			if(inputInformation.getUp().equals(ButtonState.PRESSED)
-					|| inputInformation.getUp().equals(ButtonState.DOWN)){
-				movementChangeY = 1;
+			boolean dontMoveAfterItemUse = false;
+			if(inputInformation.getA().equals(ButtonState.PRESSED)) {
+				dontMoveAfterItemUse = useItem(true);
 			}
-			else if(
-					inputInformation.getDown().equals(ButtonState.PRESSED)
-					|| inputInformation.getDown().equals(ButtonState.DOWN)){
-				movementChangeY = -1;
+			if(inputInformation.getB().equals(ButtonState.PRESSED)) {
+				dontMoveAfterItemUse = useItem(false);
 			}
-			if(inputInformation.getLeft().equals(ButtonState.PRESSED)
-					|| inputInformation.getLeft().equals(ButtonState.DOWN)){
-				movementChangeX = -1;
-			}
-			else if(inputInformation.getRight().equals(ButtonState.PRESSED)
-					|| inputInformation.getRight().equals(ButtonState.DOWN)){
-				movementChangeX = 1;
+			if(!dontMoveAfterItemUse) {
+				if(inputInformation.getUp().equals(ButtonState.PRESSED)
+						|| inputInformation.getUp().equals(ButtonState.DOWN)){
+					movementChangeY = 1;
+				}
+				else if(
+						inputInformation.getDown().equals(ButtonState.PRESSED)
+						|| inputInformation.getDown().equals(ButtonState.DOWN)){
+					movementChangeY = -1;
+				}
+				if(inputInformation.getLeft().equals(ButtonState.PRESSED)
+						|| inputInformation.getLeft().equals(ButtonState.DOWN)){
+					movementChangeX = -1;
+				}
+				else if(inputInformation.getRight().equals(ButtonState.PRESSED)
+						|| inputInformation.getRight().equals(ButtonState.DOWN)){
+					movementChangeX = 1;
+				}
 			}
 		}
 		//Move diagonally at same speed
@@ -284,6 +317,27 @@ public class PlayerObject extends GameObject {
 		}
 		predictedPositionX = positionX + (movementChangeX * movementSpeed * deltaTimeInMs);
 		predictedPositionY = positionY + (movementChangeY * movementSpeed * deltaTimeInMs);
+	}
+	
+	/***
+	 * 
+	 * @param Determines whether the A or the B button was pressed
+	 * @return Returns true if the player is not allowed to move after using the item
+	 */
+	private boolean useItem(boolean aSlot) {
+		ItemID usedItem = aSlot ? PlayerStatusManager.getInstance().getItemA() : PlayerStatusManager.getInstance().getItemB();
+		if(usedItem == null) {
+			return false;
+		}
+		switch (usedItem) {
+		case CLUB:
+			SoundManager.getInstance().playSoundEffect(SoundEffect.HIT_CLUB);
+			weaponObject = new ItemClubObject(getPositionX(), getPositionY(), movementDirection);
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
+			playerState = PlayerState.USING_ITEM;
+			return true;
+		}
+		return false;
 	}
 	
 	private void normalizeMovementChange(){
@@ -306,22 +360,8 @@ public class PlayerObject extends GameObject {
 		msSinceLastFrame += deltaTimeInMs;
 		switch(playerState){
 		case DEFAULT:
-			if(hasMovedUp
-					|| hasMovedDown
-					|| hasMovedLeft
-					|| hasMovedRight){
-				if(hasMovedDown){
-					directionNumber = 0;
-				}
-				else if(hasMovedLeft){
-					directionNumber = 1;
-				}
-				else if(hasMovedUp){
-					directionNumber = 2;
-				}
-				else if(hasMovedRight){
-					directionNumber = 3;
-				}
+			if(hasMoved){
+				directionNumber = movementDirection;
 				if(msSinceLastFrame >= msBetweenFrames){
 					msSinceLastFrame = 0;
 					showEvenFrame = !showEvenFrame;
@@ -336,6 +376,11 @@ public class PlayerObject extends GameObject {
 		case DAMAGE_TAKEN:
 			actionNumber = 0;
 			showEvenFrame = false;
+			break;
+		case USING_ITEM:
+			actionNumber = 3;
+			directionNumber = movementDirection;
+			showEvenFrame = true;
 			break;
 		}
 		lastDirection = directionNumber;
@@ -394,6 +439,7 @@ public class PlayerObject extends GameObject {
 	private enum PlayerState{
 		DEFAULT,
 		ITEM_COLLECTED,
-		DAMAGE_TAKEN;
+		DAMAGE_TAKEN,
+		USING_ITEM;
 	}
 }

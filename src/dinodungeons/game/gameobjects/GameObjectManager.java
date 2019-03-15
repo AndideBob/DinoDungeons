@@ -10,6 +10,7 @@ import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapUtil;
 import dinodungeons.game.gameobjects.base.GameObject;
+import dinodungeons.game.gameobjects.base.GameObjectDrawComparator;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.player.PlayerObject;
 import lwjgladapter.logging.Logger;
@@ -30,9 +31,12 @@ public class GameObjectManager {
 	
 	private String currentMapID;
 	
+	private ArrayList<GameObject> gameObjectsToBeDeletedDeliberately;
+	
 	private GameObjectManager() {
 		gameObjects = new HashMap<>();
 		currentMapID = null;
+		gameObjectsToBeDeletedDeliberately = new ArrayList<>();
 	}
 	
 	public PlayerObject getPlayerObject(){
@@ -47,7 +51,8 @@ public class GameObjectManager {
 			Iterator<GameObject> iter = gameObjects.get(currentMapID).iterator();
 			while(iter.hasNext()){
 				GameObject o = iter.next();
-				if(o.shouldBeDeleted()){
+				if(o.shouldBeDeleted() || gameObjectsToBeDeletedDeliberately.contains(o)){
+					gameObjectsToBeDeletedDeliberately.remove(o);
 					o.delete();
 					iter.remove();
 				}
@@ -59,9 +64,14 @@ public class GameObjectManager {
 		}
 	}
 	
-	public void drawGameObjects(ScreenMap map, int offsetX, int offsetY){
+	public void drawGameObjects(ScreenMap map, int offsetX, int offsetY, boolean drawPlayer){
 		if(map != null && map.getID() != null){
-			for(GameObject o : gameObjects.get(map.getID())){
+			ArrayList<GameObject> sortedObjects = new ArrayList<>(gameObjects.get(map.getID()));
+			if(drawPlayer) {
+				sortedObjects.add(player);
+			}
+			Collections.sort(sortedObjects, new GameObjectDrawComparator());
+			for(GameObject o : sortedObjects){
 				o.draw(offsetX,offsetY);
 			}
 		}
@@ -110,6 +120,10 @@ public class GameObjectManager {
 			return Collections.unmodifiableCollection(gameObjects.get(mapID));
 		}
 		return Collections.emptyList();
+	}
+
+	public void destroyGameObjectImmediately(GameObject gameObject) {
+		gameObjectsToBeDeletedDeliberately.add(gameObject);
 	}
 
 }

@@ -27,8 +27,16 @@ public class DinoDungeonsConstants {
 	public static final long damageTime = 200;
 	public static final long invulnerabilityTime = 500;
 	
+	public static final long clubStageTime = 80;
+	
 	// GAMEPLAY-RELEATED CONSTANTS 
 	public static final int numberOfItems = 16;
 	public static final int numberOfSpikes = 3;
+	
+	public static final int directionDown = 0;
+	public static final int directionLeft = 1;
+	public static final int directionUp = 2;
+	public static final int directionRight = 3;
+	
 
 }

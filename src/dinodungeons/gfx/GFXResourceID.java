@@ -4,34 +4,48 @@ import java.io.File;
 
 import lwjgladapter.GameWindowConstants;
 
+class FolderConstants{
+	static final String folderGFX = File.separator + "gfx";
+	
+	static final String folderTEXT = folderGFX + File.separator + "text";
+	static final String folderCHARACTERS = folderGFX + File.separator + "characters";
+	static final String folderTILESETS = folderGFX + File.separator + "tilesets";
+	static final String folderEDITOR = folderGFX + File.separator + "editor";
+	static final String folderSPRITES = folderGFX + File.separator + "sprites";
+	static final String folderUI = folderGFX + File.separator + "ui";
+	
+	static final String folderITEMS = folderSPRITES + File.separator + "items";
+	static final String folderIMMOVABLE = folderSPRITES + File.separator + "immovable";
+	static final String folderENVIRONMENT = folderSPRITES + File.separator + "environment";
+}
+
 public enum GFXResourceID {
-	UI_BACKGROUND(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderUI + File.separator + "ui_background.png"),
-	UI_HEALTH(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderUI + File.separator + "health.png"),
-	UI_BORDERS(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderUI + File.separator + "ui_borders.png"),
-	EDITOR_SELECTOR(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderEDITOR + File.separator + "editorSelector.png"),
-	TEXT_WHITE(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTEXT + File.separator + "letters_white.png"),
-	TEXT_BLACK(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTEXT + File.separator + "letters_black.png"),
-	TILESET_CAVE_GREEN(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTILESETS + File.separator + "caveGreen.png"),
-	TILESET_CAVE_RED(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderTILESETS + File.separator + "caveRed.png"),
-	CHARACTER(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderCHARACTERS + File.separator + "character.png"),
-	ITEMS(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + "items.png"),
-	SPRITE_SPIKES(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + GFXResourceID.folderIMMOVABLE + File.separator + "spikes.png"),
-	COLLECTABLES(File.separator + GFXResourceID.folderGFX + File.separator + GFXResourceID.folderSPRITES + File.separator + "collectables.png");
-	
-	
-	private static final String folderGFX = "gfx";
-	private static final String folderTEXT = "text";
-	private static final String folderCHARACTERS = "characters";
-	private static final String folderTILESETS = "tilesets";
-	private static final String folderIMMOVABLE = "immovable";
-	private static final String folderEDITOR = "editor";
-	private static final String folderSPRITES = "sprites";
-	private static final String folderUI = "ui";
+	//EDITOR
+	EDITOR_SELECTOR(FolderConstants.folderEDITOR, "editorSelector.png"),
+	//UI
+	UI_BACKGROUND(FolderConstants.folderUI, "ui_background.png"),
+	UI_HEALTH(FolderConstants.folderUI, "health.png"),
+	UI_BORDERS(FolderConstants.folderUI, "ui_borders.png"),
+	//TEXT
+	TEXT_WHITE(FolderConstants.folderTEXT, "letters_white.png"),
+	TEXT_BLACK(FolderConstants.folderTEXT, "letters_black.png"),
+	//TILESETS
+	TILESET_CAVE_GREEN(FolderConstants.folderTILESETS, "caveGreen.png"),
+	TILESET_CAVE_RED(FolderConstants.folderTILESETS, "caveRed.png"),
+	//CHARACTERS
+	CHARACTER(FolderConstants.folderCHARACTERS, "character.png"),
+	//SPRITES-------------
+	ITEMS(FolderConstants.folderSPRITES, "items.png"),
+	COLLECTABLES(FolderConstants.folderSPRITES, "collectables.png"),
+	//IMMOVABLES
+	SPRITE_SPIKES(FolderConstants.folderIMMOVABLE, "spikes.png"),
+	//ITEMS
+	ITEM_CLUB(FolderConstants.folderITEMS, "club.png");
 
 	private String filePath;
 	
-	private GFXResourceID(String filePath){
-		this.filePath = GameWindowConstants.FILEPATH_DIRECTORY + filePath;
+	private GFXResourceID(String folderPath, String filename){
+		this.filePath = GameWindowConstants.FILEPATH_DIRECTORY + folderPath + File.separator + filename;
 	}
 
 	public String getFilePath() {

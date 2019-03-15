@@ -7,7 +7,8 @@ public enum SpriteID {
 	PLAYER(GFXResourceID.CHARACTER, 16, 16),
 	ITEMS(GFXResourceID.ITEMS, 16, 16),
 	COLLECTABLES(GFXResourceID.COLLECTABLES, 10, 10),
-	SPIKES(GFXResourceID.SPRITE_SPIKES, 16, 16);
+	SPIKES(GFXResourceID.SPRITE_SPIKES, 16, 16),
+	WEAPON_CLUB(GFXResourceID.ITEM_CLUB, 16, 16);
 	
 	private GFXResourceID gfxResourceID;
 	

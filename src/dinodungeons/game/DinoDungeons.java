@@ -89,8 +89,7 @@ public class DinoDungeons extends Game {
 				}
 			}
 			//DrawGameObjects
-			GameObjectManager.getInstance().drawGameObjects(currentMap, 0, 0);
-			GameObjectManager.getInstance().getPlayerObject().draw(0, 0);
+			GameObjectManager.getInstance().drawGameObjects(currentMap, 0, 0, true);
 			break;
 		case FADING:
 			//Draw Map
@@ -103,11 +102,10 @@ public class DinoDungeons extends Game {
 				}
 			}
 			if(fadingHelper.fadingIn()) {
-				GameObjectManager.getInstance().drawGameObjects(lastMap, 0, 0);
+				GameObjectManager.getInstance().drawGameObjects(lastMap, 0, 0, false);
 			}
 			else {
-				GameObjectManager.getInstance().drawGameObjects(currentMap, 0,0);
-				GameObjectManager.getInstance().getPlayerObject().draw(0, 0);
+				GameObjectManager.getInstance().drawGameObjects(currentMap, 0, 0, true);
 			}
 			fadingHelper.drawFade();
 			break;
@@ -128,9 +126,9 @@ public class DinoDungeons extends Game {
 				}
 			}
 			//DrawGameObjects
-			GameObjectManager.getInstance().drawGameObjects(currentMap, offsetNewX, offsetNewY);
+			GameObjectManager.getInstance().drawGameObjects(currentMap, offsetNewX, offsetNewY, true);
 			GameObjectManager.getInstance().getPlayerObject().draw(offsetNewX, offsetNewY);
-			GameObjectManager.getInstance().drawGameObjects(lastMap, offsetOldX, offsetOldY);
+			GameObjectManager.getInstance().drawGameObjects(lastMap, offsetOldX, offsetOldY, false);
 			break;
 		case MENU:
 			//Menu will be drawn either way!

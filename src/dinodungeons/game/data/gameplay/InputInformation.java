@@ -22,19 +22,71 @@ public class InputInformation {
 	}
 	
 	public void update(){
-		left = cumulateButtonStates(KeyboardKey.KEY_ARROW_LEFT, GamepadButton.D_LEFT);
-		right = cumulateButtonStates(KeyboardKey.KEY_ARROW_RIGHT, GamepadButton.D_RIGHT);
-		up = cumulateButtonStates(KeyboardKey.KEY_ARROW_UP, GamepadButton.D_UP);
-		down = cumulateButtonStates(KeyboardKey.KEY_ARROW_DOWN, GamepadButton.D_DOWN);
-		start = cumulateButtonStates(KeyboardKey.KEY_ESCAPE, GamepadButton.START);
-		a = cumulateButtonStates(KeyboardKey.KEY_SPACE, GamepadButton.XBOX_A);
-		b = cumulateButtonStates(KeyboardKey.KEY_CRTL_LEFT, GamepadButton.XBOX_B);
+		left = cumulateButtonStates(left, KeyboardKey.KEY_ARROW_LEFT, GamepadButton.D_LEFT);
+		right = cumulateButtonStates(right, KeyboardKey.KEY_ARROW_RIGHT, GamepadButton.D_RIGHT);
+		up = cumulateButtonStates(up, KeyboardKey.KEY_ARROW_UP, GamepadButton.D_UP);
+		down = cumulateButtonStates(down, KeyboardKey.KEY_ARROW_DOWN, GamepadButton.D_DOWN);
+		start = cumulateButtonStates(start, KeyboardKey.KEY_ESCAPE, GamepadButton.START);
+		a = cumulateButtonStates(a, KeyboardKey.KEY_SPACE, GamepadButton.XBOX_A);
+		b = cumulateButtonStates(b, KeyboardKey.KEY_CRTL_LEFT, GamepadButton.XBOX_B);
 	}
 	
-	private ButtonState cumulateButtonStates(KeyboardKey key, GamepadButton button){
+	private ButtonState cumulateButtonStates(ButtonState oldState, KeyboardKey key, GamepadButton button){
 		ButtonState result = InputManager.instance.getKeyState(key);
 		if(result == ButtonState.UP && InputManager.instance.isGamepadPluggedIn(GamepadID.GAMEPAD_1)){
 			result = InputManager.instance.getGamepadButtonState(GamepadID.GAMEPAD_1, button);
+		}
+		if(oldState != null) {
+			switch(result) {
+			case DOWN:
+				switch(oldState) {
+				case DOWN:
+					return ButtonState.DOWN;
+				case PRESSED:
+					return ButtonState.DOWN;
+				case RELEASED:
+					return ButtonState.PRESSED;
+				case UP:
+					return ButtonState.PRESSED;
+				}
+				break;
+			case PRESSED:
+				switch(oldState) {
+				case DOWN:
+					return ButtonState.DOWN;
+				case PRESSED:
+					return ButtonState.DOWN;
+				case RELEASED:
+					return ButtonState.PRESSED;
+				case UP:
+					return ButtonState.PRESSED;
+				}
+				break;
+			case RELEASED:
+				switch(oldState) {
+				case DOWN:
+					return ButtonState.RELEASED;
+				case PRESSED:
+					return ButtonState.RELEASED;
+				case RELEASED:
+					return ButtonState.UP;
+				case UP:
+					return ButtonState.UP;
+				}
+				break;
+			case UP:
+				switch(oldState) {
+				case DOWN:
+					return ButtonState.RELEASED;
+				case PRESSED:
+					return ButtonState.RELEASED;
+				case RELEASED:
+					return ButtonState.UP;
+				case UP:
+					return ButtonState.UP;
+				}
+				break;
+			}
 		}
 		return result;
 	}
