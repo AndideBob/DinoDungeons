@@ -202,6 +202,8 @@ public class PlayerObject extends GameObject {
 		switch(tag){
 		case DAMAGING_IMMOVABLE:
 			return 1;
+		case ENEMY_BAT:
+			return 1;
 		default:
 			return 0;
 		}
@@ -209,6 +211,7 @@ public class PlayerObject extends GameObject {
 	
 	private void takeDamage(int amount, int sourceX, int sourceY) {
 		if(playerState != PlayerState.DAMAGE_TAKEN && invulTimer <= 0){
+			SoundManager.getInstance().playSoundEffect(SoundEffect.PLAYER_DAMAGE);
 			PlayerStatusManager.getInstance().damage(amount);
 			playerState = PlayerState.DAMAGE_TAKEN;
 			if(weaponObject != null) {

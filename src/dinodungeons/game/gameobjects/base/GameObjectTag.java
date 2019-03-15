@@ -32,15 +32,17 @@ public enum GameObjectTag {
 	COLLECTABLE_ITEM_ITEM_D(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_ITEM_ITEM_E(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_ITEM_ITEM_F(SortingLayers.sortingLayerStatic),
+	COLLECTABLE_STATUS_GAIN(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_MONEY_OBJECT_VALUE_ONE(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_MONEY_OBJECT_VALUE_FIVE(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_MONEY_OBJECT_VALUE_TEN(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_MONEY_OBJECT_VALUE_TWENTYFIVE(SortingLayers.sortingLayerStatic),
 	ITEM_CLUB(SortingLayers.sortingLayerEffects),
 	DAMAGING_IMMOVABLE(SortingLayers.sortingLayerStatic),
+	ENEMY_BAT(SortingLayers.sortingLayerMoving),
 	PARTICLE(SortingLayers.sortingLayerEffects);
 	
-	public static final Collection<GameObjectTag> damagingObjects = Arrays.asList(DAMAGING_IMMOVABLE);
+	public static final Collection<GameObjectTag> damagingObjects = Arrays.asList(DAMAGING_IMMOVABLE, ENEMY_BAT);
 	
 	public static final Collection<GameObjectTag> movementBlockers = Arrays.asList(WALL, DAMAGING_IMMOVABLE);
 	

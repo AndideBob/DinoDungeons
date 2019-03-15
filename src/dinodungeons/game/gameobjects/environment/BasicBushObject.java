@@ -5,13 +5,17 @@ import java.util.Collections;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import dinodungeons.game.gameobjects.collectable.HealthPickupObject;
 import dinodungeons.game.gameobjects.collectable.MoneyObject;
 import dinodungeons.game.gameobjects.particles.LeafParticle;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
+import dinodungeons.sfx.sound.SoundEffect;
+import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
@@ -42,14 +46,21 @@ public class BasicBushObject extends GameObject {
 			destroyed = true;
 			spawnParticles();
 			spawnLoot();
+			SoundManager.getInstance().playSoundEffect(SoundEffect.DESTROY_BUSH);
 		}
 	}
 	
 	private void spawnLoot() {
-		switch(DinoDungeonsConstants.random.nextInt(10)) {
-		case 0:
-			GameObjectManager.getInstance().addGameObjectToCurrentMap(new MoneyObject(GameObjectTag.COLLECTABLE_MONEY_OBJECT_VALUE_ONE, positionX + 4, positionY + 4));
-			break;
+		if(DinoDungeonsConstants.random.nextInt(4) == 0) {
+			int x = positionX + 4;
+			int y = positionY + 4;
+			int item = DinoDungeonsConstants.random.nextInt(2);
+			if(item == 0 && PlayerStatusManager.getInstance().isHurt()) {
+				GameObjectManager.getInstance().addGameObjectToCurrentMap(new HealthPickupObject(x, y));
+			}
+			else{
+				GameObjectManager.getInstance().addGameObjectToCurrentMap(new MoneyObject(GameObjectTag.COLLECTABLE_MONEY_OBJECT_VALUE_ONE, x, y));
+			}
 		}
 	}
 

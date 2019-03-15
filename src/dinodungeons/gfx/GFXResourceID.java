@@ -34,16 +34,18 @@ public enum GFXResourceID {
 	TILESET_CAVE_RED(FolderConstants.folderTILESETS, "caveRed.png"),
 	//CHARACTERS
 	CHARACTER(FolderConstants.folderCHARACTERS, "character.png"),
+	ENEMY_BAT_GREEN(FolderConstants.folderCHARACTERS, "bat_green.png"),
 	//SPRITES-------------
 	ITEMS(FolderConstants.folderSPRITES, "items.png"),
 	COLLECTABLES(FolderConstants.folderSPRITES, "collectables.png"),
-	PARTICLES(FolderConstants.folderSPRITES, "particles.png"),
+	PARTICLES_A(FolderConstants.folderSPRITES, "particlesA.png"),
+	PARTICLES_B(FolderConstants.folderSPRITES, "particlesB.png"),
 	//IMMOVABLES
 	SPRITE_SPIKES(FolderConstants.folderIMMOVABLE, "spikes.png"),
 	//ENVIRONMENT
 	SPRITE_DESTRUCTABLES(FolderConstants.folderENVIRONMENT, "destructables.png"),
 	//ITEMS
-	ITEM_CLUB(FolderConstants.folderITEMS, "club.png"), ;
+	ITEM_CLUB(FolderConstants.folderITEMS, "club.png");
 
 	private String filePath;
 	

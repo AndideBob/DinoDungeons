@@ -2,7 +2,6 @@ package dinodungeons.game;
 
 import java.util.Collection;
 
-import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
 import dinodungeons.game.data.gameplay.InputInformation;
@@ -17,8 +16,7 @@ import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.CollisionInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
-import dinodungeons.game.gameobjects.base.GameObjectTag;
-import dinodungeons.game.gameobjects.collectable.MoneyObject;
+import dinodungeons.game.gameobjects.enemies.EnemyBatObject;
 import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.game.utils.MenuManager;
 import dinodungeons.game.utils.ScreenFadingHelper;
@@ -248,6 +246,9 @@ public class DinoDungeons extends Game {
 	private void updateDebug(){
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_1).equals(ButtonState.RELEASED)){
 			PlayerStatusManager.getInstance().collectItem(ItemID.CLUB);
+		}
+		if(InputManager.instance.getKeyState(KeyboardKey.KEY_CRTL_RIGHT).equals(ButtonState.RELEASED)){
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(new EnemyBatObject(32,32));
 		}
 	}
 

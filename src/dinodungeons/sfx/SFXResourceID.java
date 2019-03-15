@@ -4,21 +4,29 @@ import java.io.File;
 
 import lwjgladapter.GameWindowConstants;
 
+class FolderConstants{
+	static final String folderSFX = File.separator + "sfx";
+	static final String folderEffects = folderSFX + File.separator + "effects";
+	static final String folderMusic = folderSFX + File.separator + "music";
+}
+
 public enum SFXResourceID {
-	SFX_EXPLOSION(File.separator + SFXResourceID.folderSFX + File.separator + SFXResourceID.folderEffects + File.separator + "Explosion.ogg"),
-	SFX_HIT_CLUB(File.separator + SFXResourceID.folderSFX + File.separator + SFXResourceID.folderEffects + File.separator + "Hit_Club.ogg"),
-	SFX_PICKUP_COIN(File.separator + SFXResourceID.folderSFX + File.separator + SFXResourceID.folderEffects + File.separator + "Pickup_Coin.ogg"),
-	MUSIC_MAIN_THEME(File.separator + SFXResourceID.folderSFX + File.separator + SFXResourceID.folderMusic + File.separator + "LOZOverworld.ogg");
+	SFX_EXPLOSION(FolderConstants.folderEffects, "Explosion.ogg"),
+	SFX_HIT_CLUB(FolderConstants.folderEffects, "Hit_Club.ogg"),
+	SFX_PICKUP_COIN(FolderConstants.folderEffects, "Pickup_Coin.ogg"),
+	SFX_PICKUP_HEALTH(FolderConstants.folderEffects, "Pickup_Health.ogg"),
+	SFX_DESTROY_BUSH(FolderConstants.folderEffects, "Bush_Destroy.ogg"),
+	SFX_DESTROY_ENEMY(FolderConstants.folderEffects, "Enemy_Destroyed.ogg"),
+	SFX_PLAYER_DAMAGE(FolderConstants.folderEffects, "Damage_Taken.ogg"),
+	MUSIC_MAIN_THEME(FolderConstants.folderMusic, "LOZOverworld.ogg");
 	
 	
-	private static final String folderSFX = "sfx";
-	private static final String folderEffects = "effects";
-	private static final String folderMusic = "music";
+	
 
 	private String filePath;
 	
-	private SFXResourceID(String filePath){
-		this.filePath = GameWindowConstants.FILEPATH_DIRECTORY + filePath;
+	private SFXResourceID(String folder, String fileName){
+		this.filePath = GameWindowConstants.FILEPATH_DIRECTORY + folder + File.separator + fileName;
 	}
 
 	public String getFilePath() {

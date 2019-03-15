@@ -82,6 +82,10 @@ public class PlayerStatusManager {
 		int actualValue = Math.max(1, Math.min(value, totalMaxHealth));
 		maxHealth = actualValue;
 	}
+	
+	public boolean isHurt() {
+		return currentHealth < maxHealth;
+	}
 
 	public void heal(int amount) {
 		if(amount > 0){
