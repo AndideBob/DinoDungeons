@@ -37,10 +37,13 @@ public enum GFXResourceID {
 	//SPRITES-------------
 	ITEMS(FolderConstants.folderSPRITES, "items.png"),
 	COLLECTABLES(FolderConstants.folderSPRITES, "collectables.png"),
+	PARTICLES(FolderConstants.folderSPRITES, "particles.png"),
 	//IMMOVABLES
 	SPRITE_SPIKES(FolderConstants.folderIMMOVABLE, "spikes.png"),
+	//ENVIRONMENT
+	SPRITE_DESTRUCTABLES(FolderConstants.folderENVIRONMENT, "destructables.png"),
 	//ITEMS
-	ITEM_CLUB(FolderConstants.folderITEMS, "club.png");
+	ITEM_CLUB(FolderConstants.folderITEMS, "club.png"), ;
 
 	private String filePath;
 	

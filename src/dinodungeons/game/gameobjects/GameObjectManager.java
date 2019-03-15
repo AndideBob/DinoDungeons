@@ -31,12 +31,14 @@ public class GameObjectManager {
 	
 	private String currentMapID;
 	
+	private ArrayList<GameObject> gameObjectsToBeAddedToCurrentMap;
 	private ArrayList<GameObject> gameObjectsToBeDeletedDeliberately;
 	
 	private GameObjectManager() {
 		gameObjects = new HashMap<>();
 		currentMapID = null;
 		gameObjectsToBeDeletedDeliberately = new ArrayList<>();
+		gameObjectsToBeAddedToCurrentMap = new ArrayList<>();
 	}
 	
 	public PlayerObject getPlayerObject(){
@@ -48,6 +50,10 @@ public class GameObjectManager {
 	
 	public void updateCurrentGameObjects(long deltaTimeInMs, InputInformation inputInformation){
 		if(currentMapID != null){
+			for(GameObject newObject : gameObjectsToBeAddedToCurrentMap) {
+				gameObjects.get(currentMapID).add(newObject);
+			}
+			gameObjectsToBeAddedToCurrentMap.clear();
 			Iterator<GameObject> iter = gameObjects.get(currentMapID).iterator();
 			while(iter.hasNext()){
 				GameObject o = iter.next();
@@ -78,12 +84,7 @@ public class GameObjectManager {
 	}
 	
 	public void addGameObjectToCurrentMap(GameObject gameObject){
-		if(currentMapID != null && gameObjects.containsKey(currentMapID)){
-			gameObjects.get(currentMapID).add(gameObject);
-		}
-		else{
-			Logger.logError("Current Map is not initialized! Object " + gameObject.getClass().getName() + " not added!");
-		}
+		gameObjectsToBeAddedToCurrentMap.add(gameObject);
 	}
 	
 	public void setCurrentMap(ScreenMap map, boolean cleanOtherRooms){

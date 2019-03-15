@@ -9,6 +9,7 @@ import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
+import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
@@ -73,7 +74,8 @@ public class Editor extends Game {
 		if(currentState == EditorState.PLACE_EXITS ||
 				currentState == EditorState.INSPECTOR ||
 				currentState == EditorState.PLACE_ITEMS ||
-				currentState == EditorState.PLACE_SPIKES){
+				currentState == EditorState.PLACE_SPIKES ||
+				currentState == EditorState.PLACE_DESTRUCTABLES){
 			drawManager.drawObjectsLayer();
 		}
 		//DrawPointer
@@ -243,6 +245,20 @@ public class Editor extends Game {
 					SpikeMapObject spike = new SpikeMapObject();
 					spike.setSpikeType(currentSelection);
 					currentMap.setMapObjectForPosition(x, y, spike);
+				}
+			}
+			break;
+		case PLACE_DESTRUCTABLES:
+			//Selection
+			switchSelection(DinoDungeonsConstants.numberOfDestructables);
+			//Placing Destructables
+			if(isMouseOnMap()) {
+				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
+					int x = currentMousePosition[0] / 16;
+					int y = currentMousePosition[1] / 16;
+					DestructibleMapObject destructable = new DestructibleMapObject();
+					destructable.setDestructableType(currentSelection);
+					currentMap.setMapObjectForPosition(x, y, destructable);
 				}
 			}
 			break;

@@ -3,15 +3,17 @@ package dinodungeons.gfx.tilesets;
 import dinodungeons.gfx.GFXResourceID;
 
 public enum TileSet {
-	CAVE_GREEN(GFXResourceID.TILESET_CAVE_GREEN, "caveGrn"),
-	CAVE_RED(GFXResourceID.TILESET_CAVE_RED, "caveRed");
+	CAVE_GREEN(GFXResourceID.TILESET_CAVE_GREEN, "caveGrn", 0),
+	CAVE_RED(GFXResourceID.TILESET_CAVE_RED, "caveRed", 1);
 	
 	private GFXResourceID resourceID;
 	private String representationInFile;
+	private int colorVariation;
 	
-	private TileSet(GFXResourceID resourceID, String representationInFile){
+	private TileSet(GFXResourceID resourceID, String representationInFile, int colorVariation){
 		this.resourceID = resourceID;
 		this.representationInFile = representationInFile.toLowerCase();
+		this.colorVariation = colorVariation;
 	}
 	
 	public static TileSet getTileSetFromRepesentation(String representation){
@@ -30,4 +32,9 @@ public enum TileSet {
 	public String getRepresentationInFile(){
 		return representationInFile.toLowerCase();
 	}
+
+	public int getColorVariation() {
+		return colorVariation;
+	}
+	
 }

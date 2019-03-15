@@ -37,7 +37,8 @@ public enum GameObjectTag {
 	COLLECTABLE_MONEY_OBJECT_VALUE_TEN(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_MONEY_OBJECT_VALUE_TWENTYFIVE(SortingLayers.sortingLayerStatic),
 	ITEM_CLUB(SortingLayers.sortingLayerEffects),
-	DAMAGING_IMMOVABLE(SortingLayers.sortingLayerStatic);
+	DAMAGING_IMMOVABLE(SortingLayers.sortingLayerStatic),
+	PARTICLE(SortingLayers.sortingLayerEffects);
 	
 	public static final Collection<GameObjectTag> damagingObjects = Arrays.asList(DAMAGING_IMMOVABLE);
 	

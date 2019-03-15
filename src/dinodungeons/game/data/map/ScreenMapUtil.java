@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import dinodungeons.game.DinoDungeons;
+import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
@@ -12,6 +13,7 @@ import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
+import dinodungeons.game.gameobjects.environment.BasicBushObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
 import dinodungeons.game.gameobjects.exits.TransitionExitObject;
 import dinodungeons.game.gameobjects.general.WallObject;
@@ -92,7 +94,7 @@ public class ScreenMapUtil {
 		ArrayList<GameObject> objects = new ArrayList<>();
 		for(int y = 0; y < map.getSizeY(); y++){
 			for(int x = 0; x < map.getSizeX(); x++){
-				GameObject object = convertMapObjectToGameObject(map.getMapObjectForPosition(x, y), x * 16, y * 16);
+				GameObject object = convertMapObjectToGameObject(map, map.getMapObjectForPosition(x, y), x * 16, y * 16);
 				if(object != null){
 					objects.add(object);
 				}
@@ -101,7 +103,7 @@ public class ScreenMapUtil {
 		return objects;
 	}
 	
-	private static GameObject convertMapObjectToGameObject(MapObject object, int posX, int posY){
+	private static GameObject convertMapObjectToGameObject(ScreenMap map, MapObject object, int posX, int posY){
 		if(object instanceof TransportMapObject){
 			return buildTransportGameObject((TransportMapObject) object, posX, posY);
 		}
@@ -111,9 +113,21 @@ public class ScreenMapUtil {
 		else if(object instanceof SpikeMapObject){
 			return buildSpikeGameObject((SpikeMapObject) object, posX, posY);
 		}
+		else if(object instanceof DestructibleMapObject){
+			return buildDestructibleMapObject((DestructibleMapObject) object, posX, posY, map.getTileSet().getColorVariation());
+		}
 		return null;
 	}
 	
+	private static GameObject buildDestructibleMapObject(DestructibleMapObject destructibleMapObject, int posX, int posY,
+			int colorVariation) {
+		switch (destructibleMapObject.getDestructableType()) {
+		case 0:
+			return new BasicBushObject(posX, posY, colorVariation);
+		}
+		return null;
+	}
+
 	private static GameObject buildSpikeGameObject(SpikeMapObject spikeMapObject, int posX, int posY) {
 		switch (spikeMapObject.getSpikeType()) {
 		case 0:

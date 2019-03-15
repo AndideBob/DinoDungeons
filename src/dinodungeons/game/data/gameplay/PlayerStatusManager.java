@@ -66,6 +66,12 @@ public class PlayerStatusManager {
 	public void collectItem(ItemID itemID){
 		Logger.logDebug("Item collected: " + itemID.toString());
 		collectedItems.add(itemID);
+		if(itemA == null) {
+			itemA = itemID;
+		}
+		else if(itemB == null) {
+			itemB = itemID;
+		}
 	}
 
 	public int getMaxHealth() {

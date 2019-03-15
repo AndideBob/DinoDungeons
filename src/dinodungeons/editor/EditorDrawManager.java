@@ -4,6 +4,7 @@ import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapConstants;
+import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
@@ -127,6 +128,10 @@ public class EditorDrawManager {
 			SpikeMapObject spike = (SpikeMapObject) mapObject;
 			SpriteManager.getInstance().getSprite(SpriteID.SPIKES).draw(spike.getSpikeType() * 2, x * 16, y * 16);
 		}
+		else if(mapObject instanceof DestructibleMapObject){
+			DestructibleMapObject destructable = (DestructibleMapObject) mapObject;
+			SpriteManager.getInstance().getSprite(SpriteID.DESTRUCTABLES).draw(destructable.getDestructableType() * 8 + currentMap.getTileSet().getColorVariation(), x * 16, y * 16);
+		}
 	}
 
 	public void drawUI(EditorState currentState, int currentSelection) {
@@ -231,13 +236,26 @@ public class EditorDrawManager {
 			break;
 		case PLACE_SPIKES:
 			textManager.DrawText(146, 247, "Spikes", 10);
-			optionsShown = 3;
+			optionsShown = Math.min(DinoDungeonsConstants.numberOfSpikes, 3);
 			lowest = Math.max(0, currentSelection-optionsShown);
 			highest = Math.min(DinoDungeonsConstants.numberOfSpikes -1, lowest+optionsShown);
 			for(int i = lowest; i <= highest; i++) {
 				String text = i == currentSelection ? ">" : " ";
 				text += "[" + i + "]";
 				text += SpikeMapObject.getSpikeName(i);
+				textManager.DrawText(136, 211 + 9*optionsShown, text, 16);
+				optionsShown--;
+			}
+			break;
+		case PLACE_DESTRUCTABLES:
+			textManager.DrawText(146, 247, "Destrctbls", 10);
+			optionsShown = Math.min(DinoDungeonsConstants.numberOfDestructables, 3);
+			lowest = Math.max(0, currentSelection-optionsShown);
+			highest = Math.min(DinoDungeonsConstants.numberOfSpikes -1, lowest+optionsShown);
+			for(int i = lowest; i <= highest; i++) {
+				String text = i == currentSelection ? ">" : " ";
+				text += "[" + i + "]";
+				text += DestructibleMapObject.getDestructableName(i);
 				textManager.DrawText(136, 211 + 9*optionsShown, text, 16);
 				optionsShown--;
 			}

@@ -6,6 +6,7 @@ import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.MapManager;
 import dinodungeons.game.data.map.ScreenMap;
@@ -18,6 +19,7 @@ import dinodungeons.game.gameobjects.base.CollisionInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.MoneyObject;
+import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.game.utils.MenuManager;
 import dinodungeons.game.utils.ScreenFadingHelper;
 import dinodungeons.game.utils.ScreenScrollingHelper;
@@ -244,24 +246,8 @@ public class DinoDungeons extends Game {
 	}
 	
 	private void updateDebug(){
-		if(InputManager.instance.getKeyState(KeyboardKey.KEY_SPACE).equals(ButtonState.RELEASED)){
-			int x = DinoDungeonsConstants.random.nextInt(DinoDungeonsConstants.mapWidth - 10);
-			int y = DinoDungeonsConstants.random.nextInt(DinoDungeonsConstants.mapHeight - 10);
-			switch(DinoDungeonsConstants.random.nextInt(4)){
-			case 0:
-				GameObjectManager.getInstance().addGameObjectToCurrentMap(new MoneyObject(GameObjectTag.COLLECTABLE_MONEY_OBJECT_VALUE_ONE, x, y));
-				break;
-			case 1:
-				GameObjectManager.getInstance().addGameObjectToCurrentMap(new MoneyObject(GameObjectTag.COLLECTABLE_MONEY_OBJECT_VALUE_FIVE, x, y));
-				break;
-			case 2:
-				GameObjectManager.getInstance().addGameObjectToCurrentMap(new MoneyObject(GameObjectTag.COLLECTABLE_MONEY_OBJECT_VALUE_TEN, x, y));
-				break;
-			case 3:
-				GameObjectManager.getInstance().addGameObjectToCurrentMap(new MoneyObject(GameObjectTag.COLLECTABLE_MONEY_OBJECT_VALUE_TWENTYFIVE, x, y));
-				break;
-			}
-			
+		if(InputManager.instance.getKeyState(KeyboardKey.KEY_1).equals(ButtonState.RELEASED)){
+			PlayerStatusManager.getInstance().collectItem(ItemID.CLUB);
 		}
 	}
 
