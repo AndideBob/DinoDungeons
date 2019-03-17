@@ -9,7 +9,6 @@ import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.HealthPickupObject;
-import dinodungeons.game.gameobjects.collectable.MoneyObject;
 import dinodungeons.game.gameobjects.particles.EnemyDestroyParticle;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;

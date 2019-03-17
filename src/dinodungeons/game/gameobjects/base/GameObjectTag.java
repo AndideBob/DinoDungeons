@@ -15,6 +15,7 @@ public enum GameObjectTag {
 	NONE(SortingLayers.sortingLayerUndrawn),
 	PLAYER(SortingLayers.sortingLayerPlayer),
 	WALL(SortingLayers.sortingLayerUndrawn),
+	EXPLODABLE(SortingLayers.sortingLayerStatic),
 	TRANSPORT(SortingLayers.sortingLayerUndrawn),
 	COLLECTABLE_ITEM_CLUB(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_ITEM_ITEM_1(SortingLayers.sortingLayerStatic),
@@ -40,7 +41,8 @@ public enum GameObjectTag {
 	ITEM_CLUB(SortingLayers.sortingLayerEffects),
 	DAMAGING_IMMOVABLE(SortingLayers.sortingLayerStatic),
 	ENEMY_BAT(SortingLayers.sortingLayerMoving),
-	PARTICLE(SortingLayers.sortingLayerEffects);
+	PARTICLE(SortingLayers.sortingLayerEffects),
+	EXPLOSION(SortingLayers.sortingLayerEffects);
 	
 	public static final Collection<GameObjectTag> damagingObjects = Arrays.asList(DAMAGING_IMMOVABLE, ENEMY_BAT);
 	
