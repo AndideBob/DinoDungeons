@@ -18,7 +18,13 @@ public class InputInformation {
 	private ButtonState b;
 	
 	public InputInformation() {
-		// TODO Auto-generated constructor stub
+		left = ButtonState.UP;
+		right = ButtonState.UP;
+		up = ButtonState.UP;
+		down = ButtonState.UP;
+		start = ButtonState.UP;
+		a = ButtonState.UP;
+		b = ButtonState.UP;
 	}
 	
 	public void update(){
@@ -34,9 +40,12 @@ public class InputInformation {
 	private ButtonState cumulateButtonStates(ButtonState oldState, KeyboardKey key, GamepadButton button){
 		ButtonState result = InputManager.instance.getKeyState(key);
 		if(result == ButtonState.UP && InputManager.instance.isGamepadPluggedIn(GamepadID.GAMEPAD_1)){
-			result = InputManager.instance.getGamepadButtonState(GamepadID.GAMEPAD_1, button);
+			ButtonState tempResult = InputManager.instance.getGamepadButtonState(GamepadID.GAMEPAD_1, button); 
+			if(tempResult != null && tempResult != ButtonState.UP) {
+				result = tempResult;
+			}
 		}
-		if(oldState != null) {
+		if(oldState != null && result != null) {
 			switch(result) {
 			case DOWN:
 				switch(oldState) {
