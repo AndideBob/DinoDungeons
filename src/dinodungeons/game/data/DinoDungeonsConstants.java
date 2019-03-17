@@ -27,6 +27,9 @@ public class DinoDungeonsConstants {
 	public static final long damageTime = 200;
 	public static final long invulnerabilityTime = 500;
 	
+	public static final long bombFuseTimer = 3000;
+	public static final long explosionDurationTime = 300;
+	
 	public static final long clubStageTime = 80;
 	
 	// GAMEPLAY-RELEATED CONSTANTS 
