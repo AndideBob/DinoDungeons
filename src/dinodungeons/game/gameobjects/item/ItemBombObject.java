@@ -11,6 +11,8 @@ import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.particles.Explosion;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
+import dinodungeons.sfx.sound.SoundEffect;
+import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.physics.collision.base.Collider;
 
 public class ItemBombObject extends GameObject {
@@ -48,6 +50,7 @@ public class ItemBombObject extends GameObject {
 			}
 			if(bombTimer <= 0) {
 				exploded = true;
+				SoundManager.getInstance().playSoundEffect(SoundEffect.EXPLOSION);
 				GameObjectManager.getInstance().addGameObjectToCurrentMap(new Explosion(positionX + 8, positionY + 8));
 			}
 		}
