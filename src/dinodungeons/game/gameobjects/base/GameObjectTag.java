@@ -39,6 +39,7 @@ public enum GameObjectTag {
 	COLLECTABLE_MONEY_OBJECT_VALUE_TEN(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_MONEY_OBJECT_VALUE_TWENTYFIVE(SortingLayers.sortingLayerStatic),
 	ITEM_CLUB(SortingLayers.sortingLayerEffects),
+	ITEM_BOMB(SortingLayers.sortingLayerStatic),
 	DAMAGING_IMMOVABLE(SortingLayers.sortingLayerStatic),
 	ENEMY_BAT(SortingLayers.sortingLayerMoving),
 	PARTICLE(SortingLayers.sortingLayerEffects),

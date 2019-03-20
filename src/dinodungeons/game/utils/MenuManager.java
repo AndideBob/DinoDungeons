@@ -125,7 +125,7 @@ public class MenuManager {
 		case 2:
 			return ItemID.ITEM_2;
 		case 3:
-			return ItemID.ITEM_3;
+			return ItemID.BOMB;
 		case 4:
 			return ItemID.ITEM_4;
 		case 5:

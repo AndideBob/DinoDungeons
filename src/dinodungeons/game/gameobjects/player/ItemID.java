@@ -4,7 +4,7 @@ public enum ItemID {
 	CLUB("0",0),
 	ITEM_1("1",1),
 	ITEM_2("2",2),
-	ITEM_3("3",3),
+	BOMB("3",3),
 	ITEM_4("4",4),
 	ITEM_5("5",5),
 	ITEM_6("6",6),

@@ -179,6 +179,11 @@ public class ItemClubObject extends GameObject {
 	public boolean shouldBeDeleted() {
 		return hitState >= 4;
 	}
+	
+	@Override
+	public boolean isTemporary() {
+		return true;
+	}
 
 	@Override
 	public Collection<Collider> getColliders() {

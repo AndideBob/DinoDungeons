@@ -10,6 +10,7 @@ import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import dinodungeons.game.gameobjects.item.ItemBombObject;
 import dinodungeons.game.gameobjects.item.ItemClubObject;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -130,7 +131,7 @@ public class PlayerObject extends GameObject {
 					collectItem(ItemID.ITEM_2);
 					break;
 				case COLLECTABLE_ITEM_ITEM_3:
-					collectItem(ItemID.ITEM_3);
+					collectItem(ItemID.BOMB);
 					break;
 				case COLLECTABLE_ITEM_ITEM_4:
 					collectItem(ItemID.ITEM_4);
@@ -337,6 +338,12 @@ public class PlayerObject extends GameObject {
 			SoundManager.getInstance().playSoundEffect(SoundEffect.HIT_CLUB);
 			weaponObject = new ItemClubObject(getPositionX(), getPositionY(), movementDirection);
 			GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
+			playerState = PlayerState.USING_ITEM;
+			return true;
+		case BOMB:
+			weaponObject = new DropingWeaponObject(DinoDungeonsConstants.dropItemDuration);
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(new ItemBombObject(getPositionX(), getPositionY()));
 			playerState = PlayerState.USING_ITEM;
 			return true;
 		}

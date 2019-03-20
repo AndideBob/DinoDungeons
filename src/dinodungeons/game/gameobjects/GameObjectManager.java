@@ -95,6 +95,16 @@ public class GameObjectManager {
 		if(!gameObjects.containsKey(currentMapID)){
 			initGameObjects(map);
 		}
+		else {
+			Iterator<GameObject> iter = gameObjects.get(currentMapID).iterator();
+			while(iter.hasNext()){
+				GameObject o = iter.next();
+				if(o.isTemporary()){
+					o.delete();
+					iter.remove();
+				}
+			}
+		}
 	}
 
 	private void initGameObjects(ScreenMap map) {

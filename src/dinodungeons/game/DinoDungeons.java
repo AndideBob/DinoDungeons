@@ -247,6 +247,9 @@ public class DinoDungeons extends Game {
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_1).equals(ButtonState.RELEASED)){
 			PlayerStatusManager.getInstance().collectItem(ItemID.CLUB);
 		}
+		if(InputManager.instance.getKeyState(KeyboardKey.KEY_2).equals(ButtonState.RELEASED)){
+			PlayerStatusManager.getInstance().collectItem(ItemID.BOMB);
+		}
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_CRTL_RIGHT).equals(ButtonState.RELEASED)){
 			GameObjectManager.getInstance().addGameObjectToCurrentMap(new EnemyBatObject(32,32));
 		}

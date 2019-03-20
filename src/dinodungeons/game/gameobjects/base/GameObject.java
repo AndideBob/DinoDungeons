@@ -83,6 +83,10 @@ public abstract class GameObject {
 		}
 	}
 	
+	public boolean isTemporary() {
+		return false;
+	}
+	
 	public boolean shouldBeDeleted(){
 		return false;
 	}

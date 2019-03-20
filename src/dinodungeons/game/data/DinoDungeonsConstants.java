@@ -2,6 +2,8 @@ package dinodungeons.game.data;
 
 import java.util.Random;
 
+import dinodungeons.game.gameobjects.base.GameObjectTag;
+
 public class DinoDungeonsConstants {
 	
 	public static final Random random = new Random(System.nanoTime());
@@ -26,8 +28,12 @@ public class DinoDungeonsConstants {
 	public static final long itemCollectionCharacterFreeze = 2000;
 	public static final long damageTime = 200;
 	public static final long invulnerabilityTime = 500;
+	public static final long dropItemDuration = 100;
 	
 	public static final long bombFuseTimer = 3000;
+	public static final long bombBlinkTimerStart = bombFuseTimer / 10;
+	public static final long bombBlinkTimerReduction = bombFuseTimer / 20;
+	public static final long minBombBlinkTimer = 30;
 	public static final long explosionDurationTime = 300;
 	
 	public static final long clubStageTime = 80;
@@ -41,8 +47,6 @@ public class DinoDungeonsConstants {
 	public static final int directionLeft = 1;
 	public static final int directionUp = 2;
 	public static final int directionRight = 3;
-
-	
 	
 
 }

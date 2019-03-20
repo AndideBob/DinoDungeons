@@ -43,7 +43,7 @@ public class CollectableItemObject extends GameObject {
 			return GameObjectTag.COLLECTABLE_ITEM_ITEM_1;
 		case ITEM_2:
 			return GameObjectTag.COLLECTABLE_ITEM_ITEM_2;
-		case ITEM_3:
+		case BOMB:
 			return GameObjectTag.COLLECTABLE_ITEM_ITEM_3;
 		case ITEM_4:
 			return GameObjectTag.COLLECTABLE_ITEM_ITEM_4;
