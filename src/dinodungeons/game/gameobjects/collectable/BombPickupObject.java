@@ -14,7 +14,7 @@ import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
-public class HealthPickupObject extends GameObject {
+public class BombPickupObject extends GameObject {
 	
 	private int positionX;
 	private int positionY;
@@ -23,7 +23,7 @@ public class HealthPickupObject extends GameObject {
 	
 	private RectCollider collider;
 	
-	public HealthPickupObject(int posX, int posY) {
+	public BombPickupObject(int posX, int posY) {
 		super(GameObjectTag.COLLECTABLE_STATUS_GAIN);
 		positionX = posX;
 		positionY = posY;
@@ -35,9 +35,10 @@ public class HealthPickupObject extends GameObject {
 	public void update(long deltaTimeInMs, InputInformation inputInformation) {
 		if(!wasCollected){
 			if(hasCollisionWithObjectWithTag(GameObjectTag.PLAYER)){
+				//TODO: Correct Sound
 				SoundManager.getInstance().playSoundEffect(SoundEffect.PICKUP_HEALTH);
 				wasCollected = true;
-				PlayerStatusManager.getInstance().heal(2);
+				PlayerStatusManager.getInstance().addBombs(1);
 			}
 		}
 	}
@@ -49,7 +50,7 @@ public class HealthPickupObject extends GameObject {
 
 	@Override
 	public void draw(int anchorX, int anchorY) {
-		SpriteManager.getInstance().getSprite(SpriteID.COLLECTABLES).draw(5, anchorX + positionX, anchorY + positionY);
+		SpriteManager.getInstance().getSprite(SpriteID.COLLECTABLES).draw(4, anchorX + positionX, anchorY + positionY);
 	}
 
 	@Override

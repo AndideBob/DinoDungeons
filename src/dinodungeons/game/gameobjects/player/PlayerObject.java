@@ -177,7 +177,7 @@ public class PlayerObject extends GameObject {
 		//Handle DamageTaking
 		Collision damageCollision = null;
 		GameObjectTag firstDamageObjectTag = GameObjectTag.NONE;
-		for(GameObjectTag tag : GameObjectTag.damagingObjects){
+		for(GameObjectTag tag : GameObjectTag.playerDamagingObjects){
 			for(Collision collision : getCollisionsWithObjectsWithTag(tag)){
 				damageCollision = collision;
 				firstDamageObjectTag = tag;
@@ -204,6 +204,8 @@ public class PlayerObject extends GameObject {
 		case DAMAGING_IMMOVABLE:
 			return 1;
 		case ENEMY_BAT:
+			return 1;
+		case EXPLOSION:
 			return 1;
 		default:
 			return 0;
@@ -341,11 +343,15 @@ public class PlayerObject extends GameObject {
 			playerState = PlayerState.USING_ITEM;
 			return true;
 		case BOMB:
-			weaponObject = new DropingWeaponObject(DinoDungeonsConstants.dropItemDuration);
-			GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
-			GameObjectManager.getInstance().addGameObjectToCurrentMap(new ItemBombObject(getPositionX(), getPositionY()));
-			playerState = PlayerState.USING_ITEM;
-			return true;
+			if(PlayerStatusManager.getInstance().canUseBomb()) {
+				PlayerStatusManager.getInstance().useBomb();
+				weaponObject = new DropingWeaponObject(DinoDungeonsConstants.dropItemDuration);
+				GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
+				GameObjectManager.getInstance().addGameObjectToCurrentMap(new ItemBombObject(getPositionX(), getPositionY()));
+				playerState = PlayerState.USING_ITEM;
+				return true;	
+			}
+			return false;
 		}
 		return false;
 	}

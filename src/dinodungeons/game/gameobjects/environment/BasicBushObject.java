@@ -1,5 +1,6 @@
 package dinodungeons.game.gameobjects.environment;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -9,6 +10,7 @@ import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import dinodungeons.game.gameobjects.collectable.BombPickupObject;
 import dinodungeons.game.gameobjects.collectable.HealthPickupObject;
 import dinodungeons.game.gameobjects.collectable.MoneyObject;
 import dinodungeons.game.gameobjects.particles.LeafParticle;
@@ -42,7 +44,7 @@ public class BasicBushObject extends GameObject {
 
 	@Override
 	public void update(long deltaTimeInMs, InputInformation inputInformation) {
-		if(hasCollisionWithObjectWithTag(GameObjectTag.ITEM_CLUB) && !destroyed) {
+		if(hasDestructiveCollision() && !destroyed) {
 			destroyed = true;
 			spawnParticles();
 			spawnLoot();
@@ -50,13 +52,25 @@ public class BasicBushObject extends GameObject {
 		}
 	}
 	
+	private boolean hasDestructiveCollision() {
+		for(GameObjectTag tag : GameObjectTag.enemyDamagingObjects) {
+			if(hasCollisionWithObjectWithTag(tag)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private void spawnLoot() {
 		if(DinoDungeonsConstants.random.nextInt(4) == 0) {
 			int x = positionX + 4;
 			int y = positionY + 4;
-			int item = DinoDungeonsConstants.random.nextInt(2);
+			int item = DinoDungeonsConstants.random.nextInt(3);
 			if(item == 0 && PlayerStatusManager.getInstance().isHurt()) {
 				GameObjectManager.getInstance().addGameObjectToCurrentMap(new HealthPickupObject(x, y));
+			}
+			else if(item == 1 && PlayerStatusManager.getInstance().needsBombs()) {
+				GameObjectManager.getInstance().addGameObjectToCurrentMap(new BombPickupObject(x, y));
 			}
 			else{
 				GameObjectManager.getInstance().addGameObjectToCurrentMap(new MoneyObject(GameObjectTag.COLLECTABLE_MONEY_OBJECT_VALUE_ONE, x, y));

@@ -32,7 +32,7 @@ public class DinoDungeonsConstants {
 	
 	public static final long bombFuseTimer = 3000;
 	public static final long bombBlinkTimerStart = bombFuseTimer / 10;
-	public static final long bombBlinkTimerReduction = bombFuseTimer / 20;
+	public static final long bombBlinkTimerReduction = bombBlinkTimerStart / 20;
 	public static final long minBombBlinkTimer = 30;
 	public static final long explosionDurationTime = 300;
 	
@@ -42,6 +42,9 @@ public class DinoDungeonsConstants {
 	public static final int numberOfItems = 16;
 	public static final int numberOfSpikes = 3;
 	public static final int numberOfDestructables = 1;
+	
+	public static final int maxBombAmountBasic = 10;
+	public static final int maxBombAmountAdvanced = 20;
 	
 	public static final int directionDown = 0;
 	public static final int directionLeft = 1;

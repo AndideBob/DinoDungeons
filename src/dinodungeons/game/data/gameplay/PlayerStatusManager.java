@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.gameobjects.player.ItemID;
 import lwjgladapter.logging.Logger;
 
@@ -27,6 +28,10 @@ public class PlayerStatusManager {
 	
 	private int currentHealth;
 	
+	private int maxBombs;
+	
+	private int currentBombs;
+	
 	private int currentMoney;
 	
 	private Set<ItemID> collectedItems;
@@ -38,6 +43,8 @@ public class PlayerStatusManager {
 	private PlayerStatusManager() {
 		maxHealth = defaultHealth;
 		currentHealth = maxHealth;
+		maxBombs = 0;
+		currentBombs = maxBombs;
 		collectedItems = new HashSet<>();
 		itemA = null;
 		itemB = null;
@@ -64,13 +71,25 @@ public class PlayerStatusManager {
 	}
 	
 	public void collectItem(ItemID itemID){
-		Logger.logDebug("Item collected: " + itemID.toString());
-		collectedItems.add(itemID);
-		if(itemA == null) {
-			itemA = itemID;
+		if(!collectedItems.contains(itemID)) {
+			Logger.logDebug("Item collected: " + itemID.toString());
+			collectedItems.add(itemID);
+			if(itemA == null) {
+				itemA = itemID;
+			}
+			else if(itemB == null) {
+				itemB = itemID;
+			}
+			increaseLimitsOnItemCollection(itemID);
 		}
-		else if(itemB == null) {
-			itemB = itemID;
+	}
+	
+	private void increaseLimitsOnItemCollection(ItemID itemID) {
+		switch(itemID) {
+		case BOMB:
+			maxBombs = DinoDungeonsConstants.maxBombAmountBasic;
+			currentBombs = maxBombs;
+			break;
 		}
 	}
 
@@ -141,6 +160,26 @@ public class PlayerStatusManager {
 
 	public int getCurrentMoney() {
 		return currentMoney;
+	}
+
+	public int getCurrentBombs() {
+		return currentBombs;
+	}
+
+	public boolean canUseBomb() {
+		return currentBombs > 0;
+	}
+
+	public void addBombs(int amount) {
+		currentBombs = Math.min(currentBombs + amount, maxBombs);
+	}
+	
+	public void useBomb() {
+		currentBombs--;
+	}
+
+	public boolean needsBombs() {
+		return currentBombs < maxBombs;
 	}
 
 }

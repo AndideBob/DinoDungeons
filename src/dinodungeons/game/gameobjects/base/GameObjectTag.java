@@ -45,7 +45,9 @@ public enum GameObjectTag {
 	PARTICLE(SortingLayers.sortingLayerEffects),
 	EXPLOSION(SortingLayers.sortingLayerEffects);
 	
-	public static final Collection<GameObjectTag> damagingObjects = Arrays.asList(EXPLOSION, DAMAGING_IMMOVABLE, ENEMY_BAT);
+	public static final Collection<GameObjectTag> playerDamagingObjects = Arrays.asList(EXPLOSION, DAMAGING_IMMOVABLE, ENEMY_BAT);
+	
+	public static final Collection<GameObjectTag> enemyDamagingObjects = Arrays.asList(EXPLOSION, ITEM_CLUB);
 	
 	public static final Collection<GameObjectTag> movementBlockers = Arrays.asList(WALL, DAMAGING_IMMOVABLE, EXPLODABLE);
 	

@@ -36,6 +36,6 @@ public class DropingWeaponObject extends GameObject {
 
 	@Override
 	public boolean shouldBeDeleted() {
-		return duration > 0;
+		return duration <= 0;
 	}
 }

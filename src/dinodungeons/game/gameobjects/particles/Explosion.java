@@ -9,6 +9,7 @@ import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
+import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.CircleCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
@@ -74,7 +75,7 @@ public class Explosion extends GameObject {
 	@Override
 	public Collection<Collider> getColliders() {
 		if(!doneExploding) {
-			Collections.singleton(collider);
+			return Collections.singleton(collider);
 		}
 		return Collections.emptyList();
 	}

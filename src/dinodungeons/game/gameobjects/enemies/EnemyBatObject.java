@@ -70,7 +70,7 @@ public class EnemyBatObject extends BaseEnemyObject {
 	}
 	
 	private void checkForDamage() {
-		if(hasCollisionWithObjectWithTag(GameObjectTag.ITEM_CLUB)) {
+		if(hasDamagingCollision()) {
 			dead = true;
 			int x = (int)Math.round(positionX);
 			int y = (int)Math.round(positionY);
@@ -78,6 +78,15 @@ public class EnemyBatObject extends BaseEnemyObject {
 			GameObjectManager.getInstance().addGameObjectToCurrentMap(new EnemyDestroyParticle(x, y));
 			SoundManager.getInstance().playSoundEffect(SoundEffect.DESTROY_ENEMY);
 		}
+	}
+	
+	private boolean hasDamagingCollision() {
+		for(GameObjectTag tag : GameObjectTag.enemyDamagingObjects) {
+			if(hasCollisionWithObjectWithTag(tag)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private void dropPickup() {

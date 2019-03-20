@@ -59,7 +59,7 @@ public class DrawUIManager {
 		textManager.DrawText(10, yPosition + 14, money, 3);
 		//Bombs
 		collectableSprites.draw(4, 0, yPosition + 1);
-		int bombAmount = 0;
+		int bombAmount = PlayerStatusManager.getInstance().getCurrentBombs();
 		String bombs = String.format("%02d", bombAmount);
 		textManager.DrawText(20, yPosition + 2, bombs, 2);
 	}
