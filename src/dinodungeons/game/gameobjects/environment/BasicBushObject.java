@@ -1,6 +1,5 @@
 package dinodungeons.game.gameobjects.environment;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -34,7 +33,7 @@ public class BasicBushObject extends GameObject {
 	private boolean destroyed;
 	
 	public BasicBushObject(int positionX, int positionY, int colorVariant) {
-		super(GameObjectTag.WALL);
+		super(GameObjectTag.GENERAL_MOVEMENT_BLOCK);
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.colorVariant = colorVariant;

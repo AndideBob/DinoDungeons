@@ -36,7 +36,11 @@ public enum BaseLayerTile {
 	DOOR_DOWN(32),
 	DOOR_UP(33),
 	DOOR_RIGHT(36),
-	DOOR_LEFT(37);
+	DOOR_LEFT(37),
+	BLOCKED_DOOR_DOWN(34),
+	BLOCKED_DOOR_UP(35),
+	BLOCKED_DOOR_RIGHT(38),
+	BLOCKED_DOOR_LEFT(39);
 	
 	private int tileSetPosition;
 	

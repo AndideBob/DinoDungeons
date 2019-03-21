@@ -15,6 +15,16 @@ public abstract class BaseExplodable extends GameObject {
 		super(GameObjectTag.EXPLODABLE);
 		exploded = false;
 	}
+	
+	protected final void setExplodedManually(boolean triggerExplosionEffect){
+		exploded = true;
+		for(Collider c : getCollidersBeforeExplosion()) {
+			c.unregister();
+		}
+		if(triggerExplosionEffect){
+			explode();
+		}
+	}
 
 	@Override
 	public final void update(long deltaTimeInMs, InputInformation inputInformation) {

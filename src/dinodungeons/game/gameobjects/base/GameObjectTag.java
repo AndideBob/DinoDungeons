@@ -16,6 +16,7 @@ public enum GameObjectTag {
 	PLAYER(SortingLayers.sortingLayerPlayer),
 	WALL(SortingLayers.sortingLayerUndrawn),
 	EXPLODABLE(SortingLayers.sortingLayerStatic),
+	GENERAL_MOVEMENT_BLOCK(SortingLayers.sortingLayerStatic),
 	TRANSPORT(SortingLayers.sortingLayerUndrawn),
 	COLLECTABLE_ITEM_CLUB(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_ITEM_ITEM_1(SortingLayers.sortingLayerStatic),
@@ -49,7 +50,7 @@ public enum GameObjectTag {
 	
 	public static final Collection<GameObjectTag> enemyDamagingObjects = Arrays.asList(EXPLOSION, ITEM_CLUB);
 	
-	public static final Collection<GameObjectTag> movementBlockers = Arrays.asList(WALL, DAMAGING_IMMOVABLE, EXPLODABLE);
+	public static final Collection<GameObjectTag> movementBlockers = Arrays.asList(GENERAL_MOVEMENT_BLOCK, WALL, DAMAGING_IMMOVABLE, EXPLODABLE);
 	
 	public static final Collection<GameObjectTag> collectableItems = Arrays.asList(COLLECTABLE_ITEM_CLUB, COLLECTABLE_ITEM_ITEM_1,
 		COLLECTABLE_ITEM_ITEM_2, COLLECTABLE_ITEM_ITEM_3, COLLECTABLE_ITEM_ITEM_4, COLLECTABLE_ITEM_ITEM_5,

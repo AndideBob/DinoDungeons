@@ -41,7 +41,6 @@ import lwjgladapter.physics.collision.exceptions.CollisionNotSupportedException;
 public class DinoDungeons extends Game {
 	
 	private MapManager mapManager;
-	private TilesetManager tileSetManager;
 	private DrawUIManager drawUiManager;
 	private ScreenScrollingHelper scrollHelper;
 	private ScreenFadingHelper fadingHelper;
@@ -58,7 +57,6 @@ public class DinoDungeons extends Game {
 	
 	public DinoDungeons() {
 		mapManager = new MapManager();
-		tileSetManager = new TilesetManager();
 		drawUiManager = new DrawUIManager();
 		menuManager = new MenuManager();
 		scrollHelper = new ScreenScrollingHelper();
@@ -84,7 +82,7 @@ public class DinoDungeons extends Game {
 				for(int x = 0; x < currentMap.getSizeX(); x++){
 					for(int y = 0; y < currentMap.getSizeY(); y++){
 						BaseLayerTile tile = currentMap.getBaseLayerTileForPosition(x, y);
-						tileSetManager.drawTile(tile, tileSet, x * 16, y * 16);
+						TilesetManager.getInstance().drawTile(tile, tileSet, x * 16, y * 16);
 					}
 				}
 			}
@@ -98,7 +96,7 @@ public class DinoDungeons extends Game {
 					ScreenMap relevantMap = fadingHelper.fadingIn() ? lastMap : currentMap;
 					BaseLayerTile tile = relevantMap.getBaseLayerTileForPosition(x, y);
 					TileSet tileSet = relevantMap.getTileSet();
-					tileSetManager.drawTile(tile, tileSet, x * 16, y * 16);
+					TilesetManager.getInstance().drawTile(tile, tileSet, x * 16, y * 16);
 				}
 			}
 			if(fadingHelper.fadingIn()) {
@@ -119,10 +117,10 @@ public class DinoDungeons extends Game {
 				for(int y = 0; y < currentMap.getSizeY(); y++){
 					BaseLayerTile tile = currentMap.getBaseLayerTileForPosition(x, y);
 					TileSet tileSet = currentMap.getTileSet();
-					tileSetManager.drawTile(tile, tileSet, offsetNewX + x * 16, offsetNewY + y * 16);
+					TilesetManager.getInstance().drawTile(tile, tileSet, offsetNewX + x * 16, offsetNewY + y * 16);
 					tile = lastMap.getBaseLayerTileForPosition(x, y);
 					tileSet = lastMap.getTileSet();
-					tileSetManager.drawTile(tile, tileSet, offsetOldX + x * 16, offsetOldY + y * 16);
+					TilesetManager.getInstance().drawTile(tile, tileSet, offsetOldX + x * 16, offsetOldY + y * 16);
 				}
 			}
 			//DrawGameObjects
@@ -142,7 +140,7 @@ public class DinoDungeons extends Game {
 		SpriteManager.getInstance().loadSprites();
 		SoundManager.getInstance().loadSounds();
 		mapManager.loadMaps();
-		tileSetManager.loadResources();
+		TilesetManager.getInstance().loadResources();
 		drawUiManager.loadResources();
 		loadInitialGameState();
 	}

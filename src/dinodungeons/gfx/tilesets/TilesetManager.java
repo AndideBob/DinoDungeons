@@ -3,15 +3,27 @@ package dinodungeons.gfx.tilesets;
 import java.util.HashMap;
 
 import dinodungeons.game.data.map.BaseLayerTile;
+import dinodungeons.gfx.sprites.SpriteID;
+import dinodungeons.gfx.sprites.SpriteManager;
 import lwjgladapter.gfx.SpriteMap;
 
 public class TilesetManager {
-
-	private HashMap<TileSet, SpriteMap> dungeonTileSets;
 	
-	public TilesetManager() {
+	private static TilesetManager instance;
+	
+	private TilesetManager() {
+		instance = this;
 		dungeonTileSets = new HashMap<>();
 	}
+	
+	public static TilesetManager getInstance(){
+		if(instance == null){
+			return new TilesetManager();
+		}
+		return instance;
+	}
+
+	private HashMap<TileSet, SpriteMap> dungeonTileSets;
 	
 	public void loadResources(){
 		for(TileSet tileSet : TileSet.values()){

@@ -22,13 +22,12 @@ import lwjgladapter.gfx.Sprite;
 public class EditorDrawManager {
 	
 	private DrawTextManager textManager;
-	private TilesetManager tileSetManager = new TilesetManager();
 	private Sprite selectorTexture;
 	
 	private ScreenMap currentMap;
 	
 	public void loadTextures(){
-		tileSetManager.loadResources();
+		TilesetManager.getInstance().loadResources();
 		textManager = new DrawTextManager(GFXResourceID.TEXT_WHITE.getFilePath());
 		selectorTexture = new Sprite(GFXResourceID.EDITOR_SELECTOR.getFilePath());
 	}
@@ -57,7 +56,7 @@ public class EditorDrawManager {
 			for(int y = 0; y < currentMap.getSizeY(); y++){
 				BaseLayerTile tile = currentMap.getBaseLayerTileForPosition(x, y);
 				TileSet tileSet = currentMap.getTileSet();
-				tileSetManager.drawTile(tile, tileSet, x * 16, y * 16);
+				TilesetManager.getInstance().drawTile(tile, tileSet, x * 16, y * 16);
 			}
 		}
 	}
