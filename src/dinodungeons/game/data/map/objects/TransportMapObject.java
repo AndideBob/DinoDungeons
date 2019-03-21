@@ -27,8 +27,8 @@ public class TransportMapObject extends MapObject {
 		case CAVE_EXIT:
 			infoText += "Cave Ex";
 			break;
-		case DUNGEON_EXIT:
-			infoText += "Dngn Ex";
+		case BLOCKED_CAVE_ENTRY:
+			infoText += "CaveBlk";
 			break;
 		case INSTANT_TELEPORT:
 			infoText += "Instant";
@@ -78,7 +78,7 @@ public class TransportMapObject extends MapObject {
 		STAIRS("ST"),
 		CAVE_ENTRY("CE"),
 		CAVE_EXIT("CX"),
-		DUNGEON_EXIT("DE");
+		BLOCKED_CAVE_ENTRY("BC");
 		
 		private String saveRepresentation;
 		

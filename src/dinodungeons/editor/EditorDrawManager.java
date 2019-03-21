@@ -82,6 +82,29 @@ public class EditorDrawManager {
 			String txtUpR = "";
 			String txtLowR = "";
 			switch(transport.getTransportationType()){
+			case BLOCKED_CAVE_ENTRY:
+				txtUpL = "C";
+				txtUpR = "V";
+				txtLowL = "B";
+				txtLowR = "K";
+				switch(currentMap.getBaseLayerTileForPosition(x, y)){
+				case DOOR_DOWN:
+					TilesetManager.getInstance().drawTile(BaseLayerTile.BLOCKED_DOOR_DOWN, currentMap.getTileSet(), x * 16, y * 16);
+					break;
+				case DOOR_LEFT:
+					TilesetManager.getInstance().drawTile(BaseLayerTile.BLOCKED_DOOR_LEFT, currentMap.getTileSet(), x * 16, y * 16);
+					break;
+				case DOOR_RIGHT:
+					TilesetManager.getInstance().drawTile(BaseLayerTile.BLOCKED_DOOR_RIGHT, currentMap.getTileSet(), x * 16, y * 16);
+					break;
+				case DOOR_UP:
+					TilesetManager.getInstance().drawTile(BaseLayerTile.BLOCKED_DOOR_UP, currentMap.getTileSet(), x * 16, y * 16);
+					break;
+				default:
+					//Not placed on correctTile
+					return;
+				}
+				break;
 			case CAVE_ENTRY:
 				txtUpL = "C";
 				txtUpR = "V";
@@ -91,12 +114,6 @@ public class EditorDrawManager {
 			case CAVE_EXIT:
 				txtUpL = "C";
 				txtUpR = "V";
-				txtLowL = "E";
-				txtLowR = "X";
-				break;
-			case DUNGEON_EXIT:
-				txtUpL = "D";
-				txtUpR = "N";
 				txtLowL = "E";
 				txtLowR = "X";
 				break;
@@ -204,8 +221,8 @@ public class EditorDrawManager {
 				case CAVE_EXIT:
 					text += "Cave Ex";
 					break;
-				case DUNGEON_EXIT:
-					text += "Dngn Ex";
+				case BLOCKED_CAVE_ENTRY:
+					text += "CaveBlk";
 					break;
 				case INSTANT_TELEPORT:
 					text += "Instant";

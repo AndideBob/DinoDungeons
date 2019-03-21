@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import dinodungeons.game.DinoDungeons;
+import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
@@ -14,11 +15,13 @@ import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
 import dinodungeons.game.gameobjects.environment.BasicBushObject;
+import dinodungeons.game.gameobjects.exits.ExplodableDoorObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
 import dinodungeons.game.gameobjects.exits.TransitionExitObject;
 import dinodungeons.game.gameobjects.general.WallObject;
 import dinodungeons.game.gameobjects.immovable.MetalSpikeObject;
 import dinodungeons.game.gameobjects.immovable.WoodenSpikeObject;
+import dinodungeons.gfx.tilesets.TileSet;
 import lwjgladapter.logging.Logger;
 
 public class ScreenMapUtil {
@@ -105,7 +108,7 @@ public class ScreenMapUtil {
 	
 	private static GameObject convertMapObjectToGameObject(ScreenMap map, MapObject object, int posX, int posY){
 		if(object instanceof TransportMapObject){
-			return buildTransportGameObject((TransportMapObject) object, posX, posY);
+			return buildTransportGameObject(map, (TransportMapObject) object, posX, posY);
 		}
 		else if(object instanceof ItemMapObject){
 			return buildItemGameObject((ItemMapObject) object, posX, posY);
@@ -142,13 +145,38 @@ public class ScreenMapUtil {
 		return new CollectableItemObject(posX, posY, itemMapObject.getItemID());
 	}
 
-	private static GameObject buildTransportGameObject(TransportMapObject transportMapObject, int posX, int posY){
+	private static GameObject buildTransportGameObject(ScreenMap currentMap, TransportMapObject transportMapObject, int posX, int posY){
 		switch(transportMapObject.getTransportationType()){
 		case CAVE_ENTRY:
 		case CAVE_EXIT:
-		case DUNGEON_EXIT:
+		case STAIRS:
 			return new TransitionExitObject(GameObjectTag.TRANSPORT, posX, posY,
-					transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());	
+					transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());
+		case BLOCKED_CAVE_ENTRY:
+			int direction = DinoDungeonsConstants.directionDown;
+			boolean validDirection = true;
+			switch(currentMap.getBaseLayerTileForPosition(posX, posY)){
+			case DOOR_DOWN:
+				direction = DinoDungeonsConstants.directionDown;
+				break;
+			case DOOR_LEFT:
+				direction = DinoDungeonsConstants.directionLeft;
+				break;
+			case DOOR_RIGHT:
+				direction = DinoDungeonsConstants.directionRight;
+				break;
+			case DOOR_UP:
+				direction = DinoDungeonsConstants.directionUp;
+				break;
+			default:
+				validDirection = false;
+				break;
+			}
+			if(validDirection){
+				return new ExplodableDoorObject(currentMap.getTileSet(), direction, posX, posY, getEventName(currentMap ,posX, posY),
+						transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());
+			}
+			break;
 		case INSTANT_TELEPORT:
 			return new InstantExitObject(GameObjectTag.TRANSPORT, posX, posY,
 					transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());	
@@ -160,4 +188,7 @@ public class ScreenMapUtil {
 		return "" + x + "," + y;
 	}
 
+	private static String getEventName(ScreenMap map, int posX, int posY){
+		return map.getID() + "(" + posX + "," + posY + ")";
+	}
 }

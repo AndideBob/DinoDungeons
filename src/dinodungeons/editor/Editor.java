@@ -278,6 +278,19 @@ public class Editor extends Game {
 				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.RELEASED)) {
 					int x = currentMousePosition[0] / 16;
 					int y = currentMousePosition[1] / 16;
+					if(transportationTypes[currentSelection] == TransportationType.BLOCKED_CAVE_ENTRY){
+						switch(currentMap.getBaseLayerTileForPosition(x, y)){
+						case DOOR_DOWN:
+						case DOOR_LEFT:
+						case DOOR_RIGHT:
+						case DOOR_UP:
+							//Placement is allowed
+							break;
+						default:
+							infoText = "Needs to be placed on a door!";
+							return;
+						}
+					}
 					TransportMapObject transport = new TransportMapObject();
 					transport.setDestinationMapID(exitMapID);
 					transport.setX(exitPosX);
