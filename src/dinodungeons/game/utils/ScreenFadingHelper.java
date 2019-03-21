@@ -15,8 +15,15 @@ public class ScreenFadingHelper {
 	
 	private boolean fadeIn;
 	
+	private String destinationMapID;
+	
+	private int destinationX;
+	private int destinationY;
+	
+	private boolean shouldTransition;
+	
 	public ScreenFadingHelper() {
-		
+		shouldTransition = false;
 	}
 	
 	public void update(long deltaTimeInMs) {
@@ -26,6 +33,7 @@ public class ScreenFadingHelper {
 		}
 		else {
 			if(fadeIn) {
+				shouldTransition = true;
 				fadeIn = false;
 				fadeTimer = 0;
 			}
@@ -73,4 +81,28 @@ public class ScreenFadingHelper {
 		fadeTimer = DinoDungeonsConstants.fadeTransitionDurationInMs;
 		update(0);
 	}
+
+	public String getDestinationMapID() {
+		return destinationMapID;
+	}
+
+	public void setDestination(String destinationMapID, int x, int y) {
+		this.destinationMapID = destinationMapID;
+		destinationX = x;
+		destinationY = y;
+	}
+
+	public int getDestinationX() {
+		return destinationX;
+	}
+
+	public int getDestinationY() {
+		return destinationY;
+	}
+
+	public boolean shouldTransition() {
+		boolean result = shouldTransition;
+		shouldTransition = false;
+		return result;
+	}	
 }

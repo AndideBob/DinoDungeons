@@ -11,9 +11,11 @@ import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
+import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
+import dinodungeons.game.data.map.objects.EnemyMapObject.EnemyType;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
 import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -51,6 +53,8 @@ public class Editor extends Game {
 	public static final TileSet[] tileSets = TileSet.values();
 	//Entrance Types
 	public static final TransportationType[] transportationTypes = TransportationType.values();
+	//EnemyTypes Sets
+	public static final EnemyType[] enemyTypes = EnemyType.values();
 	private String exitMapID = "0000";
 	private int exitPosX = 0;
 	private int exitPosY = 0;
@@ -71,11 +75,7 @@ public class Editor extends Game {
 		//DrawCurrentMap
 		drawManager.drawMap();
 		//DrawExitLayer
-		if(currentState == EditorState.PLACE_EXITS ||
-				currentState == EditorState.INSPECTOR ||
-				currentState == EditorState.PLACE_ITEMS ||
-				currentState == EditorState.PLACE_SPIKES ||
-				currentState == EditorState.PLACE_DESTRUCTABLES){
+		if(currentState != EditorState.PLACE_BASELAYER){
 			drawManager.drawObjectsLayer();
 		}
 		//DrawPointer
@@ -122,6 +122,9 @@ public class Editor extends Game {
 					selectedTileX = x;
 					selectedTileY = y;
 					infoText = currentMap.getMapObjectForPosition(x, y).getEditorInfo();
+					if(infoText.equals("")){
+						infoText = "[" + x + "," + y + "]";
+					}
 				}
 				if(InputManager.instance.getKeyState(KeyboardKey.KEY_BACKSPACE).equals(ButtonState.RELEASED)
 						|| InputManager.instance.getKeyState(KeyboardKey.KEY_DELETE).equals(ButtonState.RELEASED)){
@@ -259,6 +262,20 @@ public class Editor extends Game {
 					DestructibleMapObject destructable = new DestructibleMapObject();
 					destructable.setDestructableType(currentSelection);
 					currentMap.setMapObjectForPosition(x, y, destructable);
+				}
+			}
+			break;
+		case PLACE_ENEMIES:
+			//Selection
+			switchSelection(enemyTypes.length);
+			//Placing Destructables
+			if(isMouseOnMap()) {
+				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
+					int x = currentMousePosition[0] / 16;
+					int y = currentMousePosition[1] / 16;
+					EnemyMapObject enemy = new EnemyMapObject();
+					enemy.setEnemyType(enemyTypes[currentSelection]);
+					currentMap.setMapObjectForPosition(x, y, enemy);
 				}
 			}
 			break;

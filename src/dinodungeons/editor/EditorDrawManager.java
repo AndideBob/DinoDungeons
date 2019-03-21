@@ -6,10 +6,12 @@ import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
+import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
+import dinodungeons.game.data.map.objects.EnemyMapObject.EnemyType;
 import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.gfx.GFXResourceID;
 import dinodungeons.gfx.sprites.SpriteID;
@@ -148,6 +150,10 @@ public class EditorDrawManager {
 			DestructibleMapObject destructable = (DestructibleMapObject) mapObject;
 			SpriteManager.getInstance().getSprite(SpriteID.DESTRUCTABLES).draw(destructable.getDestructableType() * 8 + currentMap.getTileSet().getColorVariation(), x * 16, y * 16);
 		}
+		else if(mapObject instanceof EnemyMapObject){
+			EnemyMapObject enemy = (EnemyMapObject) mapObject;
+			enemy.draw(x * 16, y * 16);
+		}
 	}
 
 	public void drawUI(EditorState currentState, int currentSelection) {
@@ -267,11 +273,25 @@ public class EditorDrawManager {
 			textManager.DrawText(146, 247, "Destrctbls", 10);
 			optionsShown = Math.min(DinoDungeonsConstants.numberOfDestructables, 3);
 			lowest = Math.max(0, currentSelection-optionsShown);
-			highest = Math.min(DinoDungeonsConstants.numberOfSpikes -1, lowest+optionsShown);
+			highest = Math.min(DinoDungeonsConstants.numberOfDestructables -1, lowest+optionsShown);
 			for(int i = lowest; i <= highest; i++) {
 				String text = i == currentSelection ? ">" : " ";
 				text += "[" + i + "]";
 				text += DestructibleMapObject.getDestructableName(i);
+				textManager.DrawText(136, 211 + 9*optionsShown, text, 16);
+				optionsShown--;
+			}
+			break;
+		case PLACE_ENEMIES:
+			textManager.DrawText(146, 247, "Enemies", 10);
+			EnemyType[] enemyTypes = EnemyType.values();
+			optionsShown = enemyTypes.length;
+			lowest = Math.max(0, currentSelection-optionsShown);
+			highest = Math.min(enemyTypes.length-1, lowest+optionsShown);
+			for(int i = lowest; i <= highest; i++) {
+				String text = i == currentSelection ? ">" : " ";
+				text += "[" + i + "]";
+				text += EnemyMapObject.getEnemyName(enemyTypes[i]);
 				textManager.DrawText(136, 211 + 9*optionsShown, text, 16);
 				optionsShown--;
 			}

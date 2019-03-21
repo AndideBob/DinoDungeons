@@ -41,8 +41,10 @@ public class TransitionManager {
 
 	public void initiateTransition(String destinationMapID, int destinationXPosition, int destinationYPosition,
 			TransitionType transitionType){
-		shouldTransition = true;
-		nextTransition = new ScreenTransition(destinationMapID, destinationXPosition, destinationYPosition, transitionType);
+		if(!shouldTransition){
+			shouldTransition = true;
+			nextTransition = new ScreenTransition(destinationMapID, destinationXPosition, destinationYPosition, transitionType);
+		}
 	}
 
 	public void initiateScrollTransitionUp(int playerPositionX, int playerPositionY){

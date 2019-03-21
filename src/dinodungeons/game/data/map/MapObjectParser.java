@@ -2,6 +2,8 @@ package dinodungeons.game.data.map;
 
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
+import dinodungeons.game.data.map.objects.EnemyMapObject;
+import dinodungeons.game.data.map.objects.EnemyMapObject.EnemyType;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
@@ -22,6 +24,8 @@ public class MapObjectParser {
 	private static final String spikeMapObjectID = "S";
 	
 	private static final String destructableMapObjectID = "D";
+	
+	private static final String enemyMapObjectID = "E";
 
 	public String parseMapObjectToString(MapObject mapObject){
 		if(mapObject instanceof EmptyMapObject){
@@ -39,9 +43,21 @@ public class MapObjectParser {
 		else if(mapObject instanceof DestructibleMapObject){
 			return parseDestructibleMapObject((DestructibleMapObject)mapObject);
 		}
+		else if(mapObject instanceof EnemyMapObject){
+			return parseEnemyMapObject((EnemyMapObject)mapObject);
+		}
 		return emptyMapObjectString;
 	}
 	
+	private String parseEnemyMapObject(EnemyMapObject enemyMapObject) {
+		String result = "(";
+		result += enemyMapObjectID;
+		result += internalSplitter;
+		result += enemyMapObject.getEnemyType().getSaveRepresentation();
+		result += ")";
+		return result;
+	}
+
 	private String parseDestructibleMapObject(DestructibleMapObject destructibleMapObject) {
 		String result = "(";
 		result += destructableMapObjectID;
@@ -112,6 +128,11 @@ public class MapObjectParser {
 			DestructibleMapObject destructibleMapObject = new DestructibleMapObject();
 			destructibleMapObject.setDestructableType(Integer.parseInt(stringParts[1]));
 			return destructibleMapObject;
+		}
+		else if(stringParts[0].equals(enemyMapObjectID)){
+			EnemyMapObject enemyMapObject = new EnemyMapObject();
+			enemyMapObject.setEnemyType(EnemyType.getEnemyTypeBySaveRepresentation(stringParts[1]));
+			return enemyMapObject;
 		}
 		return new EmptyMapObject();
 	}

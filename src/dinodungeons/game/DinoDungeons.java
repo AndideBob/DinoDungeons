@@ -93,18 +93,12 @@ public class DinoDungeons extends Game {
 			//Draw Map
 			for(int x = 0; x < currentMap.getSizeX(); x++){
 				for(int y = 0; y < currentMap.getSizeY(); y++){
-					ScreenMap relevantMap = fadingHelper.fadingIn() ? lastMap : currentMap;
-					BaseLayerTile tile = relevantMap.getBaseLayerTileForPosition(x, y);
-					TileSet tileSet = relevantMap.getTileSet();
+					BaseLayerTile tile = currentMap.getBaseLayerTileForPosition(x, y);
+					TileSet tileSet = currentMap.getTileSet();
 					TilesetManager.getInstance().drawTile(tile, tileSet, x * 16, y * 16);
 				}
 			}
-			if(fadingHelper.fadingIn()) {
-				GameObjectManager.getInstance().drawGameObjects(lastMap, 0, 0, false);
-			}
-			else {
-				GameObjectManager.getInstance().drawGameObjects(currentMap, 0, 0, true);
-			}
+			GameObjectManager.getInstance().drawGameObjects(currentMap, 0, 0, true);
 			fadingHelper.drawFade();
 			break;
 		case SCROLLING:
@@ -151,11 +145,11 @@ public class DinoDungeons extends Game {
 		inputInformation.update();
 		switch(gameState){
 		case DEFAULT:
-			switchMapIfNecessary();
 			updateCollisions();
 			GameObjectManager.getInstance().updateCurrentGameObjects(deltaTimeInMs, inputInformation);
 			menuManager.update(deltaTimeInMs, inputInformation);
 			checkMenuStatusChange();
+			switchMapIfNecessary();
 			break;
 		case MENU_TRANSITION:
 			menuManager.update(deltaTimeInMs, inputInformation);
@@ -174,7 +168,13 @@ public class DinoDungeons extends Game {
 			break;
 		case FADING:
 			fadingHelper.update(deltaTimeInMs);
-			if(fadingHelper.fadeFinished()){
+			if(fadingHelper.shouldTransition()){
+				currentMap = mapManager.getMapById(fadingHelper.getDestinationMapID());
+				GameObjectManager.getInstance().setCurrentMap(currentMap, true);
+				GameObjectManager.getInstance().setPlayerPosition(fadingHelper.getDestinationX(), fadingHelper.getDestinationY());
+				TransitionManager.getInstance().setCurrentMap(currentMap);
+			}
+			else if(fadingHelper.fadeFinished()){
 				gameState = GameState.DEFAULT;
 				lastMap = null;
 			}
@@ -202,9 +202,9 @@ public class DinoDungeons extends Game {
 			}
 			else if(transition.getTransitionType() == TransitionType.TELEPORT) {
 				gameState = GameState.FADING;
+				fadingHelper.setDestination(transition.getDestinationMapID(), transition.getDestinationXPosition(), transition.getDestinationYPosition());
 				fadingHelper.startFading(transition.getTransitionType(), GameObjectManager.getInstance().getPlayerObject().getPositionX() + 8, GameObjectManager.getInstance().getPlayerObject().getPositionY() + 8);
-				lastMap = currentMap;
-				GameObjectManager.getInstance().setCurrentMap(lastMap, true);
+				return;
 			}
 			currentMap = mapManager.getMapById(transition.getDestinationMapID());
 			GameObjectManager.getInstance().setCurrentMap(currentMap, false);

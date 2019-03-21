@@ -7,6 +7,7 @@ import java.util.HashSet;
 import dinodungeons.game.DinoDungeons;
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
+import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
@@ -14,6 +15,7 @@ import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
+import dinodungeons.game.gameobjects.enemies.EnemyBatObject;
 import dinodungeons.game.gameobjects.environment.BasicBushObject;
 import dinodungeons.game.gameobjects.exits.ExplodableDoorObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
@@ -117,9 +119,20 @@ public class ScreenMapUtil {
 		else if(object instanceof DestructibleMapObject){
 			return buildDestructibleMapObject((DestructibleMapObject) object, posX * 16, posY * 16, map.getTileSet().getColorVariation());
 		}
+		else if(object instanceof EnemyMapObject){
+			return buildEnemyMapObject((EnemyMapObject) object, posX * 16, posY * 16);
+		}
 		return null;
 	}
 	
+	private static GameObject buildEnemyMapObject(EnemyMapObject enemyMapObject, int posX, int posY) {
+		switch (enemyMapObject.getEnemyType()) {
+		case GREEN_BAT:
+			return new EnemyBatObject(posX, posY);
+		}
+		return null;
+	}
+
 	private static GameObject buildDestructibleMapObject(DestructibleMapObject destructibleMapObject, int posX, int posY,
 			int colorVariation) {
 		switch (destructibleMapObject.getDestructableType()) {
