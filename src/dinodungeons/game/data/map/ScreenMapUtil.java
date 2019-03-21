@@ -21,8 +21,6 @@ import dinodungeons.game.gameobjects.exits.TransitionExitObject;
 import dinodungeons.game.gameobjects.general.WallObject;
 import dinodungeons.game.gameobjects.immovable.MetalSpikeObject;
 import dinodungeons.game.gameobjects.immovable.WoodenSpikeObject;
-import dinodungeons.gfx.tilesets.TileSet;
-import lwjgladapter.logging.Logger;
 
 public class ScreenMapUtil {
 	
@@ -97,7 +95,7 @@ public class ScreenMapUtil {
 		ArrayList<GameObject> objects = new ArrayList<>();
 		for(int y = 0; y < map.getSizeY(); y++){
 			for(int x = 0; x < map.getSizeX(); x++){
-				GameObject object = convertMapObjectToGameObject(map, map.getMapObjectForPosition(x, y), x * 16, y * 16);
+				GameObject object = convertMapObjectToGameObject(map, map.getMapObjectForPosition(x, y), x, y);
 				if(object != null){
 					objects.add(object);
 				}
@@ -111,13 +109,13 @@ public class ScreenMapUtil {
 			return buildTransportGameObject(map, (TransportMapObject) object, posX, posY);
 		}
 		else if(object instanceof ItemMapObject){
-			return buildItemGameObject((ItemMapObject) object, posX, posY);
+			return buildItemGameObject((ItemMapObject) object, posX * 16, posY * 16);
 		}
 		else if(object instanceof SpikeMapObject){
-			return buildSpikeGameObject((SpikeMapObject) object, posX, posY);
+			return buildSpikeGameObject((SpikeMapObject) object, posX * 16, posY * 16);
 		}
 		else if(object instanceof DestructibleMapObject){
-			return buildDestructibleMapObject((DestructibleMapObject) object, posX, posY, map.getTileSet().getColorVariation());
+			return buildDestructibleMapObject((DestructibleMapObject) object, posX * 16, posY * 16, map.getTileSet().getColorVariation());
 		}
 		return null;
 	}
@@ -150,7 +148,7 @@ public class ScreenMapUtil {
 		case CAVE_ENTRY:
 		case CAVE_EXIT:
 		case STAIRS:
-			return new TransitionExitObject(GameObjectTag.TRANSPORT, posX, posY,
+			return new TransitionExitObject(GameObjectTag.TRANSPORT, posX * 16, posY * 16,
 					transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());
 		case BLOCKED_CAVE_ENTRY:
 			int direction = DinoDungeonsConstants.directionDown;
@@ -173,12 +171,12 @@ public class ScreenMapUtil {
 				break;
 			}
 			if(validDirection){
-				return new ExplodableDoorObject(currentMap.getTileSet(), direction, posX, posY, getEventName(currentMap ,posX, posY),
+				return new ExplodableDoorObject(currentMap.getTileSet(), direction, posX * 16, posY * 16, getEventName(currentMap ,posX, posY),
 						transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());
 			}
 			break;
 		case INSTANT_TELEPORT:
-			return new InstantExitObject(GameObjectTag.TRANSPORT, posX, posY,
+			return new InstantExitObject(GameObjectTag.TRANSPORT, posX * 16, posY * 16,
 					transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());	
 		}
 		return null;
