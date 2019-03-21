@@ -15,7 +15,6 @@ import dinodungeons.game.gameobjects.general.BaseExplodable;
 import dinodungeons.game.gameobjects.particles.StoneParticle;
 import dinodungeons.gfx.tilesets.TileSet;
 import dinodungeons.gfx.tilesets.TilesetManager;
-import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
@@ -56,7 +55,6 @@ public class ExplodableDoorObject extends BaseExplodable {
 	@Override
 	protected void explode() {
 		// TODO Play sound and generate Particles
-		Logger.logDebug("Door exploded");
 		for(int i = 0; i < 4; i++){
 			GameObjectManager.getInstance().addGameObjectToCurrentMap(new StoneParticle(positionX + 4, positionY + 4, tileSet.getColorVariation()));
 		}

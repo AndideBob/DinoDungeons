@@ -2,6 +2,8 @@ package dinodungeons.game.data.gameplay;
 
 import java.util.HashSet;
 
+import lwjgladapter.logging.Logger;
+
 public class GameEventManager {
 
 	private static GameEventManager instance;
@@ -20,7 +22,10 @@ public class GameEventManager {
 	}
 	
 	public void markEventAsOccured(String eventKey) {
-		occuredEvents.add(eventKey);
+		if(!occuredEvents.contains(eventKey)){
+			Logger.logDebug("Event '" + eventKey + "' occured!");
+			occuredEvents.add(eventKey);
+		}
 	}
 
 	public boolean hasEventOccured(String eventKey) {
