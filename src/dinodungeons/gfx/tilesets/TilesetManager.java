@@ -3,8 +3,6 @@ package dinodungeons.gfx.tilesets;
 import java.util.HashMap;
 
 import dinodungeons.game.data.map.BaseLayerTile;
-import dinodungeons.gfx.sprites.SpriteID;
-import dinodungeons.gfx.sprites.SpriteManager;
 import lwjgladapter.gfx.SpriteMap;
 
 public class TilesetManager {

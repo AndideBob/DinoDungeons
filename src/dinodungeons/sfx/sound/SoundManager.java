@@ -4,7 +4,6 @@ import lwjgladapter.datatypes.LWJGLAdapterException;
 import lwjgladapter.logging.Logger;
 import lwjgladapter.sound.AudioMaster;
 import lwjgladapter.sound.exceptions.AudioNotInMemoryException;
-import lwjgladapter.sound.exceptions.IllegalSoundValueException;
 
 public class SoundManager {
 	

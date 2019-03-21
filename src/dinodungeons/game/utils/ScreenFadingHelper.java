@@ -4,7 +4,6 @@ import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.transitions.TransitionType;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
-import lwjgladapter.GameWindowConstants;
 
 public class ScreenFadingHelper {
 

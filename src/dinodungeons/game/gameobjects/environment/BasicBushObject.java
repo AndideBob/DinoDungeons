@@ -17,7 +17,6 @@ import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.sfx.sound.SoundEffect;
 import dinodungeons.sfx.sound.SoundManager;
-import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
