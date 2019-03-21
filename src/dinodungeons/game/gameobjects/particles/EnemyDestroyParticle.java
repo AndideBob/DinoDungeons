@@ -23,7 +23,7 @@ public class EnemyDestroyParticle extends BaseParticle {
 		int frame = Math.min(4, (int)Math.floor(particleLifeTime / 60));
 		int x = (int)Math.round(positionX);
 		int y = (int)Math.round(positionY);
-		SpriteManager.getInstance().getSprite(SpriteID.PARTICLES_B).draw(frame, x, y);
+		SpriteManager.getInstance().getSprite(SpriteID.PARTICLES_B).draw(frame, anchorX + x, anchorY + y);
 	}
 	
 	@Override

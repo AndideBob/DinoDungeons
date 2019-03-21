@@ -48,7 +48,7 @@ public class LeafParticle extends BaseParticle {
 		int frame = (flyingRight ? 0 : 8) + colorVariation;
 		int x = (int)Math.round(positionX);
 		int y = (int)Math.round(positionY);
-		SpriteManager.getInstance().getSprite(SpriteID.PARTICLES_A).draw(frame, x, y);
+		SpriteManager.getInstance().getSprite(SpriteID.PARTICLES_A).draw(frame, anchorX + x, anchorY + y);
 	}
 	
 	@Override

@@ -63,7 +63,7 @@ public class SmokeParticle extends BaseParticle {
 		int shownFrame = frame + 5;
 		int x = (int)Math.round(positionX);
 		int y = (int)Math.round(positionY);
-		SpriteManager.getInstance().getSprite(SpriteID.PARTICLES_B).draw(shownFrame, x, y);
+		SpriteManager.getInstance().getSprite(SpriteID.PARTICLES_B).draw(shownFrame, anchorX + x, anchorY + y);
 	}
 	
 	@Override
