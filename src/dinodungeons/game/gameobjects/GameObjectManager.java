@@ -31,6 +31,9 @@ public class GameObjectManager {
 	
 	private String currentMapID;
 	
+	private int lastPlayerSpawnX;
+	private int lastPlayerSpawnY;
+	
 	private ArrayList<GameObject> gameObjectsToBeAddedToCurrentMap;
 	private ArrayList<GameObject> gameObjectsToBeDeletedDeliberately;
 	
@@ -114,6 +117,12 @@ public class GameObjectManager {
 
 	public void setPlayerPosition(int destinationXPosition, int destinationYPosition) {
 		getPlayerObject().setPosition(destinationXPosition, destinationYPosition);
+		lastPlayerSpawnX = destinationXPosition;
+		lastPlayerSpawnY = destinationYPosition;
+	}
+	
+	public void resetPlayerPositionOnCurrentMap(){
+		getPlayerObject().setPosition(lastPlayerSpawnX, lastPlayerSpawnY);
 	}
 	
 	public Collection<GameObject> getCurrentGameObjects(){
