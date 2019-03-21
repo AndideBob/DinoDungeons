@@ -9,10 +9,13 @@ import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.data.transitions.TransitionType;
+import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.general.BaseExplodable;
 import dinodungeons.game.gameobjects.particles.Explosion;
+import dinodungeons.game.gameobjects.particles.SmokeParticle;
+import dinodungeons.game.gameobjects.particles.StoneParticle;
 import dinodungeons.gfx.tilesets.TileSet;
 import dinodungeons.gfx.tilesets.TilesetManager;
 import lwjgladapter.logging.Logger;
@@ -56,6 +59,10 @@ public class ExplodableDoorObject extends BaseExplodable {
 	@Override
 	protected void explode() {
 		// TODO Play sound and generate Particles
+		Logger.logDebug("Door exploded");
+		for(int i = 0; i < 4; i++){
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(new StoneParticle(positionX + 4, positionY + 4, tileSet.getColorVariation()));
+		}
 		GameEventManager.getInstance().markEventAsOccured(eventKey);
 	}
 

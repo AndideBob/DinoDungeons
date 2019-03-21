@@ -5,11 +5,11 @@ import java.util.Collections;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
-import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.CircleCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
@@ -44,6 +44,10 @@ public class Explosion extends GameObject {
 			if(timer >= DinoDungeonsConstants.explosionDurationTime) {
 				doneExploding = true;
 				collider.setRadius(0f);
+				int particleAmount = 4 + DinoDungeonsConstants.random.nextInt(5);
+				for(int i = 0; i < particleAmount; i++){
+					GameObjectManager.getInstance().addGameObjectToCurrentMap(new SmokeParticle(originX - 8, originY - 8));
+				}
 			}
 			else if(timer >= DinoDungeonsConstants.explosionDurationTime * 0.75f) {
 				animationFrame = 3;

@@ -17,12 +17,14 @@ public abstract class BaseExplodable extends GameObject {
 	}
 	
 	protected final void setExplodedManually(boolean triggerExplosionEffect){
-		exploded = true;
-		for(Collider c : getCollidersBeforeExplosion()) {
-			c.unregister();
-		}
-		if(triggerExplosionEffect){
-			explode();
+		if(!exploded){
+			exploded = true;
+			for(Collider c : getCollidersBeforeExplosion()) {
+				c.unregister();
+			}
+			if(triggerExplosionEffect){
+				explode();
+			}
 		}
 	}
 
@@ -38,11 +40,13 @@ public abstract class BaseExplodable extends GameObject {
 	}
 	
 	private void checkForExplosion() {
-		if(hasCollisionWithObjectWithTag(GameObjectTag.EXPLOSION)) {
-			exploded = true;
-			explode();
-			for(Collider c : getCollidersBeforeExplosion()) {
-				c.unregister();
+		if(!exploded){
+			if(hasCollisionWithObjectWithTag(GameObjectTag.EXPLOSION)) {
+				exploded = true;
+				explode();
+				for(Collider c : getCollidersBeforeExplosion()) {
+					c.unregister();
+				}
 			}
 		}
 	}
