@@ -12,8 +12,10 @@ import dinodungeons.game.data.map.ScreenMapUtil;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectDrawComparator;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import dinodungeons.game.gameobjects.item.ItemBoomerangObject;
 import dinodungeons.game.gameobjects.player.PlayerObject;
 import lwjgladapter.logging.Logger;
+import lwjgladapter.physics.collision.base.Collider;
 
 public class GameObjectManager {
 	
@@ -28,6 +30,7 @@ public class GameObjectManager {
 
 	private HashMap<String, Collection<GameObject>> gameObjects;
 	private PlayerObject player;
+	private ItemBoomerangObject boomerang;
 	
 	private String currentMapID;
 	
@@ -40,6 +43,7 @@ public class GameObjectManager {
 	private GameObjectManager() {
 		gameObjects = new HashMap<>();
 		currentMapID = null;
+		boomerang = null;
 		gameObjectsToBeDeletedDeliberately = new ArrayList<>();
 		gameObjectsToBeAddedToCurrentMap = new ArrayList<>();
 	}
@@ -62,6 +66,9 @@ public class GameObjectManager {
 				GameObject o = iter.next();
 				if(o.shouldBeDeleted() || gameObjectsToBeDeletedDeliberately.contains(o)){
 					gameObjectsToBeDeletedDeliberately.remove(o);
+					if(o.equals(boomerang)) {
+						boomerang = null;
+					}
 					o.delete();
 					iter.remove();
 				}
@@ -90,10 +97,25 @@ public class GameObjectManager {
 		gameObjectsToBeAddedToCurrentMap.add(gameObject);
 	}
 	
+	public void addBoomerangObjectToCurrentMap(ItemBoomerangObject boomerangGameObject){
+		boomerang = boomerangGameObject;
+		gameObjectsToBeAddedToCurrentMap.add(boomerangGameObject);
+	}
+	
+	public boolean doesBoomerangExist() {
+		return boomerang != null;
+	}
+	
 	public void setCurrentMap(ScreenMap map, boolean cleanOtherRooms){
 		if(cleanOtherRooms){
+			for(Collection<GameObject> gos : gameObjects.values()) {
+				for(GameObject o : gos) {
+					o.delete();
+				}
+			}
 			gameObjects.clear();
 		}
+		boomerang = null;
 		currentMapID = map.getID();
 		if(!gameObjects.containsKey(currentMapID)){
 			initGameObjects(map);
@@ -140,6 +162,19 @@ public class GameObjectManager {
 			return Collections.unmodifiableCollection(gameObjects.get(mapID));
 		}
 		return Collections.emptyList();
+	}
+	
+	public Collection<GameObject> getGameObjectsUsingColliderWithID(long colliderID){
+		ArrayList<GameObject> result = new ArrayList<>();
+		for(GameObject o : getCurrentGameObjects()) {
+			for(Collider c : o.getColliders()) {
+				if(c.getID() == colliderID) {
+					result.add(o);
+					break;
+				}
+			}
+		}
+		return result;
 	}
 
 	public void destroyGameObjectImmediately(GameObject gameObject) {

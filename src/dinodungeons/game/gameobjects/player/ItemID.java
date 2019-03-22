@@ -2,7 +2,7 @@ package dinodungeons.game.gameobjects.player;
 
 public enum ItemID {
 	CLUB("0",0),
-	ITEM_1("1",1),
+	BOOMERANG("1",1),
 	ITEM_2("2",2),
 	BOMB("3",3),
 	ITEM_4("4",4),

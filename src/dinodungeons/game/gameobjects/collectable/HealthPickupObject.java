@@ -14,10 +14,7 @@ import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
-public class HealthPickupObject extends GameObject {
-	
-	private int positionX;
-	private int positionY;
+public class HealthPickupObject extends PickupObject {
 	
 	private boolean wasCollected;
 	
@@ -55,6 +52,12 @@ public class HealthPickupObject extends GameObject {
 	@Override
 	public Collection<Collider> getColliders() {
 		return Collections.singleton(collider);
+	}
+
+	@Override
+	protected void updateColliderPosition() {
+		collider.setPositionX(positionX + 3);
+		collider.setPositionY(positionY + 3);
 	}
 
 }

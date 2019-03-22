@@ -11,6 +11,8 @@ class FolderConstants{
 }
 
 public enum SFXResourceID {
+	SFX_BOOMERANG_FLY(FolderConstants.folderEffects, "BoomerangFly.ogg"),
+	SFX_BOOMERANG_HIT(FolderConstants.folderEffects, "BoomerangHit.ogg"),
 	SFX_EXPLOSION(FolderConstants.folderEffects, "Explosion.ogg"),
 	SFX_HIT_CLUB(FolderConstants.folderEffects, "Hit_Club.ogg"),
 	SFX_PICKUP_COIN(FolderConstants.folderEffects, "Pickup_Coin.ogg"),

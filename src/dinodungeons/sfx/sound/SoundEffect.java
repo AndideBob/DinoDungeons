@@ -3,6 +3,8 @@ package dinodungeons.sfx.sound;
 import dinodungeons.sfx.SFXResourceID;
 
 public enum SoundEffect {
+	BOOMERANG_FLY(SFXResourceID.SFX_BOOMERANG_FLY),
+	BOOMERANG_HIT(SFXResourceID.SFX_BOOMERANG_HIT),
 	EXPLOSION(SFXResourceID.SFX_EXPLOSION),
 	HIT_CLUB(SFXResourceID.SFX_HIT_CLUB),
 	PICKUP_COIN(SFXResourceID.SFX_PICKUP_COIN),

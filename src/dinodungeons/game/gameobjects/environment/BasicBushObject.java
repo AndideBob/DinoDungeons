@@ -11,7 +11,7 @@ import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.BombPickupObject;
 import dinodungeons.game.gameobjects.collectable.HealthPickupObject;
-import dinodungeons.game.gameobjects.collectable.MoneyObject;
+import dinodungeons.game.gameobjects.collectable.MoneyPickupObject;
 import dinodungeons.game.gameobjects.particles.LeafParticle;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -71,7 +71,7 @@ public class BasicBushObject extends GameObject {
 				GameObjectManager.getInstance().addGameObjectToCurrentMap(new BombPickupObject(x, y));
 			}
 			else{
-				GameObjectManager.getInstance().addGameObjectToCurrentMap(new MoneyObject(GameObjectTag.COLLECTABLE_MONEY_OBJECT_VALUE_ONE, x, y));
+				GameObjectManager.getInstance().addGameObjectToCurrentMap(new MoneyPickupObject(GameObjectTag.COLLECTABLE_MONEY_OBJECT_VALUE_ONE, x, y));
 			}
 		}
 	}

@@ -11,6 +11,7 @@ import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.item.ItemBombObject;
+import dinodungeons.game.gameobjects.item.ItemBoomerangObject;
 import dinodungeons.game.gameobjects.item.ItemClubObject;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -124,13 +125,13 @@ public class PlayerObject extends GameObject {
 				case COLLECTABLE_ITEM_CLUB:
 					collectItem(ItemID.CLUB);
 					break;
-				case COLLECTABLE_ITEM_ITEM_1:
-					collectItem(ItemID.ITEM_1);
+				case COLLECTABLE_ITEM_BOOMERANG:
+					collectItem(ItemID.BOOMERANG);
 					break;
 				case COLLECTABLE_ITEM_ITEM_2:
 					collectItem(ItemID.ITEM_2);
 					break;
-				case COLLECTABLE_ITEM_ITEM_3:
+				case COLLECTABLE_ITEM_BOMB:
 					collectItem(ItemID.BOMB);
 					break;
 				case COLLECTABLE_ITEM_ITEM_4:
@@ -342,6 +343,15 @@ public class PlayerObject extends GameObject {
 			GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
 			playerState = PlayerState.USING_ITEM;
 			return true;
+		case BOOMERANG:
+			if(!GameObjectManager.getInstance().doesBoomerangExist()) {
+				weaponObject = new DropingWeaponObject(DinoDungeonsConstants.dropItemDuration);
+				GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
+				GameObjectManager.getInstance().addBoomerangObjectToCurrentMap(new ItemBoomerangObject(getPositionX() + 8, getPositionY() + 8, movementDirection));
+				playerState = PlayerState.USING_ITEM;
+				return true;
+			}
+			return false;
 		case BOMB:
 			if(PlayerStatusManager.getInstance().canUseBomb()) {
 				PlayerStatusManager.getInstance().useBomb();

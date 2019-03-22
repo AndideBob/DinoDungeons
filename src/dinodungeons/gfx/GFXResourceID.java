@@ -48,7 +48,8 @@ public enum GFXResourceID {
 	SPRITE_DESTRUCTABLES(FolderConstants.folderENVIRONMENT, "destructables.png"),
 	//ITEMS
 	ITEM_CLUB(FolderConstants.folderITEMS, "club.png"),
-	ITEM_BOMB(FolderConstants.folderITEMS, "bomb.png");
+	ITEM_BOMB(FolderConstants.folderITEMS, "bomb.png"),
+	ITEM_BOOMERANG(FolderConstants.folderITEMS, "boomerang.png");
 
 	private String filePath;
 	

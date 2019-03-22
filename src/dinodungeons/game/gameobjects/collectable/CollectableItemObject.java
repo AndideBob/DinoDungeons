@@ -39,12 +39,12 @@ public class CollectableItemObject extends GameObject {
 		switch (itemID) {
 		case CLUB:
 			return GameObjectTag.COLLECTABLE_ITEM_CLUB;
-		case ITEM_1:
-			return GameObjectTag.COLLECTABLE_ITEM_ITEM_1;
+		case BOOMERANG:
+			return GameObjectTag.COLLECTABLE_ITEM_BOOMERANG;
 		case ITEM_2:
 			return GameObjectTag.COLLECTABLE_ITEM_ITEM_2;
 		case BOMB:
-			return GameObjectTag.COLLECTABLE_ITEM_ITEM_3;
+			return GameObjectTag.COLLECTABLE_ITEM_BOMB;
 		case ITEM_4:
 			return GameObjectTag.COLLECTABLE_ITEM_ITEM_4;
 		case ITEM_5:

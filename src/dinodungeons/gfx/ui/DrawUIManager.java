@@ -149,7 +149,7 @@ public class DrawUIManager {
 				x = 16;
 				y = yPosition+184;
 				break;
-			case ITEM_1:
+			case BOOMERANG:
 				x = 48;
 				y = yPosition+184;
 				break;

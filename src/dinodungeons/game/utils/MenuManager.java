@@ -121,7 +121,7 @@ public class MenuManager {
 		case 0:
 			return ItemID.CLUB;
 		case 1:
-			return ItemID.ITEM_1;
+			return ItemID.BOOMERANG;
 		case 2:
 			return ItemID.ITEM_2;
 		case 3:

@@ -6,7 +6,6 @@ import java.util.Collections;
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
-import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -17,20 +16,17 @@ import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
-public class MoneyObject extends GameObject {
+public class MoneyPickupObject extends PickupObject {
 
 	private long animationTimer;
 	
 	private SpriteMap sprite;
 	
-	private int positionX;
-	private int positionY;
-	
 	private boolean wasCollected;
 	
 	private RectCollider collider;
 	
-	public MoneyObject(GameObjectTag tag, int posX, int posY) {
+	public MoneyPickupObject(GameObjectTag tag, int posX, int posY) {
 		super(tag);
 		resetAnimationTimer();
 		sprite = SpriteManager.getInstance().getSprite(SpriteID.COLLECTABLES);
@@ -116,6 +112,12 @@ public class MoneyObject extends GameObject {
 	@Override
 	public Collection<Collider> getColliders() {
 		return Collections.singleton(collider);
+	}
+
+	@Override
+	protected void updateColliderPosition() {
+		collider.setPositionX(positionX + 3);
+		collider.setPositionY(positionY + 3);
 	}
 
 }
