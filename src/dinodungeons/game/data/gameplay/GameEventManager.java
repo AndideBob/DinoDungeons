@@ -33,6 +33,7 @@ public class GameEventManager {
 	
 	public void activateRoomEvent(RoomEvent roomEvent){
 		if(!roomEvents.contains(roomEvent)){
+			Logger.logDebug(roomEvent.toString() + " was triggered!");
 			roomEvents.add(roomEvent);
 		}
 		activateRelativeRoomEvents();

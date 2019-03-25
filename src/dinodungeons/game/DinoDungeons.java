@@ -6,6 +6,7 @@ import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
+import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.MapManager;
 import dinodungeons.game.data.map.ScreenMap;
@@ -17,6 +18,7 @@ import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.CollisionInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.enemies.EnemyBatObject;
+import dinodungeons.game.gameobjects.environment.StonePushSwitch;
 import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.game.utils.MenuManager;
 import dinodungeons.game.utils.ScreenFadingHelper;
@@ -252,7 +254,7 @@ public class DinoDungeons extends Game {
 			PlayerStatusManager.getInstance().collectItem(ItemID.BOMB);
 		}
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_CRTL_RIGHT).equals(ButtonState.RELEASED)){
-			GameObjectManager.getInstance().addGameObjectToCurrentMap(new EnemyBatObject(32,32));
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(new StonePushSwitch(80,80,0,RoomEvent.SWITCH_A));
 		}
 	}
 

@@ -35,7 +35,7 @@ public class DinoDungeonsConstants {
 	public static final long bombBlinkTimerReduction = bombBlinkTimerStart / 20;
 	public static final long minBombBlinkTimer = 30;
 	public static final long explosionDurationTime = 300;
-	public static final long pushDelay = 200;
+	public static final long pushDelay = 600;
 	
 	public static final long clubStageTime = 80;
 	

@@ -315,19 +315,23 @@ public class PlayerObject extends GameObject {
 				if(inputInformation.getUp().equals(ButtonState.PRESSED)
 						|| inputInformation.getUp().equals(ButtonState.DOWN)){
 					movementChangeY = 1;
+					movementDirection = DinoDungeonsConstants.directionUp;
 				}
 				else if(
 						inputInformation.getDown().equals(ButtonState.PRESSED)
 						|| inputInformation.getDown().equals(ButtonState.DOWN)){
 					movementChangeY = -1;
+					movementDirection = DinoDungeonsConstants.directionDown;
 				}
 				if(inputInformation.getLeft().equals(ButtonState.PRESSED)
 						|| inputInformation.getLeft().equals(ButtonState.DOWN)){
 					movementChangeX = -1;
+					movementDirection = DinoDungeonsConstants.directionLeft;
 				}
 				else if(inputInformation.getRight().equals(ButtonState.PRESSED)
 						|| inputInformation.getRight().equals(ButtonState.DOWN)){
 					movementChangeX = 1;
+					movementDirection = DinoDungeonsConstants.directionRight;
 				}
 			}
 		}
@@ -406,6 +410,7 @@ public class PlayerObject extends GameObject {
 					showEvenFrame = !showEvenFrame;
 				}
 			}
+			break;
 		case PUSHING:
 			actionNumber = 1;
 			directionNumber = movementDirection;

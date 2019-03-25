@@ -1,14 +1,12 @@
 package dinodungeons.game.gameobjects.general;
 
 import java.util.Collection;
-import java.util.Collections;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.base.Collision;
 
 public abstract class BasePushable extends GameObject {
@@ -31,6 +29,7 @@ public abstract class BasePushable extends GameObject {
 		if(canBePushed()){
 			updatePushTimer(deltaTimeInMs);
 			if(pushTimer <= 0){
+				Logger.log("Push!");
 				push(pushDirection);
 			}
 		}
@@ -49,7 +48,8 @@ public abstract class BasePushable extends GameObject {
 		if(!collisionsWithPlayer.isEmpty()){
 			Collision firstCollision = collisionsWithPlayer.iterator().next();
 			int differenceX = positionX - firstCollision.getPositionX();
-			int differenceY = positionY - firstCollision.getPositionX();
+			int differenceY = positionY - firstCollision.getPositionY();
+			Logger.log("Pushing: " + differenceX + "," + differenceY);
 			if(differenceX != differenceY){
 				isPushing = true;
 				if(Math.abs(differenceX) > Math.abs(differenceY)){
