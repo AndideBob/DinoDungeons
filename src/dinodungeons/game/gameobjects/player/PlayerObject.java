@@ -95,6 +95,7 @@ public class PlayerObject extends GameObject {
 				playerState = PlayerState.DEFAULT;
 			}
 			//VVVV Fall through VVVV
+		case PUSHING:
 		case DEFAULT:
 			move();
 			updateControls(deltaTimeInMs, inputInformation);
@@ -119,6 +120,16 @@ public class PlayerObject extends GameObject {
 	}
 
 	private void handleCollisions() {
+		//Handle Pushing
+		if(playerState == PlayerState.DEFAULT || playerState == PlayerState.PUSHING){
+			if(hasCollisionWithObjectWithTag(GameObjectTag.PUSHABLE)){
+				playerState = PlayerState.PUSHING;
+			}
+			else{
+				playerState = PlayerState.DEFAULT;
+			}
+		}
+		//Handle ItemCollection
 		for(GameObjectTag tag : GameObjectTag.collectableItems){
 			if(hasCollisionWithObjectWithTag(tag)){
 				switch(tag){
@@ -288,15 +299,17 @@ public class PlayerObject extends GameObject {
 	}
 
 	private void updateControls(long deltaTimeInMs, InputInformation inputInformation){
-		if(playerState == PlayerState.DEFAULT){
+		if(playerState == PlayerState.DEFAULT || playerState == PlayerState.PUSHING){
 			movementChangeX = 0;
 			movementChangeY = 0;
 			boolean dontMoveAfterItemUse = false;
-			if(inputInformation.getA().equals(ButtonState.PRESSED)) {
-				dontMoveAfterItemUse = useItem(true);
-			}
-			if(inputInformation.getB().equals(ButtonState.PRESSED)) {
-				dontMoveAfterItemUse = useItem(false);
+			if(playerState == PlayerState.DEFAULT){
+				if(inputInformation.getA().equals(ButtonState.PRESSED)) {
+					dontMoveAfterItemUse = useItem(true);
+				}
+				if(inputInformation.getB().equals(ButtonState.PRESSED)) {
+					dontMoveAfterItemUse = useItem(false);
+				}
 			}
 			if(!dontMoveAfterItemUse) {
 				if(inputInformation.getUp().equals(ButtonState.PRESSED)
@@ -393,6 +406,13 @@ public class PlayerObject extends GameObject {
 					showEvenFrame = !showEvenFrame;
 				}
 			}
+		case PUSHING:
+			actionNumber = 1;
+			directionNumber = movementDirection;
+			if(msSinceLastFrame >= msBetweenFrames){
+				msSinceLastFrame = 0;
+				showEvenFrame = !showEvenFrame;
+			}
 			break;
 		case ITEM_COLLECTED:
 			actionNumber = 3;
@@ -464,6 +484,7 @@ public class PlayerObject extends GameObject {
 
 	private enum PlayerState{
 		DEFAULT,
+		PUSHING,
 		ITEM_COLLECTED,
 		DAMAGE_TAKEN,
 		USING_ITEM;

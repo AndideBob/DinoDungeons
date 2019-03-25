@@ -63,6 +63,10 @@ public abstract class BaseEnemyObject extends GameObject {
 	
 	protected abstract void updateDamaged(long deltaTimeInMs, InputInformation inputInformation);
 	
+	public boolean isRelevantForRoomSwitch(){
+		return true;
+	}
+	
 	protected final double getDistanceToPlayer() {
 		PlayerObject playerObject = GameObjectManager.getInstance().getPlayerObject();
 		if(playerObject != null) {

@@ -6,15 +6,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import dinodungeons.game.data.gameplay.GameEventManager;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapUtil;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectDrawComparator;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import dinodungeons.game.gameobjects.enemies.BaseEnemyObject;
 import dinodungeons.game.gameobjects.item.ItemBoomerangObject;
 import dinodungeons.game.gameobjects.player.PlayerObject;
-import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.base.Collider;
 
 public class GameObjectManager {
@@ -66,17 +68,40 @@ public class GameObjectManager {
 				GameObject o = iter.next();
 				if(o.shouldBeDeleted() || gameObjectsToBeDeletedDeliberately.contains(o)){
 					gameObjectsToBeDeletedDeliberately.remove(o);
-					if(o.equals(boomerang)) {
-						boomerang = null;
-					}
 					o.delete();
 					iter.remove();
+					checkSpecialGameObjectDeletion(o);
 				}
 				else{
 					o.update(deltaTimeInMs, inputInformation);
 				}
 			}
 			player.update(deltaTimeInMs, inputInformation);
+		}
+	}
+	
+	private void checkSpecialGameObjectDeletion(GameObject gameObject){
+		if(gameObject.equals(boomerang)) {
+			boomerang = null;
+		}
+		else if(gameObject instanceof BaseEnemyObject){
+			if(((BaseEnemyObject) gameObject).isRelevantForRoomSwitch()){
+				checkNumberOfEnemiesInRoom();
+			}
+		}
+	}
+	
+	private void checkNumberOfEnemiesInRoom(){
+		int enemyCount = 0;
+		for(GameObject o : getCurrentGameObjects()){
+			if(o instanceof BaseEnemyObject){
+				if(((BaseEnemyObject) o).isRelevantForRoomSwitch()){
+					enemyCount++;
+				}
+			}
+		}
+		if(enemyCount <= 0){
+			GameEventManager.getInstance().activateRoomEvent(RoomEvent.SWITCH_ALL_ENEMIES);
 		}
 	}
 	
@@ -107,6 +132,7 @@ public class GameObjectManager {
 	}
 	
 	public void setCurrentMap(ScreenMap map, boolean cleanOtherRooms){
+		GameEventManager.getInstance().clearRoomEvents();
 		if(cleanOtherRooms){
 			for(Collection<GameObject> gos : gameObjects.values()) {
 				for(GameObject o : gos) {
@@ -130,6 +156,7 @@ public class GameObjectManager {
 				}
 			}
 		}
+		checkNumberOfEnemiesInRoom();
 	}
 
 	private void initGameObjects(ScreenMap map) {

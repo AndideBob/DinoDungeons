@@ -16,9 +16,38 @@ public class GameEventManager {
 	}
 	
 	private HashSet<String> occuredEvents;
+	private HashSet<RoomEvent> roomEvents;
 	
 	private GameEventManager(){
 		occuredEvents = new HashSet<>();
+		roomEvents = new HashSet<>();
+	}
+	
+	public void clearRoomEvents(){
+		roomEvents.clear();
+	}
+	
+	public boolean hasRoomEventOccured(RoomEvent roomEvent){
+		return roomEvents.contains(roomEvent);
+	}
+	
+	public void activateRoomEvent(RoomEvent roomEvent){
+		if(!roomEvents.contains(roomEvent)){
+			roomEvents.add(roomEvent);
+		}
+		activateRelativeRoomEvents();
+	}
+	
+	private void activateRelativeRoomEvents(){
+		if(roomEvents.contains(RoomEvent.SWITCH_A) && roomEvents.contains(RoomEvent.SWITCH_B)){
+			roomEvents.add(RoomEvent.SWITCH_AB);
+		}
+		if(roomEvents.contains(RoomEvent.SWITCH_AB) && roomEvents.contains(RoomEvent.SWITCH_C)){
+			roomEvents.add(RoomEvent.SWITCH_ABC);
+		}
+		if(roomEvents.contains(RoomEvent.SWITCH_ABC) && roomEvents.contains(RoomEvent.SWITCH_D)){
+			roomEvents.add(RoomEvent.SWITCH_ABCD);
+		}
 	}
 	
 	public void markEventAsOccured(String eventKey) {
