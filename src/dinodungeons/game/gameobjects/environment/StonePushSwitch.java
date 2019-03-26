@@ -16,7 +16,7 @@ import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
 public class StonePushSwitch extends BasePushable {
-	
+
 	private static final float movementSpeed = 16f;
 	private static final float movementAmount = 16f;
 

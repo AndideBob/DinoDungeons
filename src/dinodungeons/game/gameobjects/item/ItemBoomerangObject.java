@@ -16,7 +16,6 @@ import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.sfx.sound.SoundEffect;
 import dinodungeons.sfx.sound.SoundManager;
-import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.CircleCollider;
 import lwjgladapter.physics.collision.base.Collider;
 import lwjgladapter.physics.collision.base.Collision;
@@ -151,7 +150,6 @@ public class ItemBoomerangObject extends GameObject {
 		changeY *= lengthFactor;
 		positionX += changeX * movementSpeed * timeChange;
 		positionY += changeY * movementSpeed * timeChange;
-		Logger.logDebug("Boomerang: [" + positionX + "," + positionY + "] " + (flyingOut ? "out" : "in"));
 	}
 	
 	private void updateColliderPosition() {

@@ -47,6 +47,8 @@ public class PlayerObject extends GameObject {
 	private long invulTimer;
 	private GameObject weaponObject;
 	
+	private ItemUsageManager itemUsageManager;
+	
 	//Graphics Releated Stuff
 	private static final long msBetweenFrames = 150;
 	private int msSinceLastFrame;
@@ -80,6 +82,8 @@ public class PlayerObject extends GameObject {
 		colliders.add(colliderYAxis);
 		characterSprite = SpriteManager.getInstance().getSprite(SpriteID.PLAYER);
 		playerState = PlayerState.DEFAULT;
+		
+		itemUsageManager = new ItemUsageManager();
 	}
 
 	@Override
@@ -350,35 +354,13 @@ public class PlayerObject extends GameObject {
 	 */
 	private boolean useItem(boolean aSlot) {
 		ItemID usedItem = aSlot ? PlayerStatusManager.getInstance().getItemA() : PlayerStatusManager.getInstance().getItemB();
-		if(usedItem == null) {
-			return false;
-		}
-		switch (usedItem) {
-		case CLUB:
-			SoundManager.getInstance().playSoundEffect(SoundEffect.HIT_CLUB);
-			weaponObject = new ItemClubObject(getPositionX(), getPositionY(), movementDirection);
-			GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
+		itemUsageManager.setPositionX(getPositionX());
+		itemUsageManager.setPositionY(getPositionY());
+		itemUsageManager.setCurrentDirection(movementDirection);
+		weaponObject = itemUsageManager.useItem(usedItem);
+		if(weaponObject != null){
 			playerState = PlayerState.USING_ITEM;
 			return true;
-		case BOOMERANG:
-			if(!GameObjectManager.getInstance().doesBoomerangExist()) {
-				weaponObject = new DropingWeaponObject(DinoDungeonsConstants.dropItemDuration);
-				GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
-				GameObjectManager.getInstance().addBoomerangObjectToCurrentMap(new ItemBoomerangObject(getPositionX() + 8, getPositionY() + 8, movementDirection));
-				playerState = PlayerState.USING_ITEM;
-				return true;
-			}
-			return false;
-		case BOMB:
-			if(PlayerStatusManager.getInstance().canUseBomb()) {
-				PlayerStatusManager.getInstance().useBomb();
-				weaponObject = new DropingWeaponObject(DinoDungeonsConstants.dropItemDuration);
-				GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
-				GameObjectManager.getInstance().addGameObjectToCurrentMap(new ItemBombObject(getPositionX(), getPositionY()));
-				playerState = PlayerState.USING_ITEM;
-				return true;	
-			}
-			return false;
 		}
 		return false;
 	}
