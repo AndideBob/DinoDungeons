@@ -47,8 +47,8 @@ public abstract class BasePushable extends GameObject {
 		Collection<Collision> collisionsWithPlayer = getCollisionsWithObjectsWithTag(GameObjectTag.PLAYER);
 		if(!collisionsWithPlayer.isEmpty()){
 			Collision firstCollision = collisionsWithPlayer.iterator().next();
-			int differenceX = positionX - firstCollision.getPositionX();
-			int differenceY = positionY - firstCollision.getPositionY();
+			int differenceX = positionX + 8 - firstCollision.getPositionX();
+			int differenceY = positionY + 8 - firstCollision.getPositionY();
 			Logger.log("Pushing: " + differenceX + "," + differenceY);
 			if(differenceX != differenceY){
 				isPushing = true;

@@ -3,6 +3,7 @@ package dinodungeons.game.gameobjects.immovable;
 import java.util.Collection;
 import java.util.Collections;
 
+import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.GameEventManager;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.gameplay.RoomEvent;
@@ -15,7 +16,7 @@ import lwjgladapter.physics.collision.base.Collider;
 
 public class RoomSwitchDoorObject extends BaseDoorObject {
 	
-	private boolean firstUpdate;
+	private long spawnDelayTimer;
 	private RectCollider collider;
 	
 	private RoomEvent openingEvent;
@@ -30,12 +31,13 @@ public class RoomSwitchDoorObject extends BaseDoorObject {
 
 	@Override
 	protected void checkOnRoomEntry() {
-		firstUpdate = true;
+		spawnDelayTimer = DinoDungeonsConstants.doorSpawnDelay;
 	}
 
 	@Override
 	public void update(long deltaTimeInMs, InputInformation inputInformation) {
-		if(firstUpdate){
+		if(spawnDelayTimer > 0){
+			spawnDelayTimer -= deltaTimeInMs;
 			if(GameEventManager.getInstance().hasRoomEventOccured(openingEvent)
 					|| hasCollisionWithObjectWithTag(GameObjectTag.PLAYER)){
 				open(false);
@@ -43,7 +45,6 @@ public class RoomSwitchDoorObject extends BaseDoorObject {
 			else{
 				close(false);
 			}
-			firstUpdate = false;
 		}
 		else{
 			if(open && !GameEventManager.getInstance().hasRoomEventOccured(openingEvent)){

@@ -76,11 +76,12 @@ public class PlayerObject extends GameObject {
 		handleCollisions();
 		switch (playerState) {
 		case DAMAGE_TAKEN:
-		case PUSHING:
-		case DEFAULT:
 			if(stateTimer <= 0){
 				playerState = PlayerState.DEFAULT;
 			}
+			//VVVV Fallthrough VVVV
+		case PUSHING:
+		case DEFAULT:
 			move();
 			updateControls(deltaTimeInMs, inputInformation);
 			break;
