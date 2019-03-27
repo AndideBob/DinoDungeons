@@ -4,7 +4,9 @@ import dinodungeons.gfx.GFXResourceID;
 
 public enum TileSet {
 	CAVE_GREEN(GFXResourceID.TILESET_CAVE_GREEN, "caveGrn", 0),
-	CAVE_RED(GFXResourceID.TILESET_CAVE_RED, "caveRed", 1);
+	CAVE_RED(GFXResourceID.TILESET_CAVE_RED, "caveRed", 1),
+	DUNGEON_ORANGE(GFXResourceID.TILESET_DUNGEON_ORANGE, "dngnOrg", 2),
+	DUNGEON_PINK(GFXResourceID.TILESET_DUNGEON_PINK, "dngnPnk", 1);
 	
 	private GFXResourceID resourceID;
 	private String representationInFile;

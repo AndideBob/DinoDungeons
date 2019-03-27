@@ -33,6 +33,8 @@ public enum GFXResourceID {
 	//TILESETS
 	TILESET_CAVE_GREEN(FolderConstants.folderTILESETS, "caveGreen.png"),
 	TILESET_CAVE_RED(FolderConstants.folderTILESETS, "caveRed.png"),
+	TILESET_DUNGEON_ORANGE(FolderConstants.folderTILESETS, "dungeonOrange.png"),
+	TILESET_DUNGEON_PINK(FolderConstants.folderTILESETS, "dungeonPink.png"),
 	//CHARACTERS
 	CHARACTER(FolderConstants.folderCHARACTERS, "character.png"),
 	ENEMY_BAT_GREEN(FolderConstants.folderCHARACTERS, "bat_green.png"),
