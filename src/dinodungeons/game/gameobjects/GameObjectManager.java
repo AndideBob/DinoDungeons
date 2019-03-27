@@ -154,6 +154,9 @@ public class GameObjectManager {
 					o.delete();
 					iter.remove();
 				}
+				else{
+					o.resetOnRoomEntry();
+				}
 			}
 		}
 		checkNumberOfEnemiesInRoom();

@@ -19,6 +19,7 @@ import dinodungeons.game.gameobjects.base.CollisionInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.enemies.EnemyBatObject;
 import dinodungeons.game.gameobjects.environment.StonePushSwitch;
+import dinodungeons.game.gameobjects.immovable.RoomSwitchDoorObject;
 import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.game.utils.MenuManager;
 import dinodungeons.game.utils.ScreenFadingHelper;
@@ -255,6 +256,8 @@ public class DinoDungeons extends Game {
 		}
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_CRTL_RIGHT).equals(ButtonState.RELEASED)){
 			GameObjectManager.getInstance().addGameObjectToCurrentMap(new StonePushSwitch(80,80,0,RoomEvent.SWITCH_A));
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(new RoomSwitchDoorObject(128,0,0,RoomEvent.SWITCH_A));
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(new RoomSwitchDoorObject(144,0,0,RoomEvent.SWITCH_A));
 		}
 	}
 

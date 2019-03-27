@@ -12,7 +12,7 @@ import lwjgladapter.physics.collision.base.Collider;
 
 public class UnpushableStone extends BasePushable {
 	
-private int colorVariant;
+	private int colorVariant;
 	
 	private RectCollider collider;
 	

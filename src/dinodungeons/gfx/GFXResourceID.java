@@ -47,6 +47,7 @@ public enum GFXResourceID {
 	//ENVIRONMENT
 	SPRITE_PUSHABLES(FolderConstants.folderENVIRONMENT, "pushables.png"),
 	SPRITE_DESTRUCTABLES(FolderConstants.folderENVIRONMENT, "destructables.png"),
+	SPRITE_DOORS(FolderConstants.folderENVIRONMENT, "doors.png"),
 	//ITEMS
 	ITEM_CLUB(FolderConstants.folderITEMS, "club.png"),
 	ITEM_BOMB(FolderConstants.folderITEMS, "bomb.png"),

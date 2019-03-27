@@ -87,6 +87,10 @@ public abstract class GameObject {
 		return false;
 	}
 	
+	public void resetOnRoomEntry(){
+		//Reset on room entry
+	}
+	
 	public boolean shouldBeDeleted(){
 		return false;
 	}
