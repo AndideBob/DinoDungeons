@@ -10,14 +10,8 @@ import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
-import dinodungeons.game.gameobjects.item.ItemBombObject;
-import dinodungeons.game.gameobjects.item.ItemBoomerangObject;
-import dinodungeons.game.gameobjects.item.ItemClubObject;
-import dinodungeons.gfx.sprites.SpriteID;
-import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.sfx.sound.SoundEffect;
 import dinodungeons.sfx.sound.SoundManager;
-import lwjgladapter.gfx.SpriteMap;
 import lwjgladapter.input.ButtonState;
 import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
@@ -44,25 +38,13 @@ public class PlayerObject extends GameObject {
 	private int movementDirection;
 	
 	//Combat base Variables
-	private long invulTimer;
+	private long stateTimer;
 	private GameObject weaponObject;
 	
 	private ItemUsageManager itemUsageManager;
-	
-	//Graphics Releated Stuff
-	private static final long msBetweenFrames = 150;
-	private int msSinceLastFrame;
-	private boolean showEvenFrame;
-	private boolean hasMoved;
-	private int lastDirection;
-	private int frameNumber;
-	private boolean blinking;
-	private boolean wasBlinking;
-	private SpriteMap characterSprite;
+	private PlayerDrawManager playerDrawManager;
 	
 	private PlayerState playerState;
-	
-	private ItemID justCollectedItem;
 	
 	public PlayerObject(GameObjectTag tag, int startX, int startY) {
 		super(tag);
@@ -80,33 +62,30 @@ public class PlayerObject extends GameObject {
 		colliders = new HashSet<>();
 		colliders.add(colliderXAxis);
 		colliders.add(colliderYAxis);
-		characterSprite = SpriteManager.getInstance().getSprite(SpriteID.PLAYER);
 		playerState = PlayerState.DEFAULT;
-		
+		stateTimer = 0;
 		itemUsageManager = new ItemUsageManager();
+		playerDrawManager = new PlayerDrawManager();
 	}
 
 	@Override
 	public void update(long deltaTimeInMs, InputInformation inputInformation) {
-		if(invulTimer > 0){
-			invulTimer -= deltaTimeInMs;
+		if(stateTimer > 0){
+			stateTimer -= deltaTimeInMs;
 		}
 		handleCollisions();
 		switch (playerState) {
 		case DAMAGE_TAKEN:
-			if(msSinceLastFrame >= DinoDungeonsConstants.damageTime){
-				msSinceLastFrame = 0;
-				playerState = PlayerState.DEFAULT;
-			}
-			//VVVV Fall through VVVV
 		case PUSHING:
 		case DEFAULT:
+			if(stateTimer <= 0){
+				playerState = PlayerState.DEFAULT;
+			}
 			move();
 			updateControls(deltaTimeInMs, inputInformation);
 			break;
 		case ITEM_COLLECTED:
-			if(msSinceLastFrame >= DinoDungeonsConstants.itemCollectionCharacterFreeze){
-				msSinceLastFrame = 0;
+			if(stateTimer <= 0){
 				playerState = PlayerState.DEFAULT;
 			}
 			break;
@@ -114,13 +93,11 @@ public class PlayerObject extends GameObject {
 			if(weaponObject.shouldBeDeleted()) {
 				weaponObject = null;
 				playerState = PlayerState.DEFAULT;
-				msSinceLastFrame = 0;
 			}
 			break;
 		}
 		updateColliders();
 		updateShownFrame(deltaTimeInMs);
-		updateColors();
 	}
 
 	private void handleCollisions() {
@@ -136,58 +113,7 @@ public class PlayerObject extends GameObject {
 		//Handle ItemCollection
 		for(GameObjectTag tag : GameObjectTag.collectableItems){
 			if(hasCollisionWithObjectWithTag(tag)){
-				switch(tag){
-				case COLLECTABLE_ITEM_CLUB:
-					collectItem(ItemID.CLUB);
-					break;
-				case COLLECTABLE_ITEM_BOOMERANG:
-					collectItem(ItemID.BOOMERANG);
-					break;
-				case COLLECTABLE_ITEM_ITEM_2:
-					collectItem(ItemID.ITEM_2);
-					break;
-				case COLLECTABLE_ITEM_BOMB:
-					collectItem(ItemID.BOMB);
-					break;
-				case COLLECTABLE_ITEM_ITEM_4:
-					collectItem(ItemID.ITEM_4);
-					break;
-				case COLLECTABLE_ITEM_ITEM_5:
-					collectItem(ItemID.ITEM_5);
-					break;
-				case COLLECTABLE_ITEM_ITEM_6:
-					collectItem(ItemID.ITEM_6);
-					break;
-				case COLLECTABLE_ITEM_ITEM_7:
-					collectItem(ItemID.ITEM_7);
-					break;
-				case COLLECTABLE_ITEM_ITEM_8:
-					collectItem(ItemID.ITEM_8);
-					break;
-				case COLLECTABLE_ITEM_ITEM_9:
-					collectItem(ItemID.ITEM_9);
-					break;
-				case COLLECTABLE_ITEM_ITEM_A:
-					collectItem(ItemID.ITEM_A);
-					break;
-				case COLLECTABLE_ITEM_ITEM_B:
-					collectItem(ItemID.ITEM_B);
-					break;
-				case COLLECTABLE_ITEM_MIRROR:
-					collectItem(ItemID.MIRROR);
-					break;
-				case COLLECTABLE_ITEM_ITEM_D:
-					collectItem(ItemID.ITEM_D);
-					break;
-				case COLLECTABLE_ITEM_ITEM_E:
-					collectItem(ItemID.ITEM_E);
-					break;
-				case COLLECTABLE_ITEM_ITEM_F:
-					collectItem(ItemID.ITEM_F);
-					break;
-				default:
-					break;
-				}
+				collectItem(ItemID.getItemIDByGameObjectTag(tag));
 			}
 		}
 		//Handle DamageTaking
@@ -209,10 +135,10 @@ public class PlayerObject extends GameObject {
 	}
 
 	private void collectItem(ItemID itemID){
-		justCollectedItem = itemID;
 		playerState = PlayerState.ITEM_COLLECTED;
-		PlayerStatusManager.getInstance().collectItem(justCollectedItem);
-		msSinceLastFrame = 0;
+		PlayerStatusManager.getInstance().collectItem(itemID);
+		playerDrawManager.setCollectedItem(itemID);
+		stateTimer = DinoDungeonsConstants.itemCollectionCharacterFreeze;
 	}
 	
 	private int getDamageByTag(GameObjectTag tag){
@@ -229,7 +155,7 @@ public class PlayerObject extends GameObject {
 	}
 	
 	private void takeDamage(int amount, int sourceX, int sourceY) {
-		if(playerState != PlayerState.DAMAGE_TAKEN && invulTimer <= 0){
+		if(playerState != PlayerState.DAMAGE_TAKEN && stateTimer > 0){
 			SoundManager.getInstance().playSoundEffect(SoundEffect.PLAYER_DAMAGE);
 			PlayerStatusManager.getInstance().damage(amount);
 			playerState = PlayerState.DAMAGE_TAKEN;
@@ -237,15 +163,14 @@ public class PlayerObject extends GameObject {
 				GameObjectManager.getInstance().destroyGameObjectImmediately(weaponObject);
 				weaponObject = null;
 			}
-			msSinceLastFrame = 0;
 			movementChangeX = positionX + 8 - sourceX;
 			movementChangeY = positionY + 8 - sourceY;
-			invulTimer = DinoDungeonsConstants.invulnerabilityTime;
+			stateTimer = DinoDungeonsConstants.invulnerabilityTime;
 		}
 	}
 
 	private void move() {
-		hasMoved = false;
+		boolean hasMoved = false;
 		//Change Y Position
 		if(predictedPositionY != positionY){
 			boolean movementBlocked = false;
@@ -293,6 +218,7 @@ public class PlayerObject extends GameObject {
 				positionX = predictedPositionX;
 			}
 		}
+		playerDrawManager.setMovemet(hasMoved, movementDirection);
 		//Check for X Transitions
 		if(positionX < DinoDungeonsConstants.scrollBoundryLeft){
 			TransitionManager.getInstance().initiateScrollTransitionLeft((int)positionX, (int)positionY);
@@ -380,73 +306,15 @@ public class PlayerObject extends GameObject {
 	}
 	
 	private void updateShownFrame(long deltaTimeInMs){
-		int actionNumber = 0;
-		int directionNumber = lastDirection;
-		msSinceLastFrame += deltaTimeInMs;
-		switch(playerState){
-		case DEFAULT:
-			if(hasMoved){
-				directionNumber = movementDirection;
-				if(msSinceLastFrame >= msBetweenFrames){
-					msSinceLastFrame = 0;
-					showEvenFrame = !showEvenFrame;
-				}
-			}
-			break;
-		case PUSHING:
-			actionNumber = 1;
-			directionNumber = movementDirection;
-			if(msSinceLastFrame >= msBetweenFrames){
-				msSinceLastFrame = 0;
-				showEvenFrame = !showEvenFrame;
-			}
-			break;
-		case ITEM_COLLECTED:
-			actionNumber = 3;
-			directionNumber = 0;
-			showEvenFrame = false;
-			break;
-		case DAMAGE_TAKEN:
-			actionNumber = 0;
-			showEvenFrame = false;
-			break;
-		case USING_ITEM:
-			actionNumber = 3;
-			directionNumber = movementDirection;
-			showEvenFrame = true;
-			break;
-		}
-		lastDirection = directionNumber;
-		frameNumber = (actionNumber * 8) + (directionNumber * 2) + (showEvenFrame ? 0 : 1);
-	}
-	
-	private void updateColors(){
-		if(invulTimer > 0){
-			blinking = ((int) Math.floor(msSinceLastFrame / 60)) % 2 == 0;
-			if(blinking != wasBlinking){
-				float value = blinking ? 0f : 1f;
-				characterSprite.setColorValues(1f, value, value, 1f);
-				wasBlinking = blinking;
-			}
-		}
-		else if(wasBlinking){
-			characterSprite.setColorValues(1f, 1f, 1f, 1f);
-			blinking = false;
-			wasBlinking = false;
-		}
+		playerDrawManager.setPlayerState(playerState);
+		playerDrawManager.update(deltaTimeInMs);
 	}
 
 	@Override
 	public void draw(int anchorX, int anchorY) {
 		int x = anchorX + Math.round(positionX);
 		int y = anchorY + Math.round(positionY);
-		characterSprite.draw(frameNumber, x, y);
-		switch (playerState) {
-		case ITEM_COLLECTED:
-			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(justCollectedItem.getSpriteSheetPosition(), x, y + 16);
-		default:
-			break;
-		}
+		playerDrawManager.draw(x, y);
 	}
 
 	@Override
@@ -469,7 +337,7 @@ public class PlayerObject extends GameObject {
 		return (int)Math.round(positionY);
 	}
 
-	private enum PlayerState{
+	public enum PlayerState{
 		DEFAULT,
 		PUSHING,
 		ITEM_COLLECTED,
