@@ -35,6 +35,9 @@ public enum GameObjectTag {
 	COLLECTABLE_ITEM_ITEM_E(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_ITEM_ITEM_F(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_STATUS_GAIN(SortingLayers.sortingLayerStatic),
+	COLLECTABLE_KEY_SMALL(SortingLayers.sortingLayerStatic),
+	COLLECTABLE_KEY_BIG(SortingLayers.sortingLayerStatic),
+	COLLECTABLE_MAP(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_MONEY_OBJECT_VALUE_ONE(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_MONEY_OBJECT_VALUE_FIVE(SortingLayers.sortingLayerStatic),
 	COLLECTABLE_MONEY_OBJECT_VALUE_TEN(SortingLayers.sortingLayerStatic),
@@ -61,6 +64,8 @@ public enum GameObjectTag {
 		COLLECTABLE_ITEM_ITEM_6, COLLECTABLE_ITEM_ITEM_7, COLLECTABLE_ITEM_ITEM_8, COLLECTABLE_ITEM_ITEM_9,
 		COLLECTABLE_ITEM_ITEM_A, COLLECTABLE_ITEM_ITEM_B, COLLECTABLE_ITEM_MIRROR,
 		COLLECTABLE_ITEM_ITEM_D, COLLECTABLE_ITEM_ITEM_E, COLLECTABLE_ITEM_ITEM_F);
+	
+	public static final Collection<GameObjectTag> collectableDungeonItems = Arrays.asList(COLLECTABLE_KEY_SMALL, COLLECTABLE_KEY_BIG, COLLECTABLE_MAP);
 	
 	private int sortingLayer;
 	

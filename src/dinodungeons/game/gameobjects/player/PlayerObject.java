@@ -117,6 +117,12 @@ public class PlayerObject extends GameObject {
 				collectItem(ItemID.getItemIDByGameObjectTag(tag));
 			}
 		}
+		//Handle ItemCollection
+		for(GameObjectTag tag : GameObjectTag.collectableDungeonItems){
+			if(hasCollisionWithObjectWithTag(tag)){
+				collectItem(DungeonItemID.getItemIDByGameObjectTag(tag));
+			}
+		}
 		//Handle DamageTaking
 		Collision damageCollision = null;
 		GameObjectTag firstDamageObjectTag = GameObjectTag.NONE;
@@ -140,6 +146,13 @@ public class PlayerObject extends GameObject {
 		PlayerStatusManager.getInstance().collectItem(itemID);
 		playerDrawManager.setCollectedItem(itemID);
 		stateTimer = DinoDungeonsConstants.itemCollectionCharacterFreeze;
+	}
+	
+	private void collectItem(DungeonItemID itemID){
+		playerState = PlayerState.ITEM_COLLECTED;
+		PlayerStatusManager.getInstance().collectDungeonItem(itemID);
+		playerDrawManager.setCollectedItem(itemID);
+		stateTimer = DinoDungeonsConstants.dungeonItemCollectionCharacterFreeze;
 	}
 	
 	private int getDamageByTag(GameObjectTag tag){

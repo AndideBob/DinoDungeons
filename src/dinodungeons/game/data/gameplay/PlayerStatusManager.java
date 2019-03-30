@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
+import dinodungeons.game.gameobjects.player.DungeonItemID;
 import dinodungeons.game.gameobjects.player.ItemID;
 import lwjgladapter.logging.Logger;
 
@@ -180,6 +181,10 @@ public class PlayerStatusManager {
 
 	public boolean needsBombs() {
 		return currentBombs < maxBombs;
+	}
+
+	public void collectDungeonItem(DungeonItemID itemID) {
+		//TODO: Handle Collection of keys, map, etc
 	}
 
 }

@@ -26,6 +26,7 @@ public class DinoDungeonsConstants {
 	public static final long fadeTransitionDurationInMs = 750;
 	public static final long scrollTransitionDurationInMs = 1000;
 	public static final long itemCollectionCharacterFreeze = 2000;
+	public static final long dungeonItemCollectionCharacterFreeze = 750;
 	public static final long damageTime = 200;
 	public static final long invulnerabilityTime = 500;
 	public static final long dropItemDuration = 100;

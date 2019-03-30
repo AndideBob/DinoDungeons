@@ -19,7 +19,7 @@ public class PlayerDrawManager {
 	private PlayerState playerState;
 	private int movementDirection;
 	private boolean hasMoved;
-	private ItemID collectedItem;
+	private int collectedItemSpriteSheetPosition;
 	
 	public PlayerDrawManager() {
 		isBlinking = false;
@@ -41,7 +41,11 @@ public class PlayerDrawManager {
 	}
 	
 	public void setCollectedItem(ItemID collectedItem){
-		this.collectedItem = collectedItem;
+		this.collectedItemSpriteSheetPosition = collectedItem.getSpriteSheetPosition();
+	}
+	
+	public void setCollectedItem(DungeonItemID collectedItem){
+		this.collectedItemSpriteSheetPosition = collectedItem.getSpriteSheetPosition();
 	}
 	
 	public void update(long deltaTimeInMs){
@@ -104,7 +108,7 @@ public class PlayerDrawManager {
 		}
 		switch (playerState) {
 		case ITEM_COLLECTED:
-			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(collectedItem.getSpriteSheetPosition(), x, y + 16);
+			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(collectedItemSpriteSheetPosition, x, y + 16);
 		default:
 			break;
 		}
