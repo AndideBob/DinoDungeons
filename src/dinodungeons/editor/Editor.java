@@ -9,7 +9,11 @@ import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.ScreenMapLoader;
 import dinodungeons.game.data.map.ScreenMapSaver;
+import dinodungeons.game.data.map.objects.BlockMapObject;
+import dinodungeons.game.data.map.objects.BlockMapObject.BlockType;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
+import dinodungeons.game.data.map.objects.DoorMapObject;
+import dinodungeons.game.data.map.objects.DoorMapObject.DoorType;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
@@ -55,6 +59,10 @@ public class Editor extends Game {
 	public static final TransportationType[] transportationTypes = TransportationType.values();
 	//EnemyTypes Sets
 	public static final EnemyType[] enemyTypes = EnemyType.values();
+	//BlockTypes
+	public static final BlockType[] blockTypes = BlockType.values();
+	//BlockTypes
+	public static final DoorType[] doorTypes = DoorType.values();
 	private String exitMapID = "0000";
 	private int exitPosX = 0;
 	private int exitPosY = 0;
@@ -331,6 +339,38 @@ public class Editor extends Game {
 					currentMap.setMapObjectForPosition(x, y, transport);
 				}
 			}
+			break;
+		case PLACE_BLOCKS:
+			//Selection
+			switchSelection(blockTypes.length);
+			//Placing Destructables
+			if(isMouseOnMap()) {
+				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
+					int x = currentMousePosition[0] / 16;
+					int y = currentMousePosition[1] / 16;
+					BlockMapObject block = new BlockMapObject();
+					block.setBlockType(blockTypes[currentSelection]);
+					currentMap.setMapObjectForPosition(x, y, block);
+				}
+			}
+			break;
+		case PLACE_DOORS:
+			//Selection
+			switchSelection(doorTypes.length);
+			//Placing Destructables
+			if(isMouseOnMap()) {
+				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
+					int x = currentMousePosition[0] / 16;
+					int y = currentMousePosition[1] / 16;
+					DoorMapObject door = new DoorMapObject();
+					door.setDoorType(doorTypes[currentSelection]);
+					currentMap.setMapObjectForPosition(x, y, door);
+				}
+			}
+			break;
+		case PLACE_DUNGEON_ITEMS:
+			break;
+		default:
 			break;
 		}
 	}

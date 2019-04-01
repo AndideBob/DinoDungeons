@@ -6,7 +6,10 @@ import java.util.HashSet;
 
 import dinodungeons.game.DinoDungeons;
 import dinodungeons.game.data.DinoDungeonsConstants;
+import dinodungeons.game.data.gameplay.RoomEvent;
+import dinodungeons.game.data.map.objects.BlockMapObject;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
+import dinodungeons.game.data.map.objects.DoorMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
@@ -17,11 +20,15 @@ import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
 import dinodungeons.game.gameobjects.enemies.EnemyBatObject;
 import dinodungeons.game.gameobjects.environment.BasicBushObject;
+import dinodungeons.game.gameobjects.environment.StonePushSwitch;
 import dinodungeons.game.gameobjects.exits.ExplodableDoorObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
 import dinodungeons.game.gameobjects.exits.TransitionExitObject;
 import dinodungeons.game.gameobjects.general.WallObject;
+import dinodungeons.game.gameobjects.immovable.KeyDoorObject;
 import dinodungeons.game.gameobjects.immovable.MetalSpikeObject;
+import dinodungeons.game.gameobjects.immovable.RoomSwitchDoorObject;
+import dinodungeons.game.gameobjects.immovable.UnpushableStone;
 import dinodungeons.game.gameobjects.immovable.WoodenSpikeObject;
 
 public class ScreenMapUtil {
@@ -122,6 +129,12 @@ public class ScreenMapUtil {
 		else if(object instanceof EnemyMapObject){
 			return buildEnemyMapObject((EnemyMapObject) object, posX * 16, posY * 16);
 		}
+		else if(object instanceof BlockMapObject){
+			return buildBlockMapObject(map, (BlockMapObject) object, posX * 16, posY * 16); 
+		}
+		else if(object instanceof DoorMapObject){
+			return buildDoorMapObject(map, (DoorMapObject) object, posX * 16, posY * 16); 
+		}
 		return null;
 	}
 	
@@ -129,6 +142,54 @@ public class ScreenMapUtil {
 		switch (enemyMapObject.getEnemyType()) {
 		case GREEN_BAT:
 			return new EnemyBatObject(posX, posY);
+		}
+		return null;
+	}
+	
+	private static GameObject buildBlockMapObject(ScreenMap map, BlockMapObject blockMapObject, int posX, int posY) {
+		switch (blockMapObject.getBlockType()) {
+		case SOLID:
+			return new UnpushableStone(posX, posY, map.getTileSet().getColorVariation());
+		case SWITCH_A:
+			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_A);
+		case SWITCH_AB:
+			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_AB);
+		case SWITCH_ABC:
+			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_ABC);
+		case SWITCH_ABCD:
+			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_ABCD);
+		case SWITCH_B:
+			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_B);
+		case SWITCH_C:
+			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_C);
+		case SWITCH_D:
+			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_D);
+		}
+		return null;
+	}
+	
+	private static GameObject buildDoorMapObject(ScreenMap map, DoorMapObject doorMapObject, int posX, int posY) {
+		switch (doorMapObject.getDoorType()) {
+		case ENEMIES:
+			return new RoomSwitchDoorObject(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_ALL_ENEMIES);
+		case KEY:
+			return new KeyDoorObject(posX, posY, map.getTileSet().getColorVariation(), getEventName(map, posX, posY));
+		case MASTER_KEY:
+			break;
+		case SWITCH_A:
+			return new RoomSwitchDoorObject(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_A);
+		case SWITCH_AB:
+			return new RoomSwitchDoorObject(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_AB);
+		case SWITCH_ABC:
+			return new RoomSwitchDoorObject(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_ABC);
+		case SWITCH_ABCD:
+			return new RoomSwitchDoorObject(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_ABCD);
+		case SWITCH_B:
+			return new RoomSwitchDoorObject(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_B);
+		case SWITCH_C:
+			return new RoomSwitchDoorObject(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_C);
+		case SWITCH_D:
+			return new RoomSwitchDoorObject(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_D);
 		}
 		return null;
 	}

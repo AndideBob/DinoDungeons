@@ -1,6 +1,10 @@
 package dinodungeons.game.data.map;
 
+import dinodungeons.game.data.map.objects.BlockMapObject;
+import dinodungeons.game.data.map.objects.BlockMapObject.BlockType;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
+import dinodungeons.game.data.map.objects.DoorMapObject;
+import dinodungeons.game.data.map.objects.DoorMapObject.DoorType;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject.EnemyType;
@@ -27,6 +31,10 @@ public class MapObjectParser {
 	
 	private static final String enemyMapObjectID = "E";
 
+	private static final String blockMapObjectID = "B";
+
+	private static final String doorMapObjectID = "G";
+
 	public String parseMapObjectToString(MapObject mapObject){
 		if(mapObject instanceof EmptyMapObject){
 			return emptyMapObjectString;
@@ -45,6 +53,12 @@ public class MapObjectParser {
 		}
 		else if(mapObject instanceof EnemyMapObject){
 			return parseEnemyMapObject((EnemyMapObject)mapObject);
+		}
+		else if(mapObject instanceof BlockMapObject){
+			return parseBlockMapObject((BlockMapObject)mapObject);
+		}
+		else if(mapObject instanceof DoorMapObject){
+			return parseDoorMapObject((DoorMapObject)mapObject);
 		}
 		return emptyMapObjectString;
 	}
@@ -81,6 +95,24 @@ public class MapObjectParser {
 		result += itemMapObjectID;
 		result += internalSplitter;
 		result += itemMapObject.getItemID().getSaveRepresentation();
+		result += ")";
+		return result;
+	}
+	
+	private String parseBlockMapObject(BlockMapObject blockMapObject) {
+		String result = "(";
+		result += blockMapObjectID;
+		result += internalSplitter;
+		result += blockMapObject.getBlockType().getSaveRepresentation();
+		result += ")";
+		return result;
+	}
+	
+	private String parseDoorMapObject(DoorMapObject doorMapObject) {
+		String result = "(";
+		result += doorMapObjectID;
+		result += internalSplitter;
+		result += doorMapObject.getDoorType().getSaveRepresentation();
 		result += ")";
 		return result;
 	}
@@ -133,6 +165,16 @@ public class MapObjectParser {
 			EnemyMapObject enemyMapObject = new EnemyMapObject();
 			enemyMapObject.setEnemyType(EnemyType.getEnemyTypeBySaveRepresentation(stringParts[1]));
 			return enemyMapObject;
+		}
+		else if(stringParts[0].equals(blockMapObjectID)){
+			BlockMapObject blockMapObject = new BlockMapObject();
+			blockMapObject.setBlockType(BlockType.getBlockTypeBySaveRepresentation(stringParts[1]));
+			return blockMapObject;
+		}
+		else if(stringParts[0].equals(doorMapObjectID)){
+			DoorMapObject doorMapObject = new DoorMapObject();
+			doorMapObject.setDoorType(DoorType.getDoorTypeBySaveRepresentation(stringParts[1]));
+			return doorMapObject;
 		}
 		return new EmptyMapObject();
 	}

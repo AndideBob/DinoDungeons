@@ -4,7 +4,9 @@ import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapConstants;
+import dinodungeons.game.data.map.objects.BlockMapObject;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
+import dinodungeons.game.data.map.objects.DoorMapObject;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
@@ -77,12 +79,12 @@ public class EditorDrawManager {
 			//Do not draw anything
 			return;
 		}
+		String txtUpL = "";
+		String txtLowL = "";
+		String txtUpR = "";
+		String txtLowR = "";
 		if(mapObject instanceof TransportMapObject){
 			TransportMapObject transport = (TransportMapObject) mapObject;
-			String txtUpL = "";
-			String txtLowL = "";
-			String txtUpR = "";
-			String txtLowR = "";
 			switch(transport.getTransportationType()){
 			case BLOCKED_CAVE_ENTRY:
 				txtUpL = "C";
@@ -132,10 +134,6 @@ public class EditorDrawManager {
 				txtLowR = "S";
 				break;
 			}
-			textManager.DrawText(x * 16 - 1, y * 16 + 8, txtUpL, 1);
-			textManager.DrawText(x * 16 + 7, y * 16 + 8, txtUpR, 1);
-			textManager.DrawText(x * 16 - 1, y * 16, txtLowL, 1);
-			textManager.DrawText(x * 16 + 7, y * 16, txtLowR, 1);
 			return;
 		}
 		else if(mapObject instanceof ItemMapObject){
@@ -154,6 +152,89 @@ public class EditorDrawManager {
 			EnemyMapObject enemy = (EnemyMapObject) mapObject;
 			enemy.draw(x * 16, y * 16);
 		}
+		else if(mapObject instanceof BlockMapObject){
+			BlockMapObject block = (BlockMapObject) mapObject;
+			SpriteManager.getInstance().getSprite(SpriteID.PUSHABLES).draw(currentMap.getTileSet().getColorVariation(), x * 16, y * 16);
+			switch(block.getBlockType()){
+			case SOLID:
+				break;
+			case SWITCH_A:
+				txtUpL = "A";
+				break;
+			case SWITCH_AB:
+				txtUpL = "A";
+				txtUpR = "B";
+				break;
+			case SWITCH_ABC:
+				txtUpL = "A";
+				txtUpR = "B";
+				break;
+			case SWITCH_ABCD:
+				txtUpL = "A";
+				txtUpR = "B";
+				txtLowL = "C";
+				txtLowR = "D";
+				break;
+			case SWITCH_B:
+				txtUpL = "B";
+				break;
+			case SWITCH_C:
+				txtUpL = "C";
+				break;
+			case SWITCH_D:
+				txtUpL = "D";
+				break;
+			}
+		}
+		else if(mapObject instanceof DoorMapObject){
+			DoorMapObject door = (DoorMapObject) mapObject;
+			int alternate = 0;
+			switch(door.getDoorType()){
+			case SWITCH_A:
+				txtUpL = "A";
+				break;
+			case SWITCH_AB:
+				txtUpL = "A";
+				txtUpR = "B";
+				break;
+			case SWITCH_ABC:
+				txtUpL = "A";
+				txtUpR = "B";
+				break;
+			case SWITCH_ABCD:
+				txtUpL = "A";
+				txtUpR = "B";
+				txtLowL = "C";
+				txtLowR = "D";
+				break;
+			case SWITCH_B:
+				txtUpL = "B";
+				break;
+			case SWITCH_C:
+				txtUpL = "C";
+				break;
+			case SWITCH_D:
+				txtUpL = "D";
+				break;
+			case ENEMIES:
+				break;
+			case KEY:
+				alternate = 1;
+				break;
+			case MASTER_KEY:
+				alternate = 2;
+				break;
+			default:
+				break;
+			}
+			SpriteManager.getInstance().getSprite(SpriteID.DOORS).draw(alternate * 8 + currentMap.getTileSet().getColorVariation(), x * 16, y * 16);
+		}
+		
+		//Draw Text on Top
+		textManager.DrawText(x * 16 - 1, y * 16 + 8, txtUpL, 1);
+		textManager.DrawText(x * 16 + 7, y * 16 + 8, txtUpR, 1);
+		textManager.DrawText(x * 16 - 1, y * 16, txtLowL, 1);
+		textManager.DrawText(x * 16 + 7, y * 16, txtLowR, 1);
 	}
 
 	public void drawUI(EditorState currentState, int currentSelection) {
