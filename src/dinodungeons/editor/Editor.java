@@ -186,6 +186,21 @@ public class Editor extends Game {
 							switchToState(EditorState.PLACE_EXITS);
 						}
 						break;
+					case DUNGEON_ID:
+						int dungeonID;
+						try{
+							dungeonID = Integer.parseInt(enteredText);
+							if(dungeonID < 0 || dungeonID > 12){
+								throw new NumberFormatException();
+							}else{
+								switchToState(EditorState.INSPECTOR);
+								currentMap.setDungeonID(dungeonID);
+							}
+						}
+						catch(NumberFormatException e){
+							infoText = "Only [0-12] are valid!";
+						}
+						break;
 					default:
 						Logger.logError("Text usage not defined!");
 						infoText = "Error!";
@@ -365,6 +380,11 @@ public class Editor extends Game {
 				switchToEnterTextMode(TextUsage.EXIT_NORTH);
 				return true;
 			}
+			//Enter DungeonID Mode
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_F4).equals(ButtonState.RELEASED)) {
+				switchToEnterTextMode(TextUsage.DUNGEON_ID);
+				return true;
+			}
 			//Enter Exit Placement Edit Mode
 			if(currentState == EditorState.PLACE_EXITS && InputManager.instance.getKeyState(KeyboardKey.KEY_F5).equals(ButtonState.RELEASED)) {
 				switchToEnterTextMode(TextUsage.EXIT_MAP_ID);
@@ -431,6 +451,12 @@ public class Editor extends Game {
 		case SAVING:
 			infoText = "Enter File-id to save:";
 			enteredText = currentMap.getID();
+			break;
+		case DUNGEON_ID:
+			infoText = "Enter belonging dungeon id:";
+			enteredText = "" + currentMap.getDungeonID();
+			break;
+		default:
 			break;
 		}
 	}
@@ -509,6 +535,7 @@ public class Editor extends Game {
 	private enum TextUsage{
 		SAVING,
 		LOAD,
+		DUNGEON_ID,
 		EXIT_NORTH,
 		EXIT_SOUTH,
 		EXIT_EAST,

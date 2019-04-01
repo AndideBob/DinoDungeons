@@ -160,6 +160,7 @@ public class EditorDrawManager {
 		textManager.DrawText(0, 247, "[F1]Save", 9);
 		textManager.DrawText(0, 238, "[F2]Load", 9);
 		textManager.DrawText(0, 229, "[F3]Exits", 10);
+		textManager.DrawText(0, 220, "[F4]Dungeon-ID", 10);
 		textManager.DrawText(96, 247, "[</>]", 5);
 		//ToolSelection
 		int optionsShown = 3;
