@@ -7,12 +7,14 @@ import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.objects.BlockMapObject;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.DoorMapObject;
+import dinodungeons.game.data.map.objects.DoorMapObject.DoorType;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
+import dinodungeons.game.data.map.objects.BlockMapObject.BlockType;
 import dinodungeons.game.data.map.objects.EnemyMapObject.EnemyType;
 import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.gfx.GFXResourceID;
@@ -374,6 +376,34 @@ public class EditorDrawManager {
 				String text = i == currentSelection ? ">" : " ";
 				text += "[" + i + "]";
 				text += EnemyMapObject.getEnemyName(enemyTypes[i]);
+				textManager.DrawText(136, 211 + 9*optionsShown, text, 16);
+				optionsShown--;
+			}
+			break;
+		case PLACE_BLOCKS:
+			textManager.DrawText(146, 247, "Blocks", 10);
+			BlockType[] blockTypes = BlockType.values();
+			optionsShown = 3;
+			lowest = Math.max(0, currentSelection-optionsShown);
+			highest = Math.min(blockTypes.length-1, lowest+optionsShown);
+			for(int i = lowest; i <= highest; i++) {
+				String text = i == currentSelection ? ">" : " ";
+				text += "[" + i + "]";
+				text += BlockMapObject.getBlockName(blockTypes[i]);
+				textManager.DrawText(136, 211 + 9*optionsShown, text, 16);
+				optionsShown--;
+			}
+			break;
+		case PLACE_DOORS:
+			textManager.DrawText(146, 247, "Doors", 10);
+			DoorType[] doors = DoorType.values();
+			optionsShown = 3;
+			lowest = Math.max(0, currentSelection-optionsShown);
+			highest = Math.min(doors.length-1, lowest+optionsShown);
+			for(int i = lowest; i <= highest; i++) {
+				String text = i == currentSelection ? ">" : " ";
+				text += "[" + i + "]";
+				text += DoorMapObject.getDoorName(doors[i]);
 				textManager.DrawText(136, 211 + 9*optionsShown, text, 16);
 				optionsShown--;
 			}
