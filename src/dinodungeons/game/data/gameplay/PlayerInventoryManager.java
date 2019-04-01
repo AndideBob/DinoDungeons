@@ -31,9 +31,14 @@ public class PlayerInventoryManager {
 	//Collectables
 	private HashMap<CollectableType, CollectableContainer> collectables;
 	
+	private HashMap<Integer, Boolean> masterKeys;
+	private HashMap<Integer, Boolean> maps;
+	
 	private PlayerInventoryManager(){
 		currentDungeon = 0;
 		collectedItems = new HashSet<>();
+		masterKeys = new HashMap<>();
+		maps = new HashMap<>();
 		collectables = new HashMap<>();
 		for(CollectableType collectable : CollectableType.values()){
 			int minValue = 0;
@@ -46,15 +51,29 @@ public class PlayerInventoryManager {
 			case KEYS_DUNGEON_02:
 			case KEYS_DUNGEON_03:
 			case KEYS_DUNGEON_04:
+			case KEYS_DUNGEON_05:
+			case KEYS_DUNGEON_06:
+			case KEYS_DUNGEON_07:
+			case KEYS_DUNGEON_08:
+			case KEYS_DUNGEON_09:
+			case KEYS_DUNGEON_10:
+			case KEYS_DUNGEON_11:
+			case KEYS_DUNGEON_12:
 				maxValue = DinoDungeonsConstants.maxKeyAmount;
 				break;
 			case MONEY:
 				maxValue = DinoDungeonsConstants.maxMoneyAmount;
-				break;	
+				break;
 			}
 			collectables.put(collectable, new CollectableContainer(minValue, maxValue));
 		}
 	}
+	
+	public void setCurrentDungeon(int dungeonID){
+		currentDungeon = dungeonID;
+	}
+	
+	//ITEMS
 	
 	public Collection<ItemID> getCollectedItems(){
 		return Collections.unmodifiableSet(collectedItems);
@@ -83,6 +102,19 @@ public class PlayerInventoryManager {
 		}
 	}
 	
+	//COLLECTABLE VALUES
+	public int getCurrent(CollectableType collectable){
+		return collectables.get(collectable).getValue();
+	}
+	
+	public boolean isMaxed(CollectableType collectable){
+		return collectables.get(collectable).isMax();
+	}
+	
+	public boolean isEmpty(CollectableType collectable){
+		return collectables.get(collectable).isMin();
+	}
+	
 	public void increase(CollectableType collectable, int amount){
 		collectables.get(collectable).increase(amount);
 	}
@@ -106,32 +138,47 @@ public class PlayerInventoryManager {
 	public void decreaseKeysForCurrentDungeon(int amount){
 		decrease(CollectableType.getKeyTypeForDungeonID(currentDungeon), amount);
 	}
-	
-	public int getCurrent(CollectableType collectable){
-		return collectables.get(collectable).getValue();
-	}
-	
-	public boolean isMaxed(CollectableType collectable){
-		return collectables.get(collectable).isMax();
-	}
-	
-	public boolean isEmpty(CollectableType collectable){
-		return collectables.get(collectable).isMin();
-	}
-	
-	public void setCurrentDungeon(int dungeonID){
-		currentDungeon = dungeonID;
-	}
 
+	//DUNGEON ITEMS
 	public void collectDungeonItem(DungeonItemID itemID) {
 		switch (itemID) {
 		case KEY_SMALL:
 			increaseKeysForCurrentDungeon(1);
 			break;
+		case KEY_BIG:
+			collectMasterKeyForCurrentDungeon();
+			break;
+		case MAP:
+			collectMapForCurrentDungeon();
+			break;
 		default:
 			Logger.logError("Collection of " + itemID.toString() + " not supported yet!");
 			break;
 		}
+	}
+	
+	//MASTER KEY
+	public void collectMasterKeyForCurrentDungeon(){
+		masterKeys.put(currentDungeon, Boolean.TRUE);
+	}
+	
+	public boolean hasMasterKeyForCurrentDungeon(){
+		if(!masterKeys.containsKey(currentDungeon)){
+			masterKeys.put(currentDungeon, Boolean.FALSE);
+		}
+		return masterKeys.get(currentDungeon);
+	}
+	
+	//MAP
+	public void collectMapForCurrentDungeon(){
+		maps.put(currentDungeon, Boolean.TRUE);
+	}
+	
+	public boolean hasMapForCurrentDungeon(){
+		if(!maps.containsKey(currentDungeon)){
+			maps.put(currentDungeon, Boolean.FALSE);
+		}
+		return maps.get(currentDungeon);
 	}
 
 }
