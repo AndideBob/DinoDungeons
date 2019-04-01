@@ -19,6 +19,8 @@ public class ScreenMap {
 	
 	private TileSet tileSet;
 	
+	private int dungeonID;
+	
 	private int[][] baseLayer;
 	
 	private BaseLayerTile[][] baseLayerTiles;
@@ -40,6 +42,8 @@ public class ScreenMap {
 		transitionUpID = "0000";
 		//TileSet
 		tileSet = TileSet.CAVE_GREEN;
+		//DungeonID
+		dungeonID = 0;
 	}
 	
 	public void updateBaseLayerTiles(){
@@ -311,5 +315,17 @@ public class ScreenMap {
 		else{
 			throw new ScreenMapIndexOutOfBounds("Tried to access [" + posX + "," + posY + "] but Map is only of Size [" + sizeX + "," + sizeY + "]");
 		}
+	}
+
+	public int getDungeonID() {
+		return dungeonID;
+	}
+
+	public void setDungeonID(int dungeonID) {
+		this.dungeonID = dungeonID;
+	}
+	
+	public boolean isDungeon(){
+		return dungeonID > 0;
 	}
 }

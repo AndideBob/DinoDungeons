@@ -26,19 +26,22 @@ public class PlayerInventoryManager {
 	
 	private Set<ItemID> collectedItems;
 	
+	private int currentDungeon;
+	
 	//Collectables
 	private HashMap<CollectableType, CollectableContainer> collectables;
 	
 	private PlayerInventoryManager(){
+		currentDungeon = 0;
 		collectedItems = new HashSet<>();
 		collectables = new HashMap<>();
 		for(CollectableType collectable : CollectableType.values()){
 			int minValue = 0;
 			int maxValue = 0;
 			switch(collectable){
+			case NONE:
 			case BOMBS:
 				break;
-			case KEYS_DUNGEON_00:
 			case KEYS_DUNGEON_01:
 			case KEYS_DUNGEON_02:
 			case KEYS_DUNGEON_03:
@@ -88,6 +91,22 @@ public class PlayerInventoryManager {
 		collectables.get(collectable).increase(amount);
 	}
 	
+	public boolean hasKeysForCurrentDungeon(){
+		return !isEmpty(CollectableType.getKeyTypeForDungeonID(currentDungeon));
+	}
+	
+	public int getKeysForCurrentDungeon(){
+		return getCurrent(CollectableType.getKeyTypeForDungeonID(currentDungeon));
+	}
+	
+	public void increaseKeysForCurrentDungeon(int amount){
+		increase(CollectableType.getKeyTypeForDungeonID(currentDungeon), amount);
+	}
+	
+	public void decreaseKeysForCurrentDungeon(int amount){
+		decrease(CollectableType.getKeyTypeForDungeonID(currentDungeon), amount);
+	}
+	
 	public int getCurrent(CollectableType collectable){
 		return collectables.get(collectable).getValue();
 	}
@@ -99,9 +118,20 @@ public class PlayerInventoryManager {
 	public boolean isEmpty(CollectableType collectable){
 		return collectables.get(collectable).isMin();
 	}
+	
+	public void setCurrentDungeon(int dungeonID){
+		currentDungeon = dungeonID;
+	}
 
 	public void collectDungeonItem(DungeonItemID itemID) {
-		//TODO: Handle Collection of keys, map, etc
+		switch (itemID) {
+		case KEY_SMALL:
+			increaseKeysForCurrentDungeon(1);
+			break;
+		default:
+			Logger.logError("Collection of " + itemID.toString() + " not supported yet!");
+			break;
+		}
 	}
 
 }

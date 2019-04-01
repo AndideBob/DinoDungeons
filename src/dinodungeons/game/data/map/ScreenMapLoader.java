@@ -92,6 +92,10 @@ public class ScreenMapLoader {
             		//TileSet
             		result.setTileSet(TileSet.getTileSetFromRepesentation(line));
             	}
+            	else if(lineIndex == height*2+12){
+            		//TileSet
+            		result.setDungeonID(Integer.parseInt(line));
+            	}
             	lineIndex++;
             	line = br.readLine();
             }

@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 import dinodungeons.game.data.gameplay.GameEventManager;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.gameplay.PlayerInventoryManager;
 import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapUtil;
@@ -133,6 +134,7 @@ public class GameObjectManager {
 	
 	public void setCurrentMap(ScreenMap map, boolean cleanOtherRooms){
 		GameEventManager.getInstance().clearRoomEvents();
+		PlayerInventoryManager.getInstance().setCurrentDungeon(map.getDungeonID());
 		if(cleanOtherRooms){
 			for(Collection<GameObject> gos : gameObjects.values()) {
 				for(GameObject o : gos) {
