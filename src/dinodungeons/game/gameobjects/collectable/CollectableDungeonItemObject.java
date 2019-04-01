@@ -4,11 +4,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 import dinodungeons.game.data.gameplay.InputInformation;
-import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.player.DungeonItemID;
-import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import lwjgladapter.physics.collision.RectCollider;

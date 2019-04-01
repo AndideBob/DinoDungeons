@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import dinodungeons.game.data.gameplay.InputInformation;
-import dinodungeons.game.data.gameplay.PlayerStatusManager;
-import dinodungeons.game.gameobjects.base.GameObject;
+import dinodungeons.game.data.gameplay.PlayerInventoryManager;
+import dinodungeons.game.data.gameplay.inventory.CollectableType;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -35,7 +35,7 @@ public class BombPickupObject extends PickupObject {
 				//TODO: Correct Sound
 				SoundManager.getInstance().playSoundEffect(SoundEffect.PICKUP_HEALTH);
 				wasCollected = true;
-				PlayerStatusManager.getInstance().addBombs(1);
+				PlayerInventoryManager.getInstance().increase(CollectableType.BOMBS, 1);
 			}
 		}
 	}

@@ -1,6 +1,8 @@
 package dinodungeons.gfx.ui;
 
+import dinodungeons.game.data.gameplay.PlayerInventoryManager;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
+import dinodungeons.game.data.gameplay.inventory.CollectableType;
 import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.game.utils.MenuManager;
 import dinodungeons.gfx.GFXResourceID;
@@ -27,11 +29,12 @@ public class DrawUIManager {
 	}
 	
 	public void draw(MenuManager menuManager){
+		PlayerInventoryManager inventory = PlayerInventoryManager.getInstance();
 		PlayerStatusManager playerStatus = PlayerStatusManager.getInstance();
 		int internalYPosition = menuManager.getInternalYPosition();
 		drawOnscreenUI(internalYPosition, playerStatus);
 		if(internalYPosition < MenuManager.defaultYPosition){
-			drawMenuUI(internalYPosition, playerStatus, menuManager);
+			drawMenuUI(internalYPosition, inventory, menuManager);
 		}
 	}
 	
@@ -54,12 +57,12 @@ public class DrawUIManager {
 		collectableSprites.setColorValues(0f, 0.8f, 1f, 1f);
 		collectableSprites.draw(0, 0, yPosition + 13);
 		collectableSprites.setColorValues(1f, 1f, 1f, 1f);
-		int moneyAmount = PlayerStatusManager.getInstance().getCurrentMoney();
+		int moneyAmount = PlayerInventoryManager.getInstance().getCurrent(CollectableType.MONEY);
 		String money = String.format("%03d", moneyAmount);
 		textManager.DrawText(10, yPosition + 14, money, 3);
 		//Bombs
 		collectableSprites.draw(4, 0, yPosition + 1);
-		int bombAmount = PlayerStatusManager.getInstance().getCurrentBombs();
+		int bombAmount = PlayerInventoryManager.getInstance().getCurrent(CollectableType.BOMBS);
 		String bombs = String.format("%02d", bombAmount);
 		textManager.DrawText(20, yPosition + 2, bombs, 2);
 	}
@@ -130,16 +133,16 @@ public class DrawUIManager {
 		}
 	}
 	
-	private void drawMenuUI(int yPosition, PlayerStatusManager playerStatus, MenuManager menuManager){
+	private void drawMenuUI(int yPosition, PlayerInventoryManager inventory, MenuManager menuManager){
 		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(0, 0, yPosition + 64, GameWindowConstants.DEFAULT_SCREEN_WIDTH, 192f);
 		drawBorders(yPosition+64);
 		drawBorders(yPosition+248);
-		drawItemSelection(yPosition, playerStatus, menuManager);
+		drawItemSelection(yPosition, inventory, menuManager);
 	}
 	
-	private void drawItemSelection(int yPosition, PlayerStatusManager playerStatus, MenuManager menuManager){
+	private void drawItemSelection(int yPosition, PlayerInventoryManager inventory, MenuManager menuManager){
 		for(ItemID item : ItemID.values()){
-			if(!playerStatus.getCollectedItems().contains(item)){
+			if(!inventory.getCollectedItems().contains(item)){
 				continue;
 			}
 			int x = 0;

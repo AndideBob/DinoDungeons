@@ -5,7 +5,7 @@ import java.util.Collection;
 import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
 import dinodungeons.game.data.gameplay.InputInformation;
-import dinodungeons.game.data.gameplay.PlayerStatusManager;
+import dinodungeons.game.data.gameplay.PlayerInventoryManager;
 import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.MapManager;
@@ -17,7 +17,6 @@ import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.CollisionInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
-import dinodungeons.game.gameobjects.enemies.EnemyBatObject;
 import dinodungeons.game.gameobjects.environment.StonePushSwitch;
 import dinodungeons.game.gameobjects.immovable.RoomSwitchDoorObject;
 import dinodungeons.game.gameobjects.player.ItemID;
@@ -246,13 +245,13 @@ public class DinoDungeons extends Game {
 	
 	private void updateDebug(){
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_1).equals(ButtonState.RELEASED)){
-			PlayerStatusManager.getInstance().collectItem(ItemID.CLUB);
+			PlayerInventoryManager.getInstance().collectItem(ItemID.CLUB);
 		}
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_2).equals(ButtonState.RELEASED)){
-			PlayerStatusManager.getInstance().collectItem(ItemID.BOOMERANG);
+			PlayerInventoryManager.getInstance().collectItem(ItemID.BOOMERANG);
 		}
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_3).equals(ButtonState.RELEASED)){
-			PlayerStatusManager.getInstance().collectItem(ItemID.BOMB);
+			PlayerInventoryManager.getInstance().collectItem(ItemID.BOMB);
 		}
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_CRTL_RIGHT).equals(ButtonState.RELEASED)){
 			GameObjectManager.getInstance().addGameObjectToCurrentMap(new StonePushSwitch(80,80,0,RoomEvent.SWITCH_A));

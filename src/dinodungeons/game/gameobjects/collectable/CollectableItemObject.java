@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import dinodungeons.game.data.gameplay.InputInformation;
-import dinodungeons.game.data.gameplay.PlayerStatusManager;
+import dinodungeons.game.data.gameplay.PlayerInventoryManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.player.ItemID;
@@ -75,7 +75,7 @@ public class CollectableItemObject extends GameObject {
 
 	@Override
 	public void update(long deltaTimeInMs, InputInformation inputInformation) {
-		isValid = !PlayerStatusManager.getInstance().getCollectedItems().contains(itemID);
+		isValid = !PlayerInventoryManager.getInstance().getCollectedItems().contains(itemID);
 	}
 
 	@Override

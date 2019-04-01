@@ -1,7 +1,8 @@
 package dinodungeons.game.gameobjects.player;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
-import dinodungeons.game.data.gameplay.PlayerStatusManager;
+import dinodungeons.game.data.gameplay.PlayerInventoryManager;
+import dinodungeons.game.data.gameplay.inventory.CollectableType;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.item.ItemBombObject;
@@ -55,8 +56,8 @@ public class ItemUsageManager {
 			}
 			break;
 		case BOMB:
-			if(PlayerStatusManager.getInstance().canUseBomb()) {
-				PlayerStatusManager.getInstance().useBomb();
+			if(!PlayerInventoryManager.getInstance().isEmpty(CollectableType.BOMBS)) {
+				PlayerInventoryManager.getInstance().decrease(CollectableType.BOMBS, 1);
 				weaponObject = new DropingWeaponObject(DinoDungeonsConstants.dropItemDuration);
 				GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
 				GameObjectManager.getInstance().addGameObjectToCurrentMap(new ItemBombObject(positionX, positionY));

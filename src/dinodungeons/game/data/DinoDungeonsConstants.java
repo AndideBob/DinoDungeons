@@ -45,13 +45,17 @@ public class DinoDungeonsConstants {
 	public static final int numberOfSpikes = 3;
 	public static final int numberOfDestructables = 1;
 	
+	public static final int maxMoneyAmount = 999;
 	public static final int maxBombAmountBasic = 10;
 	public static final int maxBombAmountAdvanced = 20;
+	public static final int maxKeyAmount = 99;
 	
 	public static final int directionDown = 0;
 	public static final int directionLeft = 1;
 	public static final int directionUp = 2;
 	public static final int directionRight = 3;
+
+	
 
 	
 	

@@ -2,6 +2,7 @@ package dinodungeons.game.utils;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.gameplay.PlayerInventoryManager;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.gameobjects.player.ItemID;
 import lwjgladapter.input.ButtonState;
@@ -91,7 +92,7 @@ public class MenuManager {
 	private void selectItem(InputInformation inputInformation){
 		if(inputInformation.getA().equals(ButtonState.RELEASED)){
 			ItemID selectedItem = getItemBySelection();
-			if(selectedItem != null && PlayerStatusManager.getInstance().getCollectedItems().contains(selectedItem)){
+			if(selectedItem != null && PlayerInventoryManager.getInstance().getCollectedItems().contains(selectedItem)){
 				if(PlayerStatusManager.getInstance().getItemB() != null && PlayerStatusManager.getInstance().getItemB().equals(selectedItem)){
 					PlayerStatusManager.getInstance().setItemB(PlayerStatusManager.getInstance().getItemA());
 				}
@@ -103,7 +104,7 @@ public class MenuManager {
 		}
 		if(inputInformation.getB().equals(ButtonState.RELEASED)){
 			ItemID selectedItem = getItemBySelection();
-			if(selectedItem != null && PlayerStatusManager.getInstance().getCollectedItems().contains(selectedItem)){
+			if(selectedItem != null && PlayerInventoryManager.getInstance().getCollectedItems().contains(selectedItem)){
 				if(PlayerStatusManager.getInstance().getItemA() != null && PlayerStatusManager.getInstance().getItemA().equals(selectedItem)){
 					PlayerStatusManager.getInstance().setItemA(PlayerStatusManager.getInstance().getItemB());
 				}

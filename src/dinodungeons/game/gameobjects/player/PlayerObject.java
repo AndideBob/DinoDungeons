@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.gameplay.PlayerInventoryManager;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
@@ -143,14 +144,14 @@ public class PlayerObject extends GameObject {
 
 	private void collectItem(ItemID itemID){
 		playerState = PlayerState.ITEM_COLLECTED;
-		PlayerStatusManager.getInstance().collectItem(itemID);
+		PlayerInventoryManager.getInstance().collectItem(itemID);
 		playerDrawManager.setCollectedItem(itemID);
 		stateTimer = DinoDungeonsConstants.itemCollectionCharacterFreeze;
 	}
 	
 	private void collectItem(DungeonItemID itemID){
 		playerState = PlayerState.ITEM_COLLECTED;
-		PlayerStatusManager.getInstance().collectDungeonItem(itemID);
+		PlayerInventoryManager.getInstance().collectDungeonItem(itemID);
 		playerDrawManager.setCollectedItem(itemID);
 		stateTimer = DinoDungeonsConstants.dungeonItemCollectionCharacterFreeze;
 	}

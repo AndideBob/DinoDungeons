@@ -23,19 +23,10 @@ public class PlayerStatusManager {
 	
 	private static final int defaultHealth = 6;
 	private static final int totalMaxHealth = 48;
-	private static final int maxMoney = 999;
 	
 	private int maxHealth;
 	
 	private int currentHealth;
-	
-	private int maxBombs;
-	
-	private int currentBombs;
-	
-	private int currentMoney;
-	
-	private Set<ItemID> collectedItems;
 	
 	private ItemID itemA;
 	
@@ -44,9 +35,6 @@ public class PlayerStatusManager {
 	private PlayerStatusManager() {
 		maxHealth = defaultHealth;
 		currentHealth = maxHealth;
-		maxBombs = 0;
-		currentBombs = maxBombs;
-		collectedItems = new HashSet<>();
 		itemA = null;
 		itemB = null;
 	}
@@ -65,33 +53,6 @@ public class PlayerStatusManager {
 	
 	public ItemID getItemB(){
 		return itemB;
-	}
-	
-	public Collection<ItemID> getCollectedItems(){
-		return Collections.unmodifiableSet(collectedItems);
-	}
-	
-	public void collectItem(ItemID itemID){
-		if(!collectedItems.contains(itemID)) {
-			Logger.logDebug("Item collected: " + itemID.toString());
-			collectedItems.add(itemID);
-			if(itemA == null) {
-				itemA = itemID;
-			}
-			else if(itemB == null) {
-				itemB = itemID;
-			}
-			increaseLimitsOnItemCollection(itemID);
-		}
-	}
-	
-	private void increaseLimitsOnItemCollection(ItemID itemID) {
-		switch(itemID) {
-		case BOMB:
-			maxBombs = DinoDungeonsConstants.maxBombAmountBasic;
-			currentBombs = maxBombs;
-			break;
-		}
 	}
 
 	public int getMaxHealth() {
@@ -125,66 +86,6 @@ public class PlayerStatusManager {
 
 	public int getCurrentHealth() {
 		return currentHealth;
-	}
-	
-	public void addMoney(int amount){
-		if(amount > 0){
-			currentMoney += amount;
-			if(currentMoney > maxMoney){
-				currentMoney = maxMoney;
-			}
-		}
-		else{
-			Logger.logDebug("Tried to add negative or zero amount of money! No change made!");
-		}
-	}
-	
-	public void removeMoney(int amount){
-		if(amount > 0){
-			currentMoney -= amount;
-			if(currentMoney < 0){
-				currentMoney = 0;
-			}
-		}
-		else{
-			Logger.logDebug("Tried to remove negative or zero amount of money! No change made!");
-		}
-	}
-	
-	public boolean isMoneyMaxedOut(){
-		return currentMoney >= maxMoney;
-	}
-	
-	public boolean isMoneyEmpty(){
-		return currentMoney <= 0;
-	}
-
-	public int getCurrentMoney() {
-		return currentMoney;
-	}
-
-	public int getCurrentBombs() {
-		return currentBombs;
-	}
-
-	public boolean canUseBomb() {
-		return currentBombs > 0;
-	}
-
-	public void addBombs(int amount) {
-		currentBombs = Math.min(currentBombs + amount, maxBombs);
-	}
-	
-	public void useBomb() {
-		currentBombs--;
-	}
-
-	public boolean needsBombs() {
-		return currentBombs < maxBombs;
-	}
-
-	public void collectDungeonItem(DungeonItemID itemID) {
-		//TODO: Handle Collection of keys, map, etc
 	}
 
 }

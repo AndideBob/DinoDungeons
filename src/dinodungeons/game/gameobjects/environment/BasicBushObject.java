@@ -5,7 +5,9 @@ import java.util.Collections;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.gameplay.PlayerInventoryManager;
 import dinodungeons.game.data.gameplay.PlayerStatusManager;
+import dinodungeons.game.data.gameplay.inventory.CollectableType;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
@@ -67,7 +69,7 @@ public class BasicBushObject extends GameObject {
 			if(item == 0 && PlayerStatusManager.getInstance().isHurt()) {
 				GameObjectManager.getInstance().addGameObjectToCurrentMap(new HealthPickupObject(x, y));
 			}
-			else if(item == 1 && PlayerStatusManager.getInstance().needsBombs()) {
+			else if(item == 1 && !PlayerInventoryManager.getInstance().isMaxed(CollectableType.BOMBS)) {
 				GameObjectManager.getInstance().addGameObjectToCurrentMap(new BombPickupObject(x, y));
 			}
 			else{

@@ -5,7 +5,8 @@ import java.util.Collections;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
-import dinodungeons.game.data.gameplay.PlayerStatusManager;
+import dinodungeons.game.data.gameplay.PlayerInventoryManager;
+import dinodungeons.game.data.gameplay.inventory.CollectableType;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -48,16 +49,16 @@ public class MoneyPickupObject extends PickupObject {
 				wasCollected = true;
 				switch(tag){
 				case COLLECTABLE_MONEY_OBJECT_VALUE_ONE:
-					PlayerStatusManager.getInstance().addMoney(1);
+					PlayerInventoryManager.getInstance().increase(CollectableType.MONEY, 1);
 					break;
 				case COLLECTABLE_MONEY_OBJECT_VALUE_FIVE:
-					PlayerStatusManager.getInstance().addMoney(5);
+					PlayerInventoryManager.getInstance().increase(CollectableType.MONEY, 5);
 					break;
 				case COLLECTABLE_MONEY_OBJECT_VALUE_TEN:
-					PlayerStatusManager.getInstance().addMoney(10);
+					PlayerInventoryManager.getInstance().increase(CollectableType.MONEY, 10);
 					break;
 				case COLLECTABLE_MONEY_OBJECT_VALUE_TWENTYFIVE:
-					PlayerStatusManager.getInstance().addMoney(25);
+					PlayerInventoryManager.getInstance().increase(CollectableType.MONEY, 25);
 					break;
 				default:
 					Logger.logError("Money was incorrectly tagged: " + tag.toString());

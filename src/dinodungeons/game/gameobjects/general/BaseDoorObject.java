@@ -1,14 +1,10 @@
 package dinodungeons.game.gameobjects.general;
 
-import java.util.Collection;
-
 import dinodungeons.game.data.DinoDungeonsConstants;
-import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.particles.SmokeParticle;
-import lwjgladapter.physics.collision.base.Collider;
 
 public abstract class BaseDoorObject extends GameObject {
 
