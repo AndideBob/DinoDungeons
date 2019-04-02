@@ -23,6 +23,7 @@ class FolderConstants{
 public enum GFXResourceID {
 	//EDITOR
 	EDITOR_SELECTOR(FolderConstants.folderEDITOR, "editorSelector.png"),
+	EDITOR_BUTTONS(FolderConstants.folderEDITOR, "buttons.png"),
 	//UI
 	UI_BACKGROUND(FolderConstants.folderUI, "ui_background.png"),
 	UI_HEALTH(FolderConstants.folderUI, "health.png"),

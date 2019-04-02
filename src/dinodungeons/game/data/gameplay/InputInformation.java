@@ -3,6 +3,7 @@ package dinodungeons.game.data.gameplay;
 import lwjgladapter.input.ButtonState;
 import lwjgladapter.input.InputManager;
 import lwjgladapter.input.KeyboardKey;
+import lwjgladapter.input.MouseButton;
 import lwjgladapter.input.gamepad.GamepadButton;
 import lwjgladapter.input.gamepad.GamepadID;
 
@@ -17,6 +18,10 @@ public class InputInformation {
 	private ButtonState a;
 	private ButtonState b;
 	
+	private int mouseX;
+	private int mouseY;
+	private ButtonState leftMouseButton;
+	
 	public InputInformation() {
 		left = ButtonState.UP;
 		right = ButtonState.UP;
@@ -25,6 +30,9 @@ public class InputInformation {
 		start = ButtonState.UP;
 		a = ButtonState.UP;
 		b = ButtonState.UP;
+		mouseX = 0;
+		mouseY = 0;
+		leftMouseButton = ButtonState.UP;
 	}
 	
 	public void update(){
@@ -35,6 +43,9 @@ public class InputInformation {
 		start = cumulateButtonStates(start, KeyboardKey.KEY_ESCAPE, GamepadButton.START);
 		a = cumulateButtonStates(a, KeyboardKey.KEY_SPACE, GamepadButton.XBOX_A);
 		b = cumulateButtonStates(b, KeyboardKey.KEY_CRTL_LEFT, GamepadButton.XBOX_B);
+		mouseX = InputManager.instance.getRelativeMousePositionXAsInt();
+		mouseY = InputManager.instance.getRelativeMousePositionYAsInt();
+		leftMouseButton = InputManager.instance.getMouseState(MouseButton.LEFT);
 	}
 	
 	private ButtonState cumulateButtonStates(ButtonState oldState, KeyboardKey key, GamepadButton button){
@@ -127,5 +138,16 @@ public class InputInformation {
 	public ButtonState getB() {
 		return b;
 	}
-	
+
+	public int getMouseX() {
+		return mouseX;
+	}
+
+	public int getMouseY() {
+		return mouseY;
+	}
+
+	public ButtonState getLeftMouseButton() {
+		return leftMouseButton;
+	}
 }
