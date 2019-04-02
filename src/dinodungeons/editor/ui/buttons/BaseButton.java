@@ -11,7 +11,7 @@ import lwjgladapter.physics.PhysicsHelper;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.exceptions.CollisionNotSupportedException;
 
-public abstract class BaseButton implements UIElement{
+public abstract class BaseButton extends UIElement{
 
 	private ButtonSprite sprite;
 	

@@ -4,7 +4,7 @@ import dinodungeons.editor.ui.UIElement;
 import dinodungeons.game.data.gameplay.InputInformation;
 import lwjgladapter.physics.collision.RectCollider;
 
-public class MouseHandler implements UIElement {
+public class MouseHandler extends UIElement {
 
 	private RectCollider clickCollider;
 	
