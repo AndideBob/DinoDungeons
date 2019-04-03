@@ -1,6 +1,7 @@
 package dinodungeons.editor.ui.input;
 
 import dinodungeons.editor.Editor;
+import dinodungeons.editor.EditorControlUtil;
 import dinodungeons.editor.ui.UIElement;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.window.ButtonWindowCancel;
@@ -55,7 +56,7 @@ public class TextInputWindow extends UIElement implements EditorWindow {
 				if(InputManager.instance.getKeyState(KeyboardKey.KEY_ENTER) == ButtonState.RELEASED){
 					closeConfirm();
 				}
-				else if(InputManager.instance.getKeyState(KeyboardKey.KEY_ESCAPE) == ButtonState.RELEASED){
+				else if(EditorControlUtil.getEscapePressed()){
 					closeCancel();
 				}
 			}

@@ -1,5 +1,8 @@
 package dinodungeons.editor.map;
 
+import java.util.Collection;
+
+import dinodungeons.editor.map.change.MapChange;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapLoader;
@@ -71,6 +74,12 @@ public class EditorMapManager {
 	public void saveMap(String enteredID){
 		if(enteredID != null && !enteredID.isEmpty()){
 			saver.saveMap(enteredID, currentMap);
+		}
+	}
+	
+	public void applyMapChanges(Collection<MapChange> changes){
+		for(MapChange change : changes){
+			change.applyTo(currentMap);
 		}
 	}
 }

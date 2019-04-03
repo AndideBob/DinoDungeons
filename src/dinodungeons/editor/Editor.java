@@ -1,6 +1,7 @@
 package dinodungeons.editor;
 
 import dinodungeons.editor.map.EditorMapManager;
+import dinodungeons.editor.map.MapChangeManager;
 import dinodungeons.editor.ui.EditorUIHandler;
 import dinodungeons.editor.ui.input.InputUsage;
 import dinodungeons.game.data.gameplay.InputInformation;
@@ -17,6 +18,7 @@ public class Editor extends Game {
 	
 	private EditorUIHandler uiHandler;
 	private EditorMapManager mapManager;
+	private MapChangeManager mapChangeManager;
 	
 	private InputInformation currentInput;
 
@@ -25,6 +27,7 @@ public class Editor extends Game {
 		currentState = EditorState.DEFAULT;
 		uiHandler = new EditorUIHandler(this);
 		mapManager = new EditorMapManager();
+		mapChangeManager = new MapChangeManager();
 	}
 
 	@Override
@@ -40,6 +43,8 @@ public class Editor extends Game {
 		PhysicsHelper.getInstance().checkCollisions();
 		currentInput.update();
 		uiHandler.update(currentState, currentInput);
+		mapChangeManager.update(currentInput);
+		mapManager.applyMapChanges(mapChangeManager.getNewMapChanges());
 		mapManager.update();
 	}
 
