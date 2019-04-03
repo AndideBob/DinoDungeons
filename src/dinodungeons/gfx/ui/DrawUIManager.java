@@ -24,7 +24,6 @@ public class DrawUIManager {
 	public void loadResources(){
 		healthSprite = new SpriteMap(GFXResourceID.UI_HEALTH.getFilePath(), 8, 8);
 		borderSprite = new SpriteMap(GFXResourceID.UI_BORDERS.getFilePath(), 8, 8);
-		textManager = new DrawTextManager(GFXResourceID.TEXT_BLACK.getFilePath());
 		collectableSprites = SpriteManager.getInstance().getSprite(SpriteID.COLLECTABLES);
 	}
 	
@@ -59,12 +58,12 @@ public class DrawUIManager {
 		collectableSprites.setColorValues(1f, 1f, 1f, 1f);
 		int moneyAmount = PlayerInventoryManager.getInstance().getCurrent(CollectableType.MONEY);
 		String money = String.format("%03d", moneyAmount);
-		textManager.DrawText(10, yPosition + 14, money, 3);
+		DrawTextManager.getInstance().drawText(10, yPosition + 14, money, 3);
 		//Bombs
 		collectableSprites.draw(4, 0, yPosition + 1);
 		int bombAmount = PlayerInventoryManager.getInstance().getCurrent(CollectableType.BOMBS);
 		String bombs = String.format("%02d", bombAmount);
-		textManager.DrawText(20, yPosition + 2, bombs, 2);
+		DrawTextManager.getInstance().drawText(20, yPosition + 2, bombs, 2);
 	}
 
 	private void drawBorders(int yPosition){
@@ -80,12 +79,12 @@ public class DrawUIManager {
 		//Item Borders
 		int healthEnding = healthPerLine * 8;
 		drawItemBorder(healthEnding, yPosition + 8);
-		textManager.DrawText(healthEnding + 32, yPosition + 24, "A", 1);
+		DrawTextManager.getInstance().drawText(healthEnding + 32, yPosition + 24, "A", 1);
 		if(playerStatus.getItemA() != null){
 			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(playerStatus.getItemA().getSpriteSheetPosition(), healthEnding + 8, yPosition + 16);
 		}
 		drawItemBorder(healthEnding + 48, yPosition + 8);
-		textManager.DrawText(healthEnding + 80, yPosition + 24, "B", 1);
+		DrawTextManager.getInstance().drawText(healthEnding + 80, yPosition + 24, "B", 1);
 		if(playerStatus.getItemB() != null){
 			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(playerStatus.getItemB().getSpriteSheetPosition(), healthEnding + 56, yPosition + 16);
 		}

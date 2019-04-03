@@ -17,8 +17,8 @@ public class Main {
 		handleArgs(args);
 		if(startAsEditor){
 			GameWindowConstants.DEFAULT_SCREEN_WIDTH = 320;
-			GameWindowConstants.DEFAULT_SCREEN_HEIGHT = 272;
-			GameWindow gameWindow = new GameWindow(640, 544, Color.BLACK, "Dino Dungeons Editor", 30);
+			GameWindowConstants.DEFAULT_SCREEN_HEIGHT = 240;
+			GameWindow gameWindow = new GameWindow(640, 480, Color.BLACK, "Dino Dungeons Editor", 30);
 			gameWindow.run(new Editor());
 		}
 		else{

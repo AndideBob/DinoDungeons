@@ -8,7 +8,9 @@ public enum ButtonSprite {
 	SET_ROOM_UP(4),
 	SET_ROOM_DOWN(5),
 	SET_ROOM_LEFT(6),
-	SET_ROOM_RIGHT(7);
+	SET_ROOM_RIGHT(7),
+	CONFIRM(8),
+	CANCEL(9);
 	
 	private int positionOnSpriteSheet;
 	

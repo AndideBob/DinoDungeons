@@ -23,17 +23,27 @@ public abstract class BaseButton extends UIElement{
 	
 	private boolean wasClicked;
 	
+	private boolean pressed;
+	
 	public BaseButton(int positionX, int positionY, ButtonSprite sprite) {
 		this.sprite = sprite;
 		this.positionX = positionX;
 		this.positionY = positionY;
 		buttonSurface = new RectCollider(positionX, positionY, 16, 16);
 		wasClicked = false;
+		pressed = false;
 	}
 	
 	@Override
 	public final void update(InputInformation inputInformation) {
-		if(inputInformation.getLeftMouseButton().equals(ButtonState.RELEASED)) {
+		pressed = false;
+		if(inputInformation.getLeftMouseButton().equals(ButtonState.DOWN) ||
+				inputInformation.getLeftMouseButton().equals(ButtonState.PRESSED)){
+			if(isMouseOver()){
+				pressed = true;
+			}
+		}
+		else if(inputInformation.getLeftMouseButton().equals(ButtonState.RELEASED)) {
 			try {
 				if(!wasClicked && PhysicsHelper.getInstance().checkCollisionBetween(buttonSurface, MouseHandler.getInstance().getCollider()) != null) {
 					onClick();
@@ -47,12 +57,31 @@ public abstract class BaseButton extends UIElement{
 			wasClicked = false;
 		}
 	}
+	
+	private boolean isMouseOver(){
+		try {
+			return PhysicsHelper.getInstance().checkCollisionBetween(buttonSurface, MouseHandler.getInstance().getCollider()) != null;
+		} catch (CollisionNotSupportedException e) {
+			Logger.logError(e);
+			return false;
+		}
+	}
 
 	@Override
 	public final void draw() {
+		if(pressed){
+			SpriteManager.getInstance().getSprite(SpriteID.EDITOR_BUTTONS).setColorValues(0.6f, 0.6f, 0.6f, 1f);
+		}
 		SpriteManager.getInstance().getSprite(SpriteID.EDITOR_BUTTONS).draw(sprite.getPositionOnSpriteSheet(), positionX, positionY);
+		if(pressed){
+			SpriteManager.getInstance().getSprite(SpriteID.EDITOR_BUTTONS).setColorValues(1f, 1f, 1f, 1f);
+		}
 	}
 	
 	protected abstract void onClick();
+
+	public void setColliderActive(boolean active) {
+		buttonSurface.setActive(active);
+	}
 
 }

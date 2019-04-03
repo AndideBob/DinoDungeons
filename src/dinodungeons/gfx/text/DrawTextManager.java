@@ -1,19 +1,30 @@
 package dinodungeons.gfx.text;
 
+import dinodungeons.gfx.GFXResourceID;
+
 public class DrawTextManager {
 	
 	private static final int letterTileWidth = 8;
 	private static final int letterTileHeight = 8;
 	
 	private static final int letterSpacing = 2;
-
+	
+	private static DrawTextManager instance;
+	
 	private LetterTileMap letterMap;
 	
-	public DrawTextManager(String textTexturePath){
+	public static DrawTextManager getInstance(){
+		if(instance == null){
+			instance = new DrawTextManager(GFXResourceID.TEXT_BLACK.getFilePath());
+		}
+		return instance;
+	}
+	
+	private DrawTextManager(String textTexturePath){
 		letterMap = new LetterTileMap(textTexturePath, letterTileWidth, letterTileHeight);
 	}
 	
-	public void DrawText(int posX, int posY, String text, int maxLength){
+	public void drawText(int posX, int posY, String text, int maxLength){
 		int count = 0;
 		String actualText = text;
 		if(text.length() > maxLength){

@@ -1,22 +1,16 @@
 package dinodungeons.editor;
 
-import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
-import dinodungeons.game.data.map.ScreenMapConstants;
 import dinodungeons.game.data.map.objects.BlockMapObject;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.DoorMapObject;
-import dinodungeons.game.data.map.objects.DoorMapObject.DoorType;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
-import dinodungeons.game.data.map.objects.BlockMapObject.BlockType;
-import dinodungeons.game.data.map.objects.EnemyMapObject.EnemyType;
-import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.gfx.GFXResourceID;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -27,14 +21,12 @@ import lwjgladapter.gfx.Sprite;
 
 public class EditorDrawManager {
 	
-	private DrawTextManager textManager;
 	private Sprite selectorTexture;
 	
 	private ScreenMap currentMap;
 	
 	public void loadTextures(){
 		TilesetManager.getInstance().loadResources();
-		textManager = new DrawTextManager(GFXResourceID.TEXT_WHITE.getFilePath());
 		selectorTexture = new Sprite(GFXResourceID.EDITOR_SELECTOR.getFilePath());
 	}
 	
@@ -47,197 +39,17 @@ public class EditorDrawManager {
 	}
 	
 	public void drawInfoText(String text) {
-		textManager.DrawText(0, 202, text, 25);
+		DrawTextManager.getInstance().drawText(0, 202, text, 25);
 	}
 	
 	public void drawEnteredText(String enteredText) {
-		textManager.DrawText(0, 192, enteredText, 4);
+		DrawTextManager.getInstance().drawText(0, 192, enteredText, 4);
 		if(enteredText.length() < 4) {
-			textManager.DrawText(enteredText.length() * 10, 192, "|", 1);
+			DrawTextManager.getInstance().drawText(enteredText.length() * 10, 192, "|", 1);
 		}
 	}
-
-	public void drawMap(){
-		for(int x = 0; x < currentMap.getSizeX(); x++){
-			for(int y = 0; y < currentMap.getSizeY(); y++){
-				BaseLayerTile tile = currentMap.getBaseLayerTileForPosition(x, y);
-				TileSet tileSet = currentMap.getTileSet();
-				TilesetManager.getInstance().drawTile(tile, tileSet, x * 16, y * 16);
-			}
-		}
-	}
-	
-	public void drawObjectsLayer(){
-		for(int x = 0; x < currentMap.getSizeX(); x++){
-			for(int y = 0; y < currentMap.getSizeY(); y++){
-				MapObject mapObject = currentMap.getMapObjectForPosition(x, y);
-				drawMapObject(mapObject, x, y);
-			}
-		}
-	}
-	
-	private void drawMapObject(MapObject mapObject, int x, int y) {
-		if(mapObject instanceof EmptyMapObject){
-			//Do not draw anything
-			return;
-		}
-		String txtUpL = "";
-		String txtLowL = "";
-		String txtUpR = "";
-		String txtLowR = "";
-		if(mapObject instanceof TransportMapObject){
-			TransportMapObject transport = (TransportMapObject) mapObject;
-			switch(transport.getTransportationType()){
-			case BLOCKED_CAVE_ENTRY:
-				txtUpL = "C";
-				txtUpR = "V";
-				txtLowL = "B";
-				txtLowR = "K";
-				switch(currentMap.getBaseLayerTileForPosition(x, y)){
-				case DOOR_DOWN:
-					TilesetManager.getInstance().drawTile(BaseLayerTile.BLOCKED_DOOR_DOWN, currentMap.getTileSet(), x * 16, y * 16);
-					break;
-				case DOOR_LEFT:
-					TilesetManager.getInstance().drawTile(BaseLayerTile.BLOCKED_DOOR_LEFT, currentMap.getTileSet(), x * 16, y * 16);
-					break;
-				case DOOR_RIGHT:
-					TilesetManager.getInstance().drawTile(BaseLayerTile.BLOCKED_DOOR_RIGHT, currentMap.getTileSet(), x * 16, y * 16);
-					break;
-				case DOOR_UP:
-					TilesetManager.getInstance().drawTile(BaseLayerTile.BLOCKED_DOOR_UP, currentMap.getTileSet(), x * 16, y * 16);
-					break;
-				default:
-					//Not placed on correctTile
-					return;
-				}
-				break;
-			case CAVE_ENTRY:
-				txtUpL = "C";
-				txtUpR = "V";
-				txtLowL = "E";
-				txtLowR = "N";
-				break;
-			case CAVE_EXIT:
-				txtUpL = "C";
-				txtUpR = "V";
-				txtLowL = "E";
-				txtLowR = "X";
-				break;
-			case INSTANT_TELEPORT:
-				txtUpL = "I";
-				txtUpR = "N";
-				txtLowL = "T";
-				txtLowR = "P";
-				break;
-			case STAIRS:
-				txtUpL = "S";
-				txtUpR = "T";
-				txtLowL = "R";
-				txtLowR = "S";
-				break;
-			}
-			return;
-		}
-		else if(mapObject instanceof ItemMapObject){
-			ItemMapObject item = (ItemMapObject) mapObject;
-			SpriteManager.getInstance().getSprite(SpriteID.ITEMS).draw(item.getItemID().getSpriteSheetPosition(), x * 16, y * 16);
-		}
-		else if(mapObject instanceof SpikeMapObject){
-			SpikeMapObject spike = (SpikeMapObject) mapObject;
-			SpriteManager.getInstance().getSprite(SpriteID.SPIKES).draw(spike.getSpikeType() * 2, x * 16, y * 16);
-		}
-		else if(mapObject instanceof DestructibleMapObject){
-			DestructibleMapObject destructable = (DestructibleMapObject) mapObject;
-			SpriteManager.getInstance().getSprite(SpriteID.DESTRUCTABLES).draw(destructable.getDestructableType() * 8 + currentMap.getTileSet().getColorVariation(), x * 16, y * 16);
-		}
-		else if(mapObject instanceof EnemyMapObject){
-			EnemyMapObject enemy = (EnemyMapObject) mapObject;
-			enemy.draw(x * 16, y * 16);
-		}
-		else if(mapObject instanceof BlockMapObject){
-			BlockMapObject block = (BlockMapObject) mapObject;
-			SpriteManager.getInstance().getSprite(SpriteID.PUSHABLES).draw(currentMap.getTileSet().getColorVariation(), x * 16, y * 16);
-			switch(block.getBlockType()){
-			case SOLID:
-				break;
-			case SWITCH_A:
-				txtUpL = "A";
-				break;
-			case SWITCH_AB:
-				txtUpL = "A";
-				txtUpR = "B";
-				break;
-			case SWITCH_ABC:
-				txtUpL = "A";
-				txtUpR = "B";
-				break;
-			case SWITCH_ABCD:
-				txtUpL = "A";
-				txtUpR = "B";
-				txtLowL = "C";
-				txtLowR = "D";
-				break;
-			case SWITCH_B:
-				txtUpL = "B";
-				break;
-			case SWITCH_C:
-				txtUpL = "C";
-				break;
-			case SWITCH_D:
-				txtUpL = "D";
-				break;
-			}
-		}
-		else if(mapObject instanceof DoorMapObject){
-			DoorMapObject door = (DoorMapObject) mapObject;
-			int alternate = 0;
-			switch(door.getDoorType()){
-			case SWITCH_A:
-				txtUpL = "A";
-				break;
-			case SWITCH_AB:
-				txtUpL = "A";
-				txtUpR = "B";
-				break;
-			case SWITCH_ABC:
-				txtUpL = "A";
-				txtUpR = "B";
-				break;
-			case SWITCH_ABCD:
-				txtUpL = "A";
-				txtUpR = "B";
-				txtLowL = "C";
-				txtLowR = "D";
-				break;
-			case SWITCH_B:
-				txtUpL = "B";
-				break;
-			case SWITCH_C:
-				txtUpL = "C";
-				break;
-			case SWITCH_D:
-				txtUpL = "D";
-				break;
-			case ENEMIES:
-				break;
-			case KEY:
-				alternate = 1;
-				break;
-			case MASTER_KEY:
-				alternate = 2;
-				break;
-			default:
-				break;
-			}
-			SpriteManager.getInstance().getSprite(SpriteID.DOORS).draw(alternate * 8 + currentMap.getTileSet().getColorVariation(), x * 16, y * 16);
-		}
+}
 		
-		//Draw Text on Top
-		textManager.DrawText(x * 16 - 1, y * 16 + 8, txtUpL, 1);
-		textManager.DrawText(x * 16 + 7, y * 16 + 8, txtUpR, 1);
-		textManager.DrawText(x * 16 - 1, y * 16, txtLowL, 1);
-		textManager.DrawText(x * 16 + 7, y * 16, txtLowR, 1);
-	}
 
 //	public void drawUI(EditorState currentState, int currentSelection) {
 //		textManager.DrawText(0, 247, "[F1]Save", 9);
@@ -418,4 +230,4 @@ public class EditorDrawManager {
 
 	
 
-}
+
