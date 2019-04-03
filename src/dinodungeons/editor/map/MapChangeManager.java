@@ -20,6 +20,7 @@ public class MapChangeManager {
 
 	public MapChangeManager() {
 		currentChanges = new ArrayList<>();
+		changes = new ArrayList<>();
 		resetCurrentChangeState();
 		changing = false;
 	}
