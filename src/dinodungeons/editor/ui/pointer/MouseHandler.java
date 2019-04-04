@@ -50,6 +50,7 @@ public class MouseHandler extends UIElement {
 			String posX = String.format("%02d", x);
 			String posY = String.format("%02d", y);
 			DrawTextManager.getInstance().drawText(258, 1, "X" + posX + "Y" + posY, 6);
+			SpriteManager.getInstance().getSprite(SpriteID.EDITOR_SELECTOR).draw(0, x * 16, y * 16);
 		}
 	}
 	

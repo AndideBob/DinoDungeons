@@ -105,12 +105,15 @@ public class TextInputWindow extends UIElement implements EditorWindow {
 		isOpen = true;
 		confirmButton.setColliderActive(true);
 		cancelButton.setColliderActive(true);
+		inputLine.setColliderActive(true);
+		inputLine.setSelected(true);
 	}
 	
 	private void close(){
 		isOpen = false;
 		confirmButton.setColliderActive(false);
 		cancelButton.setColliderActive(false);
+		inputLine.setColliderActive(false);
 	}
 
 }

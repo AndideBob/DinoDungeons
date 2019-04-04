@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import dinodungeons.editor.ui.UIElement;
+import dinodungeons.editor.ui.pointer.MouseHandler;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -12,6 +13,10 @@ import lwjgladapter.input.ButtonState;
 import lwjgladapter.input.InputManager;
 import lwjgladapter.input.KeyboardKey;
 import lwjgladapter.input.KeyboardKeyUtil;
+import lwjgladapter.logging.Logger;
+import lwjgladapter.physics.PhysicsHelper;
+import lwjgladapter.physics.collision.RectCollider;
+import lwjgladapter.physics.collision.exceptions.CollisionNotSupportedException;
 
 public class TextInputLine extends UIElement {
 	
@@ -22,34 +27,61 @@ public class TextInputLine extends UIElement {
 	private int numberOfLetters;
 	
 	private String text;
+	
+	private boolean selected;
+	
+	private RectCollider selectionCollider;
 
 	public TextInputLine(int positionX, int positionY, int numberOfLetters) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.numberOfLetters = numberOfLetters;
 		text = "";
+		selected = false;
+		selectionCollider = new RectCollider(positionX, positionY, numberOfLetters * 10, 10);
+	}
+	
+	public void setSelected(boolean selected){
+		this.selected = selected;
 	}
 
 	@Override
 	public void update(InputInformation inputInformation) {
-		if(InputManager.instance.getKeyState(KeyboardKey.KEY_BACKSPACE).equals(ButtonState.RELEASED)) {
-			if(text.length() > 0) {
-				text = text.substring(0, text.length()-1);
+		if(inputInformation.getLeftMouseButton() == ButtonState.RELEASED){
+			try {
+				selected = PhysicsHelper.getInstance().checkCollisionBetween(selectionCollider, MouseHandler.getInstance().getCollider()) != null;
+			} catch (CollisionNotSupportedException e) {
+				Logger.logError(e);
 			}
 		}
-		else if(text.length() < numberOfLetters){
-			text += getTextInput();
+		if(selected){
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_BACKSPACE).equals(ButtonState.RELEASED)) {
+				if(text.length() > 0) {
+					text = text.substring(0, text.length()-1);
+				}
+			}
+			else if(text.length() < numberOfLetters){
+				text += getTextInput();
+			}
 		}
 	}
 
 	@Override
 	public void draw() {
-		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(3, positionX, positionY, numberOfLetters * 10, 10);
-		DrawTextManager.getInstance().drawText(positionX, positionY + 1, text, numberOfLetters);
+		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(selected ? 3 : 4, positionX, positionY, numberOfLetters * 10, 10);
+		String shownText = text;
+		if(shownText.length() < 4 && selected){
+			shownText += "_";
+		}
+		DrawTextManager.getInstance().drawText(positionX + 1, positionY + 1, shownText, numberOfLetters);
 	}
 	
 	public String getInput(){
 		return text;
+	}
+	
+	public void setColliderActive(boolean active) {
+		selectionCollider.setActive(active);
 	}
 	
 	private String getTextInput() {

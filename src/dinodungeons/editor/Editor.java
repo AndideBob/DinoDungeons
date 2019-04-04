@@ -43,7 +43,7 @@ public class Editor extends Game {
 		PhysicsHelper.getInstance().checkCollisions();
 		currentInput.update();
 		uiHandler.update(currentState, currentInput);
-		mapChangeManager.update(currentInput);
+		mapChangeManager.update(currentState, currentInput);
 		mapManager.applyMapChanges(mapChangeManager.getNewMapChanges());
 		mapManager.update();
 	}

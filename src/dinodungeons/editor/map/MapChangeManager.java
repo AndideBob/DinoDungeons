@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import dinodungeons.editor.EditorControlUtil;
+import dinodungeons.editor.EditorState;
 import dinodungeons.editor.map.change.AbstractMapChange;
 import dinodungeons.editor.map.factories.BaseLayerMapChangeFactory;
 import dinodungeons.editor.map.factories.MapChangeFactory;
@@ -30,31 +31,34 @@ public class MapChangeManager {
 		changes = new ArrayList<>();
 		resetCurrentChangeState();
 		changing = false;
-		currentChangeFactory = new BaseLayerMapChangeFactory(2);
+		currentChangeFactory = new BaseLayerMapChangeFactory();
+		currentChangeFactory.handleParams("2");
 	}
 	
-	public void update(InputInformation inputInformation){
-		currentChanges.clear();
-		if(!changing){
-			if(EditorControlUtil.getUndo()){
-				undo();
+	public void update(EditorState editorState, InputInformation inputInformation){
+		if(editorState == EditorState.DEFAULT){
+			currentChanges.clear();
+			if(!changing){
+				if(EditorControlUtil.getUndo()){
+					undo();
+				}
+				else if(EditorControlUtil.getRedo()){
+					redo();
+				}
+				else{
+					checkForChanges(inputInformation);
+					applyNewCurrentChanges();
+				}
 			}
-			else if(EditorControlUtil.getRedo()){
-				redo();
+			else if(inputInformation.getLeftMouseButton() == ButtonState.RELEASED
+					|| inputInformation.getLeftMouseButton() == ButtonState.UP){
+				changing = false;
+				advanceCurrentChangeState();
 			}
-			else{
+			else if (changing){
 				checkForChanges(inputInformation);
 				applyNewCurrentChanges();
 			}
-		}
-		else if(inputInformation.getLeftMouseButton() == ButtonState.RELEASED
-				|| inputInformation.getLeftMouseButton() == ButtonState.UP){
-			changing = false;
-			advanceCurrentChangeState();
-		}
-		else if (changing){
-			checkForChanges(inputInformation);
-			applyNewCurrentChanges();
 		}
 	}
 

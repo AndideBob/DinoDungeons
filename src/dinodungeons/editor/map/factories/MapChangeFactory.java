@@ -6,4 +6,6 @@ public interface MapChangeFactory {
 	
 	public AbstractMapChange buildMapChange(int x, int y);
 	
+	public void handleParams(String... params);
+	
 }
