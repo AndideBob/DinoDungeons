@@ -3,26 +3,34 @@ package dinodungeons.editor.map;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 
 import dinodungeons.editor.EditorControlUtil;
-import dinodungeons.editor.map.change.MapChange;
+import dinodungeons.editor.map.change.AbstractMapChange;
+import dinodungeons.editor.map.factories.BaseLayerMapChangeFactory;
+import dinodungeons.editor.map.factories.MapChangeFactory;
+import dinodungeons.editor.ui.pointer.MouseHandler;
 import dinodungeons.game.data.gameplay.InputInformation;
 import lwjgladapter.input.ButtonState;
+import lwjgladapter.logging.Logger;
 
 public class MapChangeManager {
 	
-	private ArrayList<Collection<MapChange>> changes;
+	private ArrayList<HashSet<AbstractMapChange>> changes;
 	
-	private ArrayList<MapChange> currentChanges;
+	private MapChangeFactory currentChangeFactory;
+	
+	private HashSet<AbstractMapChange> currentChanges;
 	private int currentChangeState;
 	
 	private boolean changing;
 
 	public MapChangeManager() {
-		currentChanges = new ArrayList<>();
+		currentChanges = new HashSet<>();
 		changes = new ArrayList<>();
 		resetCurrentChangeState();
 		changing = false;
+		currentChangeFactory = new BaseLayerMapChangeFactory(2);
 	}
 	
 	public void update(InputInformation inputInformation){
@@ -44,16 +52,30 @@ public class MapChangeManager {
 			changing = false;
 			advanceCurrentChangeState();
 		}
+		else if (changing){
+			checkForChanges(inputInformation);
+			applyNewCurrentChanges();
+		}
 	}
 
 	private void checkForChanges(InputInformation inputInformation) {
-		//TODO: Actually changing map
+		if(MouseHandler.getInstance().isOnMap() && 
+				(inputInformation.getLeftMouseButton() == ButtonState.PRESSED
+				|| inputInformation.getLeftMouseButton() == ButtonState.DOWN)){
+			changing = true;
+			int x = MouseHandler.getInstance().getPositionX() / 16;
+			int y = MouseHandler.getInstance().getPositionY() / 16;
+			AbstractMapChange change = currentChangeFactory.buildMapChange(x, y);
+			if(!currentChanges.contains(change)){
+				currentChanges.add(change);
+			}
+		}
 	}
 
 	private void undo() {
 		if(currentChangeState > 0){
 			currentChangeState--;
-			for(MapChange change : changes.get(currentChangeState)){
+			for(AbstractMapChange change : changes.get(currentChangeState)){
 				change.revert();
 				currentChanges.add(change);
 			}
@@ -62,11 +84,11 @@ public class MapChangeManager {
 	
 	private void redo() {
 		if(currentChangeState < changes.size()-1){
-			currentChangeState++;
-			for(MapChange change : changes.get(currentChangeState)){
+			for(AbstractMapChange change : changes.get(currentChangeState)){
 				change.revert();
 				currentChanges.add(change);
 			}
+			currentChangeState++;
 		}
 	}
 	
@@ -76,21 +98,21 @@ public class MapChangeManager {
 	
 	private void advanceCurrentChangeState() {
 		//Resetting for undone Changes
-		for(int i = changes.size()-1; i > currentChangeState;i++){
+		for(int i = changes.size()-1; i > currentChangeState;i--){
 			changes.remove(i);
 		}
-		changes.add(new ArrayList<>());
+		changes.add(new HashSet<>());
 		currentChangeState++;
 	}
 	
 	public void resetCurrentChangeState(){
 		currentChangeState = 0;
 		changes.clear();
-		changes.add(new ArrayList<>());
+		changes.add(new HashSet<>());
 	}
 	
-	public Collection<MapChange> getNewMapChanges(){
-		return Collections.unmodifiableList(currentChanges);
+	public Collection<AbstractMapChange> getNewMapChanges(){
+		return Collections.unmodifiableCollection(currentChanges);
 	}
 	
 	public void draw(){

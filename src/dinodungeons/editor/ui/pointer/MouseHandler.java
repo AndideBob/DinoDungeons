@@ -1,7 +1,12 @@
 package dinodungeons.editor.ui.pointer;
 
+import com.sun.javafx.binding.StringFormatter;
+
 import dinodungeons.editor.ui.UIElement;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.gfx.sprites.SpriteID;
+import dinodungeons.gfx.sprites.SpriteManager;
+import dinodungeons.gfx.text.DrawTextManager;
 import lwjgladapter.physics.collision.RectCollider;
 
 public class MouseHandler extends UIElement {
@@ -9,6 +14,10 @@ public class MouseHandler extends UIElement {
 	private RectCollider clickCollider;
 	
 	private static MouseHandler instance;
+	
+	private int positionX;
+	
+	private int positionY;
 	
 	public static MouseHandler getInstance() {
 		if(instance == null) {
@@ -19,22 +28,45 @@ public class MouseHandler extends UIElement {
 	
 	private MouseHandler() {
 		clickCollider = new RectCollider(0, 0, 3, 3);
+		positionX = 0;
+		positionY = 0;
 	}
 
 	@Override
 	public void update(InputInformation inputInformation) {
-		clickCollider.setPositionX(inputInformation.getMouseX() - 1);
-		clickCollider.setPositionY(inputInformation.getMouseY() - 1);
+		positionX = inputInformation.getMouseX();
+		positionY = inputInformation.getMouseY();
+		clickCollider.setPositionX(positionX - 1);
+		clickCollider.setPositionY(positionY - 1);
 	}
 
 	@Override
 	public void draw() {
-		// TODO Auto-generated method stub
-		
+		//Draw Position On Map
+		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(0, 256, 0, 64, 10);
+		if(isOnMap()){
+			int x = MouseHandler.getInstance().getPositionX() / 16;
+			int y = MouseHandler.getInstance().getPositionY() / 16;
+			String posX = String.format("%02d", x);
+			String posY = String.format("%02d", y);
+			DrawTextManager.getInstance().drawText(258, 1, "X" + posX + "Y" + posY, 6);
+		}
 	}
 	
 	public RectCollider getCollider() {
 		return clickCollider;
+	}
+
+	public boolean isOnMap() {
+		return positionX < 256 && positionY < 192;
+	}
+
+	public int getPositionX() {
+		return positionX;
+	}
+
+	public int getPositionY() {
+		return positionY;
 	}
 
 }
