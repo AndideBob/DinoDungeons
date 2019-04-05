@@ -23,7 +23,7 @@ public class ScreenMapLoader {
 	public ScreenMap loadMap(String id){
 		String path = File.separator + ScreenMapConstants.mapDirectiory + File.separator + id + ScreenMapConstants.mapFileExtension;
 		try {
-			ScreenMap result = ScreenMap.defaultMap;
+			ScreenMap result = ScreenMap.getDefaultMap();
 			File file = new File(path);
 			if (!file.exists()) {
 				return result;

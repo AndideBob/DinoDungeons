@@ -1,6 +1,7 @@
 package dinodungeons.editor.ui.buttons.tileset;
 
 import dinodungeons.editor.Editor;
+import dinodungeons.editor.map.change.MapChangeType;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
 import dinodungeons.game.data.gameplay.InputInformation;
@@ -21,7 +22,7 @@ public class BaseLayerChangeButton extends BaseButton {
 
 	@Override
 	protected void onClick() {
-		
+		editorHandle.setMapChange(MapChangeType.BASE_LAYER, "" + tileType);
 	}
 	
 	private static ButtonSprite getButtonSpriteForTileType(int tileType){

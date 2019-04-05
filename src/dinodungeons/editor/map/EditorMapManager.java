@@ -66,7 +66,8 @@ public class EditorMapManager {
 	}
 	
 	public void newMap(){
-		currentMap = ScreenMap.defaultMap;
+		currentMap = ScreenMap.getDefaultMap();
+		currentMap.updateBaseLayerTiles();
 	}
 	
 	public void loadMap(String enteredID){

@@ -6,7 +6,9 @@ import dinodungeons.gfx.tilesets.TileSet;
 
 public class ScreenMap {
 
-	public static final ScreenMap defaultMap = new ScreenMap("0000", 16, 12);
+	public static final ScreenMap getDefaultMap() {
+		return new ScreenMap("0000", 16, 12);
+	}
 	
 	private String id;
 	private int sizeX;

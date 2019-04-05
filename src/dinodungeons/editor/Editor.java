@@ -2,6 +2,8 @@ package dinodungeons.editor;
 
 import dinodungeons.editor.map.EditorMapManager;
 import dinodungeons.editor.map.MapChangeManager;
+import dinodungeons.editor.map.change.MapChangeType;
+import dinodungeons.editor.map.factories.MapChangeFactoryUtil;
 import dinodungeons.editor.ui.EditorUIHandler;
 import dinodungeons.editor.ui.input.InputUsage;
 import dinodungeons.game.data.gameplay.InputInformation;
@@ -71,6 +73,10 @@ public class Editor extends Game {
 		case NOTHING:
 			break;
 		}
+	}
+	
+	public void setMapChange(MapChangeType mapChangeType, String... params) {
+		mapChangeManager.setMapChange(mapChangeType, params);
 	}
 
 	public void openNewMap() {

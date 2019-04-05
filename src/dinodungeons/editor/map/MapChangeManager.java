@@ -8,8 +8,10 @@ import java.util.HashSet;
 import dinodungeons.editor.EditorControlUtil;
 import dinodungeons.editor.EditorState;
 import dinodungeons.editor.map.change.AbstractMapChange;
+import dinodungeons.editor.map.change.MapChangeType;
 import dinodungeons.editor.map.factories.BaseLayerMapChangeFactory;
 import dinodungeons.editor.map.factories.MapChangeFactory;
+import dinodungeons.editor.map.factories.MapChangeFactoryUtil;
 import dinodungeons.editor.ui.pointer.MouseHandler;
 import dinodungeons.game.data.gameplay.InputInformation;
 import lwjgladapter.input.ButtonState;
@@ -33,6 +35,11 @@ public class MapChangeManager {
 		changing = false;
 		currentChangeFactory = new BaseLayerMapChangeFactory();
 		currentChangeFactory.handleParams("2");
+	}
+	
+	public void setMapChange(MapChangeType mapChangeType, String... params) {
+		currentChangeFactory = MapChangeFactoryUtil.getMapChangeFactory(mapChangeType);
+		currentChangeFactory.handleParams(params);
 	}
 	
 	public void update(EditorState editorState, InputInformation inputInformation){

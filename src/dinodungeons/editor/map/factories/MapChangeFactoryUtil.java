@@ -1,0 +1,17 @@
+package dinodungeons.editor.map.factories;
+
+import dinodungeons.editor.map.change.MapChangeType;
+import lwjgladapter.logging.Logger;
+
+public class MapChangeFactoryUtil {
+
+	public static MapChangeFactory getMapChangeFactory(MapChangeType mapChangeType) {
+		switch (mapChangeType) {
+		case BASE_LAYER:
+			return new BaseLayerMapChangeFactory();
+		}
+		Logger.logError("Could not retrieve MapChangeFactory for MapChangeType: " + mapChangeType.toString());
+		return new BaseLayerMapChangeFactory();
+	}
+
+}
