@@ -56,7 +56,11 @@ public abstract class BaseButton extends UIElement{
 		else {
 			wasClicked = false;
 		}
+		updateInternal(inputInformation);
 	}
+	
+	protected abstract void updateInternal(InputInformation inputInformation);
+	protected abstract void drawInternal();
 	
 	private boolean isMouseOver(){
 		try {
@@ -76,6 +80,7 @@ public abstract class BaseButton extends UIElement{
 		if(pressed){
 			SpriteManager.getInstance().getSprite(SpriteID.EDITOR_BUTTONS).setColorValues(1f, 1f, 1f, 1f);
 		}
+		drawInternal();
 	}
 	
 	protected abstract void onClick();

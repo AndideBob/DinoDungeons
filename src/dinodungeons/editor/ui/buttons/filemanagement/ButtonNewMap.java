@@ -3,6 +3,7 @@ package dinodungeons.editor.ui.buttons.filemanagement;
 import dinodungeons.editor.Editor;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
+import dinodungeons.game.data.gameplay.InputInformation;
 
 public class ButtonNewMap extends BaseButton {
 	
@@ -16,6 +17,16 @@ public class ButtonNewMap extends BaseButton {
 	@Override
 	protected void onClick() {
 		editorHandle.openNewMap();
+	}
+	
+	@Override
+	protected void updateInternal(InputInformation inputInformation) {
+		//Do nothing
+	}
+
+	@Override
+	protected void drawInternal() {
+		//Do nothing
 	}
 
 }

@@ -3,6 +3,7 @@ package dinodungeons.editor.ui.buttons.window;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
 import dinodungeons.editor.ui.input.EditorWindow;
+import dinodungeons.game.data.gameplay.InputInformation;
 
 public class ButtonWindowCancel extends BaseButton {
 
@@ -16,6 +17,16 @@ public class ButtonWindowCancel extends BaseButton {
 	@Override
 	protected void onClick() {
 		windowHandle.closeCancel();
+	}
+	
+	@Override
+	protected void updateInternal(InputInformation inputInformation) {
+		//Do nothing
+	}
+
+	@Override
+	protected void drawInternal() {
+		//Do nothing
 	}
 
 }

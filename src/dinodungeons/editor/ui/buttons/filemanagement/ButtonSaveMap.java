@@ -4,6 +4,7 @@ import dinodungeons.editor.Editor;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
 import dinodungeons.editor.ui.input.InputUsage;
+import dinodungeons.game.data.gameplay.InputInformation;
 
 public class ButtonSaveMap extends BaseButton {
 	
@@ -19,4 +20,13 @@ public class ButtonSaveMap extends BaseButton {
 		editorHandle.waitForInput("Enter map id", InputUsage.SAVING);
 	}
 
+	@Override
+	protected void updateInternal(InputInformation inputInformation) {
+		//Do nothing
+	}
+
+	@Override
+	protected void drawInternal() {
+		//Do nothing
+	}
 }
