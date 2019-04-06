@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import dinodungeons.editor.Editor;
 import dinodungeons.editor.ui.buttons.BaseButton;
-import dinodungeons.editor.ui.buttons.tileset.BaseLayerChangeButton;
+import dinodungeons.editor.ui.buttons.mapchange.BaseLayerChangeButton;
 import dinodungeons.game.data.map.ScreenMapConstants;
 
 public class TileEditorButtonGroup extends UIButtonGroup {

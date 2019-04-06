@@ -1,4 +1,4 @@
-package dinodungeons.editor.ui.buttons.tileset;
+package dinodungeons.editor.ui.buttons.mapchange;
 
 import dinodungeons.editor.Editor;
 import dinodungeons.editor.map.change.MapChangeType;

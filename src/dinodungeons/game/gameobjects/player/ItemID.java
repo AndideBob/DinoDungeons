@@ -36,6 +36,15 @@ public enum ItemID {
 	public String getSaveRepresentation() {
 		return saveRepresentation;
 	}
+	
+	public static ItemID getItemIDBySpriteSheetPosition(int spriteSheetPosition){
+		for(ItemID iid : values()){
+			if(iid.getSpriteSheetPosition() == spriteSheetPosition){
+				return iid;
+			}
+		}
+		return CLUB;
+	}
 
 	public static ItemID getItemIDBySaveRepresentation(String saveRepresentation){
 		for(ItemID iid : values()){
