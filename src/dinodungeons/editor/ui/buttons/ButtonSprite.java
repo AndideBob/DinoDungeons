@@ -40,7 +40,16 @@ public enum ButtonSprite {
 	ITEM_MIRROR(36),
 	ITEM_D(37),
 	ITEM_E(38),
-	ITEM_F(39);
+	ITEM_F(39),
+	SELECTION_SWITCH(40),
+	SWITCH_A(41),
+	SWITCH_B(42),
+	SWITCH_C(43),
+	SWITCH_D(44),
+	SWITCH_AB(45),
+	SWITCH_ABC(46),
+	SWITCH_ABCD(47),
+	OBJECT_STONE_BLOCK(48);
 	
 	private int positionOnSpriteSheet;
 	

@@ -18,6 +18,7 @@ public abstract class UIButtonGroup extends UIElement implements UIGroup {
 	public UIButtonGroup(final Editor editorHandle) {
 		buttons = new ArrayList<>();
 		buttons.addAll(initializeButtons(editorHandle));
+		unpressAll();
 		setActive(false);
 	}
 
@@ -46,6 +47,17 @@ public abstract class UIButtonGroup extends UIElement implements UIGroup {
 		visible = active;
 		for(BaseButton button : buttons){
 			button.setColliderActive(active);
+		}
+		unpressAll();
+	}
+	
+	protected void onActivate() {
+		//Can be overwritten
+	}
+	
+	public final void unpressAll() {
+		for(BaseButton button : buttons){
+			button.setPressed(false);
 		}
 	}
 

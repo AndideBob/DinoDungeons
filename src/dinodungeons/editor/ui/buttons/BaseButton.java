@@ -25,6 +25,8 @@ public abstract class BaseButton extends UIElement{
 	
 	private boolean pressed;
 	
+	private boolean hovering;
+	
 	public BaseButton(int positionX, int positionY, ButtonSprite sprite) {
 		this.sprite = sprite;
 		this.positionX = positionX;
@@ -32,29 +34,30 @@ public abstract class BaseButton extends UIElement{
 		buttonSurface = new RectCollider(positionX, positionY, 16, 16);
 		wasClicked = false;
 		pressed = false;
+		hovering = false;
 	}
 	
 	@Override
 	public final void update(InputInformation inputInformation) {
-		pressed = false;
+		hovering = false;
 		if(inputInformation.getLeftMouseButton().equals(ButtonState.DOWN) ||
 				inputInformation.getLeftMouseButton().equals(ButtonState.PRESSED)){
 			if(isMouseOver()){
-				pressed = true;
+				hovering = true;
 			}
 		}
 		else if(inputInformation.getLeftMouseButton().equals(ButtonState.RELEASED)) {
 			try {
 				if(!wasClicked && PhysicsHelper.getInstance().checkCollisionBetween(buttonSurface, MouseHandler.getInstance().getCollider()) != null) {
 					onClick();
-					wasClicked = true;
+					hovering = true;
 				}
 			} catch (CollisionNotSupportedException e) {
 				Logger.logError(e);
 			}
 		}
 		else {
-			wasClicked = false;
+			hovering = false;
 		}
 		updateInternal(inputInformation);
 	}
@@ -73,11 +76,11 @@ public abstract class BaseButton extends UIElement{
 
 	@Override
 	public final void draw() {
-		if(pressed){
+		if(pressed || hovering){
 			SpriteManager.getInstance().getSprite(SpriteID.EDITOR_BUTTONS).setColorValues(0.6f, 0.6f, 0.6f, 1f);
 		}
 		SpriteManager.getInstance().getSprite(SpriteID.EDITOR_BUTTONS).draw(sprite.getPositionOnSpriteSheet(), positionX, positionY);
-		if(pressed){
+		if(pressed || hovering){
 			SpriteManager.getInstance().getSprite(SpriteID.EDITOR_BUTTONS).setColorValues(1f, 1f, 1f, 1f);
 		}
 		drawInternal();
@@ -87,6 +90,10 @@ public abstract class BaseButton extends UIElement{
 
 	public void setColliderActive(boolean active) {
 		buttonSurface.setActive(active);
+	}
+	
+	public void setPressed(boolean pressed) {
+		this.pressed = pressed;
 	}
 
 }

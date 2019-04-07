@@ -4,6 +4,7 @@ import dinodungeons.editor.Editor;
 import dinodungeons.editor.map.change.MapChangeType;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
+import dinodungeons.editor.ui.groups.buttons.UIButtonGroup;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.gameobjects.player.ItemID;
 
@@ -11,16 +12,21 @@ public class CollectableItemChangeButton extends BaseButton {
 
 	private Editor editorHandle;
 	
+	private UIButtonGroup belongingButtonGroup;
+	
 	private ItemID itemID;
 	
-	public CollectableItemChangeButton(int positionX, int positionY, final Editor editorHandle, ItemID itemID) {
+	public CollectableItemChangeButton(int positionX, int positionY, final Editor editorHandle, final UIButtonGroup belongingButtonGroup, ItemID itemID) {
 		super(positionX, positionY, getButtonSpriteForItemID(itemID));
 		this.itemID = itemID;
 		this.editorHandle = editorHandle;
+		this.belongingButtonGroup = belongingButtonGroup;
 	}
 
 	@Override
 	protected void onClick() {
+		belongingButtonGroup.unpressAll();
+		setPressed(true);
 		editorHandle.setMapChange(MapChangeType.COLLECTABLE_ITEM, itemID.getSaveRepresentation());
 	}
 	

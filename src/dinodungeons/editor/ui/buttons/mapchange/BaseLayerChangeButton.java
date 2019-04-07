@@ -4,24 +4,29 @@ import dinodungeons.editor.Editor;
 import dinodungeons.editor.map.change.MapChangeType;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
+import dinodungeons.editor.ui.groups.buttons.UIButtonGroup;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.map.ScreenMapConstants;
-import dinodungeons.gfx.sprites.SpriteID;
 
 public class BaseLayerChangeButton extends BaseButton {
 
 	private Editor editorHandle;
 	
+	private UIButtonGroup belongingButtonGroup;
+	
 	private int tileType;
 	
-	public BaseLayerChangeButton(int positionX, int positionY, final Editor editorHandle, int tileType) {
+	public BaseLayerChangeButton(int positionX, int positionY, final Editor editorHandle, final UIButtonGroup belongingButtonGroup, int tileType) {
 		super(positionX, positionY, getButtonSpriteForTileType(tileType));
 		this.tileType = tileType;
 		this.editorHandle = editorHandle;
+		this.belongingButtonGroup = belongingButtonGroup;
 	}
 
 	@Override
 	protected void onClick() {
+		belongingButtonGroup.unpressAll();
+		setPressed(true);
 		editorHandle.setMapChange(MapChangeType.BASE_LAYER, "" + tileType);
 	}
 	

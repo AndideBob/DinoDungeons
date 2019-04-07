@@ -226,40 +226,6 @@
 //				enteredText += getTextInput();
 //			}
 //			break;
-//		case PLACE_BASELAYER:
-//			//Selection
-//			switchSelection(ScreenMapConstants.maxBaseLayerSelection + 1);
-//			//Placing Tiles
-//			if(isMouseOnMap()) {
-//				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
-//					int x = currentMousePosition[0] / 16;
-//					int y = currentMousePosition[1] / 16;
-//					int tileValue = currentMap.getBaseLayerValueForPosition(x, y);
-//					if(tileValue != currentSelection) {
-//						try {
-//							currentMap.setBaseLayer(x, y, currentSelection);
-//							currentMap.updateBaseLayerTiles();
-//						} catch (ScreenMapIndexOutOfBounds e) {
-//							Logger.logError(e);
-//						}
-//					}
-//				}
-//			}
-//			break;
-//		case PLACE_ITEMS:
-//			//Selection
-//			switchSelection(DinoDungeonsConstants.numberOfItems);
-//			//Placing Item
-//			if(isMouseOnMap()) {
-//				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
-//					int x = currentMousePosition[0] / 16;
-//					int y = currentMousePosition[1] / 16;
-//					ItemMapObject item = new ItemMapObject();
-//					item.setItemID(ItemID.values()[currentSelection]);
-//					currentMap.setMapObjectForPosition(x, y, item);
-//				}
-//			}
-//			break;
 //		case PLACE_SPIKES:
 //			//Selection
 //			switchSelection(DinoDungeonsConstants.numberOfSpikes);
