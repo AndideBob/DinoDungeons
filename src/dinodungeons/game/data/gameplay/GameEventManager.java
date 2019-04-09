@@ -21,10 +21,12 @@ public class GameEventManager {
 	private GameEventManager(){
 		occuredEvents = new HashSet<>();
 		roomEvents = new HashSet<>();
+		roomEvents.add(RoomEvent.NONE);
 	}
 	
 	public void clearRoomEvents(){
 		roomEvents.clear();
+		roomEvents.add(RoomEvent.NONE);
 	}
 	
 	public boolean hasRoomEventOccured(RoomEvent roomEvent){

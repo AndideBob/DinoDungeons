@@ -10,6 +10,7 @@ import dinodungeons.editor.ui.buttons.filemanagement.ButtonSaveMap;
 import dinodungeons.editor.ui.buttons.selection.BaseLayerSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.CollectableItemPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.SelectionButton;
+import dinodungeons.editor.ui.buttons.selection.SwitchPlacementSelectionButton;
 import dinodungeons.editor.ui.input.InputUsage;
 import dinodungeons.editor.ui.input.TextInputWindow;
 import dinodungeons.editor.ui.pointer.MouseHandler;
@@ -36,6 +37,7 @@ public class EditorUIHandler {
 		//Placement Selections
 		uiElements.add(new BaseLayerSelectionButton(64, 224, this, editorHandle));
 		uiElements.add(new CollectableItemPlacementSelectionButton(80, 224, this, editorHandle));
+		uiElements.add(new SwitchPlacementSelectionButton(96, 224, this, editorHandle));
 		//InputWindow (add last)
 		textInputWindow = new TextInputWindow(96, 102, editorHandle);
 		uiElements.add(textInputWindow);

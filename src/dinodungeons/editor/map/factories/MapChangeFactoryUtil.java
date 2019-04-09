@@ -11,6 +11,8 @@ public class MapChangeFactoryUtil {
 			return new BaseLayerMapChangeFactory();
 		case COLLECTABLE_ITEM:
 			return new CollectableItemMapChangeFactory();
+		case SWITCH_PLACEMENT:
+			return new SwitchMapChangeFactory();
 		}
 		Logger.logError("Could not retrieve MapChangeFactory for MapChangeType: " + mapChangeType.toString());
 		return new BaseLayerMapChangeFactory();

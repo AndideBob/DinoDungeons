@@ -1,6 +1,7 @@
 package dinodungeons.game.data.gameplay;
 
 public enum RoomEvent {
+	NONE("none"),
 	SWITCH_A("a"),
 	SWITCH_B("b"),
 	SWITCH_C("c"),
