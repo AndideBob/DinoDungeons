@@ -26,9 +26,9 @@ public class Editor extends Game {
 	public Editor() {
 		currentInput = new InputInformation();
 		currentState = EditorState.DEFAULT;
+		mapChangeManager = new MapChangeManager();
 		uiHandler = new EditorUIHandler(this);
 		mapManager = new EditorMapManager();
-		mapChangeManager = new MapChangeManager();
 	}
 
 	@Override

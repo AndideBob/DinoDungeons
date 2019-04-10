@@ -26,19 +26,26 @@ public class MapChangeManager {
 	private int currentChangeState;
 	
 	private boolean changing;
+	
+	private boolean canChange;
 
 	public MapChangeManager() {
 		currentChanges = new HashSet<>();
 		changes = new ArrayList<>();
 		resetCurrentChangeState();
 		changing = false;
-		currentChangeFactory = new BaseLayerMapChangeFactory();
-		currentChangeFactory.handleParams("2");
+		setMapChange(MapChangeType.NONE);
 	}
 	
 	public void setMapChange(MapChangeType mapChangeType, String... params) {
 		currentChangeFactory = MapChangeFactoryUtil.getMapChangeFactory(mapChangeType);
-		currentChangeFactory.handleParams(params);
+		if(currentChangeFactory == null){
+			canChange = false;
+		}
+		else{
+			canChange = true;
+			currentChangeFactory.handleParams(params);
+		}
 	}
 	
 	public void update(EditorState editorState, InputInformation inputInformation){
@@ -69,7 +76,8 @@ public class MapChangeManager {
 	}
 
 	private void checkForChanges(InputInformation inputInformation) {
-		if(MouseHandler.getInstance().isOnMap() && 
+		if(canChange &&
+				MouseHandler.getInstance().isOnMap() && 
 				(inputInformation.getLeftMouseButton() == ButtonState.PRESSED
 				|| inputInformation.getLeftMouseButton() == ButtonState.DOWN)){
 			changing = true;

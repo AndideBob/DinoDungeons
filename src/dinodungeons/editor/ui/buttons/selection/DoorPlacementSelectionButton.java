@@ -4,19 +4,20 @@ import dinodungeons.editor.Editor;
 import dinodungeons.editor.map.change.MapChangeType;
 import dinodungeons.editor.ui.EditorUIHandler;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
-import dinodungeons.editor.ui.groups.buttons.TileEditorButtonGroup;
+import dinodungeons.editor.ui.groups.buttons.CollectableItemPlacementButtonGroup;
+import dinodungeons.editor.ui.groups.buttons.DoorPlacementButtonGroup;
 import dinodungeons.game.data.gameplay.InputInformation;
 
-public class BaseLayerSelectionButton extends SelectionButton {
+public class DoorPlacementSelectionButton extends SelectionButton {
 	
 	private Editor editorHandle;
 	
-	private TileEditorButtonGroup belongingButtonGroup;
+	private DoorPlacementButtonGroup belongingButtonGroup;
 
-	public BaseLayerSelectionButton(int positionX, int positionY, final EditorUIHandler uiHandler, final Editor editorHandle) {
-		super(positionX, positionY, uiHandler, ButtonSprite.SELECTION_TILESET);
+	public DoorPlacementSelectionButton(int positionX, int positionY, final EditorUIHandler uiHandler, final Editor editorHandle) {
+		super(positionX, positionY, uiHandler, ButtonSprite.SELECTION_DOOR);
+		belongingButtonGroup = new DoorPlacementButtonGroup(editorHandle);
 		this.editorHandle = editorHandle;
-		belongingButtonGroup = new TileEditorButtonGroup(editorHandle);
 	}
 
 	@Override
