@@ -306,34 +306,6 @@
 //				}
 //			}
 //			break;
-//		case PLACE_BLOCKS:
-//			//Selection
-//			switchSelection(blockTypes.length);
-//			//Placing Destructables
-//			if(isMouseOnMap()) {
-//				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
-//					int x = currentMousePosition[0] / 16;
-//					int y = currentMousePosition[1] / 16;
-//					BlockMapObject block = new BlockMapObject();
-//					block.setBlockType(blockTypes[currentSelection]);
-//					currentMap.setMapObjectForPosition(x, y, block);
-//				}
-//			}
-//			break;
-//		case PLACE_DOORS:
-//			//Selection
-//			switchSelection(doorTypes.length);
-//			//Placing Destructables
-//			if(isMouseOnMap()) {
-//				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.PRESSED)) {
-//					int x = currentMousePosition[0] / 16;
-//					int y = currentMousePosition[1] / 16;
-//					DoorMapObject door = new DoorMapObject();
-//					door.setDoorType(doorTypes[currentSelection]);
-//					currentMap.setMapObjectForPosition(x, y, door);
-//				}
-//			}
-//			break;
 //		case PLACE_DUNGEON_ITEMS:
 //			break;
 //		default:

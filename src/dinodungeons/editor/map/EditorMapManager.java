@@ -3,6 +3,7 @@ package dinodungeons.editor.map;
 import java.util.Collection;
 
 import dinodungeons.editor.map.change.AbstractMapChange;
+import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.ScreenMapLoader;
@@ -92,5 +93,26 @@ public class EditorMapManager {
 		for(AbstractMapChange change : changes){
 			change.applyTo(currentMap);
 		}
+	}
+
+	public void setTransition(String input, int direction) {
+		switch (direction) {
+		case DinoDungeonsConstants.directionDown:
+			currentMap.setTransitionDownID(input);
+			break;
+		case DinoDungeonsConstants.directionUp:
+			currentMap.setTransitionUpID(input);
+			break;
+		case DinoDungeonsConstants.directionLeft:
+			currentMap.setTransitionLeftID(input);
+			break;
+		default:
+			currentMap.setTransitionRightID(input);
+			break;
+		}
+	}
+
+	public void setDungeonID(int id) {
+		currentMap.setDungeonID(id);
 	}
 }

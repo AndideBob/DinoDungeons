@@ -12,6 +12,7 @@ import dinodungeons.editor.ui.buttons.selection.CollectableItemPlacementSelectio
 import dinodungeons.editor.ui.buttons.selection.DoorPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.SelectionButton;
 import dinodungeons.editor.ui.buttons.selection.SwitchPlacementSelectionButton;
+import dinodungeons.editor.ui.groups.general.MapSettingsUIGroup;
 import dinodungeons.editor.ui.input.InputUsage;
 import dinodungeons.editor.ui.input.TextInputWindow;
 import dinodungeons.editor.ui.pointer.MouseHandler;
@@ -40,6 +41,8 @@ public class EditorUIHandler {
 		uiElements.add(new CollectableItemPlacementSelectionButton(80, 224, this, editorHandle));
 		uiElements.add(new SwitchPlacementSelectionButton(96, 224, this, editorHandle));
 		uiElements.add(new DoorPlacementSelectionButton(112, 224, this, editorHandle));
+		//Map Settings
+		uiElements.add(new MapSettingsUIGroup(256, 10, editorHandle));
 		//InputWindow (add last)
 		textInputWindow = new TextInputWindow(96, 102, editorHandle);
 		uiElements.add(textInputWindow);
