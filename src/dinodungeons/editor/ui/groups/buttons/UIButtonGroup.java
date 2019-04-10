@@ -11,7 +11,7 @@ import dinodungeons.game.data.gameplay.InputInformation;
 
 public abstract class UIButtonGroup extends UIElement implements UIGroup {
 
-	private ArrayList<BaseButton> buttons;
+	protected ArrayList<BaseButton> buttons;
 	
 	private boolean visible;
 	

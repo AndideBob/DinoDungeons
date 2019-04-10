@@ -1,8 +1,7 @@
 package dinodungeons.editor.map.factories;
 
-import dinodungeons.editor.map.change.ItemPlacementMapChange;
+import dinodungeons.editor.map.change.SwitchPlacementMapChange;
 import dinodungeons.game.data.gameplay.RoomEvent;
-import dinodungeons.game.gameobjects.player.ItemID;
 import lwjgladapter.logging.Logger;
 import dinodungeons.editor.map.change.AbstractMapChange;
 
@@ -19,8 +18,7 @@ public class SwitchMapChangeFactory extends AbstractMapChangeFactory{
 
 	@Override
 	public AbstractMapChange buildMapChange(int x, int y) {
-		return null;
-		//return new ItemPlacementMapChange(x, y, itemID);
+		return new SwitchPlacementMapChange(x, y, switchEvent, switchObjectID);
 	}
 	
 	@Override

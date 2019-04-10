@@ -4,6 +4,7 @@ import dinodungeons.editor.Editor;
 import dinodungeons.editor.map.change.MapChangeType;
 import dinodungeons.editor.ui.UIElement;
 import dinodungeons.editor.ui.groups.UIGroup;
+import dinodungeons.editor.ui.groups.buttons.SwitchObjectButtonGroup;
 import dinodungeons.editor.ui.groups.buttons.SwitchSelectionButtonGroup;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.gameplay.RoomEvent;
@@ -14,6 +15,8 @@ public class SwitchPlacementUIGroup extends UIElement implements UIGroup{
 	
 	private SwitchSelectionButtonGroup switchSelectionButtonGroup;
 	
+	private SwitchObjectButtonGroup switchObjectButtonGroup;
+	
 	private RoomEvent selectedSwitch;
 	
 	private int switchObjectID;
@@ -23,21 +26,25 @@ public class SwitchPlacementUIGroup extends UIElement implements UIGroup{
 		selectedSwitch = RoomEvent.NONE;
 		switchObjectID = 0;
 		switchSelectionButtonGroup = new SwitchSelectionButtonGroup(editorHandle, this);
+		switchObjectButtonGroup = new SwitchObjectButtonGroup(editorHandle, this);
 	}
 
 	@Override
 	public void setActive(boolean active) {
 		switchSelectionButtonGroup.setActive(active);
+		switchObjectButtonGroup.setActive(active);
 	}
 	
 	@Override
 	public final void update(InputInformation inputInformation) {
 		switchSelectionButtonGroup.update(inputInformation);
+		switchObjectButtonGroup.update(inputInformation);
 	}
 
 	@Override
 	public final void draw() {
 		switchSelectionButtonGroup.draw();
+		switchObjectButtonGroup.draw();
 	}
 
 	public void setSwitch(RoomEvent switchType) {

@@ -39,6 +39,8 @@ public class BlockMapObject extends MapObject {
 			return "C BLOCK";
 		case SWITCH_D:
 			return "D BLOCK";
+		case NO_SWITCH:
+			return "NO_SWITCH";
 		default:
 			return "Block";
 		}
@@ -52,7 +54,8 @@ public class BlockMapObject extends MapObject {
 		SWITCH_D("000D"),
 		SWITCH_AB("00AB"),
 		SWITCH_ABC("0ABC"),
-		SWITCH_ABCD("ABCD");
+		SWITCH_ABCD("ABCD"),
+		NO_SWITCH("0001");
 		
 		private String saveRepresentation;
 		

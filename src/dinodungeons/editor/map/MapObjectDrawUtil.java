@@ -126,6 +126,9 @@ public class MapObjectDrawUtil {
 		switch(blockMapObject.getBlockType()){
 		case SOLID:
 			break;
+		case NO_SWITCH:
+			drawTextOverlay(x, y, 'X');
+			break;
 		case SWITCH_A:
 			drawTextOverlay(x, y, 'A');
 			break;

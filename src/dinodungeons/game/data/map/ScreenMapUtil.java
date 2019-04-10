@@ -150,6 +150,8 @@ public class ScreenMapUtil {
 		switch (blockMapObject.getBlockType()) {
 		case SOLID:
 			return new UnpushableStone(posX, posY, map.getTileSet().getColorVariation());
+		case NO_SWITCH:
+			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.NONE);
 		case SWITCH_A:
 			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_A);
 		case SWITCH_AB:

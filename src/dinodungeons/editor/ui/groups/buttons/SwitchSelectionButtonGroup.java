@@ -43,6 +43,39 @@ public class SwitchSelectionButtonGroup extends UIButtonGroup {
 	@Override
 	protected void onActivate() {
 		belongingGroup.setSwitch(selectedSwitch);
+		pressSelectedButton();
+	}
+	
+	private void pressSelectedButton(){
+		switch (selectedSwitch) {
+		case NONE:
+			buttons.get(0).setPressed(true);
+			break;
+		case SWITCH_A:
+			buttons.get(1).setPressed(true);
+			break;
+		case SWITCH_B:
+			buttons.get(2).setPressed(true);
+			break;
+		case SWITCH_C:
+			buttons.get(3).setPressed(true);
+			break;
+		case SWITCH_D:
+			buttons.get(4).setPressed(true);
+			break;
+		case SWITCH_AB:
+			buttons.get(5).setPressed(true);
+			break;
+		case SWITCH_ABC:
+			buttons.get(6).setPressed(true);
+			break;
+		case SWITCH_ABCD:
+			buttons.get(7).setPressed(true);
+			break;
+		case SWITCH_ALL_ENEMIES:
+			break;
+		
+		}
 	}
 
 }
