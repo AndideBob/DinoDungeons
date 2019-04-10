@@ -15,7 +15,6 @@ import dinodungeons.editor.map.factories.MapChangeFactoryUtil;
 import dinodungeons.editor.ui.pointer.MouseHandler;
 import dinodungeons.game.data.gameplay.InputInformation;
 import lwjgladapter.input.ButtonState;
-import lwjgladapter.logging.Logger;
 
 public class MapChangeManager {
 	

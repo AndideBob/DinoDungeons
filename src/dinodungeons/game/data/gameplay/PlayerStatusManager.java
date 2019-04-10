@@ -1,14 +1,6 @@
 package dinodungeons.game.data.gameplay;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
-import dinodungeons.game.data.DinoDungeonsConstants;
-import dinodungeons.game.gameobjects.player.DungeonItemID;
 import dinodungeons.game.gameobjects.player.ItemID;
-import lwjgladapter.logging.Logger;
 
 public class PlayerStatusManager {
 	

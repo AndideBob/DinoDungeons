@@ -14,7 +14,6 @@ import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.sfx.sound.SoundEffect;
 import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.input.ButtonState;
-import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 import lwjgladapter.physics.collision.base.Collision;

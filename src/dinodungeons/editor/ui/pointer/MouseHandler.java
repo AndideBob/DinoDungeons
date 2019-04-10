@@ -1,7 +1,5 @@
 package dinodungeons.editor.ui.pointer;
 
-import com.sun.javafx.binding.StringFormatter;
-
 import dinodungeons.editor.ui.UIElement;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.gfx.sprites.SpriteID;

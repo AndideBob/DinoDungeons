@@ -7,8 +7,6 @@ import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.GameEventManager;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.gameplay.PlayerInventoryManager;
-import dinodungeons.game.data.gameplay.RoomEvent;
-import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.general.BaseDoorObject;
 import dinodungeons.gfx.sprites.SpriteID;

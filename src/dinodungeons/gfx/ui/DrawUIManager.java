@@ -19,7 +19,6 @@ public class DrawUIManager {
 	private SpriteMap healthSprite;
 	private SpriteMap borderSprite;
 	private SpriteMap collectableSprites;
-	private DrawTextManager textManager;
 	
 	public void loadResources(){
 		healthSprite = new SpriteMap(GFXResourceID.UI_HEALTH.getFilePath(), 8, 8);
