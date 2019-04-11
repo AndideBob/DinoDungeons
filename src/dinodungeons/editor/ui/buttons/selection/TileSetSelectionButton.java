@@ -1,22 +1,23 @@
 package dinodungeons.editor.ui.buttons.selection;
 
 import dinodungeons.editor.Editor;
+import dinodungeons.editor.map.EditorMapManager;
 import dinodungeons.editor.map.change.MapChangeType;
 import dinodungeons.editor.ui.EditorUIHandler;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
-import dinodungeons.editor.ui.groups.buttons.TileEditorButtonGroup;
+import dinodungeons.editor.ui.groups.buttons.TilesetSelectionButtonGroup;
 import dinodungeons.game.data.gameplay.InputInformation;
 
-public class BaseLayerSelectionButton extends SelectionButton {
+public class TileSetSelectionButton extends SelectionButton {
 	
 	private Editor editorHandle;
 	
-	private TileEditorButtonGroup belongingButtonGroup;
+	private TilesetSelectionButtonGroup belongingButtonGroup;
 
-	public BaseLayerSelectionButton(int positionX, int positionY, final EditorUIHandler uiHandler, final Editor editorHandle) {
-		super(positionX, positionY, uiHandler, ButtonSprite.SELECTION_BASE_LAYER);
+	public TileSetSelectionButton(int positionX, int positionY, final EditorUIHandler uiHandler, final Editor editorHandle, final EditorMapManager mapManagerHandle) {
+		super(positionX, positionY, uiHandler, ButtonSprite.SELECTION_TILESET);
 		this.editorHandle = editorHandle;
-		belongingButtonGroup = new TileEditorButtonGroup(editorHandle);
+		belongingButtonGroup = new TilesetSelectionButtonGroup(editorHandle, mapManagerHandle);
 	}
 
 	@Override

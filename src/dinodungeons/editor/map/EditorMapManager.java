@@ -115,4 +115,12 @@ public class EditorMapManager {
 	public void setDungeonID(int id) {
 		currentMap.setDungeonID(id);
 	}
+	
+	public void setTileset(TileSet tileSet){
+		currentMap.setTileSet(tileSet);
+	}
+
+	public TileSet getCurrentTileset() {
+		return currentMap.getTileSet();
+	}
 }

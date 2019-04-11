@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import dinodungeons.editor.Editor;
 import dinodungeons.editor.EditorState;
+import dinodungeons.editor.map.EditorMapManager;
 import dinodungeons.editor.ui.buttons.filemanagement.ButtonLoadMap;
 import dinodungeons.editor.ui.buttons.filemanagement.ButtonNewMap;
 import dinodungeons.editor.ui.buttons.filemanagement.ButtonSaveMap;
@@ -12,6 +13,7 @@ import dinodungeons.editor.ui.buttons.selection.CollectableItemPlacementSelectio
 import dinodungeons.editor.ui.buttons.selection.DoorPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.SelectionButton;
 import dinodungeons.editor.ui.buttons.selection.SwitchPlacementSelectionButton;
+import dinodungeons.editor.ui.buttons.selection.TileSetSelectionButton;
 import dinodungeons.editor.ui.groups.general.MapSettingsUIGroup;
 import dinodungeons.editor.ui.input.InputUsage;
 import dinodungeons.editor.ui.input.TextInputWindow;
@@ -24,11 +26,11 @@ public class EditorUIHandler {
 	
 	private TextInputWindow textInputWindow;
 
-	public EditorUIHandler(Editor editorHandle) {
-		initialize(editorHandle);
+	public EditorUIHandler(final Editor editorHandle, final EditorMapManager mapManagerHandle) {
+		initialize(editorHandle, mapManagerHandle);
 	}
 	
-	private void initialize(Editor editorHandle){
+	private void initialize(final Editor editorHandle, final EditorMapManager mapManagerHandle){
 		uiElements = new ArrayList<>();
 		//MousePointer
 		uiElements.add(MouseHandler.getInstance());
@@ -37,6 +39,7 @@ public class EditorUIHandler {
 		uiElements.add(new ButtonLoadMap(16, 224, editorHandle));
 		uiElements.add(new ButtonSaveMap(32, 224, editorHandle));
 		//Placement Selections
+		uiElements.add(new TileSetSelectionButton(48, 224, this, editorHandle, mapManagerHandle));
 		uiElements.add(new BaseLayerSelectionButton(64, 224, this, editorHandle));
 		uiElements.add(new CollectableItemPlacementSelectionButton(80, 224, this, editorHandle));
 		uiElements.add(new SwitchPlacementSelectionButton(96, 224, this, editorHandle));

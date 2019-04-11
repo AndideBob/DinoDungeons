@@ -49,6 +49,9 @@ public abstract class UIButtonGroup extends UIElement implements UIGroup {
 			button.setColliderActive(active);
 		}
 		unpressAll();
+		if(active){
+			onActivate();
+		}
 	}
 	
 	protected void onActivate() {
