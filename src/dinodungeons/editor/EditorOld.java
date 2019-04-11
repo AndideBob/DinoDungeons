@@ -142,47 +142,6 @@
 //				}
 //			}
 //			break;
-//		case ENTER_TEXT:
-//			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ENTER).equals(ButtonState.RELEASED)) {
-//				if(enteredText.length() > 0) {
-//					switch (textUsage) {
-//					case EXIT_MAP_ID:
-//						switchToEnterTextMode(TextUsage.EXIT_MAP_X);
-//						break;
-//					case EXIT_MAP_X:
-//						switchToEnterTextMode(TextUsage.EXIT_MAP_Y);
-//						break;
-//					case EXIT_MAP_Y:
-//						try{
-//							exitPosY = Integer.parseInt(enteredText);
-//						}
-//						catch(NumberFormatException e){
-//							exitPosY = 20;
-//						}
-//						if(exitPosY < 0 || exitPosY > 11){
-//							infoText = "Valid Y-Position [0-11]";
-//						}
-//						else{
-//							switchToState(EditorState.PLACE_EXITS);
-//						}
-//						break;
-//					default:
-//						Logger.logError("Text usage not defined!");
-//						infoText = "Error!";
-//						switchToState(EditorState.PLACE_BASELAYER);
-//						break;
-//					}
-//				}
-//			}
-//			else if(InputManager.instance.getKeyState(KeyboardKey.KEY_BACKSPACE).equals(ButtonState.RELEASED)) {
-//				if(enteredText.length() > 0) {
-//					enteredText = enteredText.substring(0, enteredText.length()-1);
-//				}
-//			}
-//			else if(enteredText.length() < 4){
-//				enteredText += getTextInput();
-//			}
-//			break;
 //		case PLACE_SPIKES:
 //			//Selection
 //			switchSelection(DinoDungeonsConstants.numberOfSpikes);
@@ -222,36 +181,6 @@
 //					EnemyMapObject enemy = new EnemyMapObject();
 //					enemy.setEnemyType(enemyTypes[currentSelection]);
 //					currentMap.setMapObjectForPosition(x, y, enemy);
-//				}
-//			}
-//			break;
-//		case PLACE_EXITS:
-//			//Selection
-//			switchSelection(transportationTypes.length);
-//			//Placing Exits
-//			if(isMouseOnMap()) {
-//				if(InputManager.instance.getMouseState(MouseButton.LEFT).equals(ButtonState.RELEASED)) {
-//					int x = currentMousePosition[0] / 16;
-//					int y = currentMousePosition[1] / 16;
-//					if(transportationTypes[currentSelection] == TransportationType.BLOCKED_CAVE_ENTRY){
-//						switch(currentMap.getBaseLayerTileForPosition(x, y)){
-//						case DOOR_DOWN:
-//						case DOOR_LEFT:
-//						case DOOR_RIGHT:
-//						case DOOR_UP:
-//							//Placement is allowed
-//							break;
-//						default:
-//							infoText = "Needs to be placed on a door!";
-//							return;
-//						}
-//					}
-//					TransportMapObject transport = new TransportMapObject();
-//					transport.setDestinationMapID(exitMapID);
-//					transport.setX(exitPosX);
-//					transport.setY(exitPosY);
-//					transport.setTransportationType(transportationTypes[currentSelection]);
-//					currentMap.setMapObjectForPosition(x, y, transport);
 //				}
 //			}
 //			break;

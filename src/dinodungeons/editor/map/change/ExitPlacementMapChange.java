@@ -14,10 +14,13 @@ public class ExitPlacementMapChange extends AbstractMapChange {
 	MapObject previousObject;
 	
 	private boolean shouldRevert;
+	
+	private boolean checkForTileSet;
 
 	public ExitPlacementMapChange(int x, int y, TransportationType transportationType, String destinationMapID, int destinationX, int destinationY) {
 		super(x, y);
 		exitObject = buildExitObject(transportationType, destinationMapID, destinationX, destinationY);
+		checkForTileSet = TransportationType.BLOCKED_CAVE_ENTRY == transportationType;
 		previousObject = null;
 		shouldRevert = false;
 	}
@@ -38,7 +41,13 @@ public class ExitPlacementMapChange extends AbstractMapChange {
 				Logger.logError("Could not place unmapped Switch!");
 			}
 			previousObject = map.getMapObjectForPosition(getX(), getY());
-			map.setMapObjectForPosition(getX(), getY(), exitObject);
+			if(isPlacementAllowed(map))
+			{
+				map.setMapObjectForPosition(getX(), getY(), exitObject);
+			}
+			else{
+				map.setMapObjectForPosition(getX(), getY(), new EmptyMapObject());
+			}
 		}
 		else {
 			if(previousObject == null) {
@@ -49,6 +58,21 @@ public class ExitPlacementMapChange extends AbstractMapChange {
 			}
 		}
 		
+	}
+
+	private boolean isPlacementAllowed(ScreenMap map) {
+		if(checkForTileSet){
+			switch(map.getBaseLayerTileForPosition(getX(), getY())){
+			case DOOR_DOWN:
+			case DOOR_LEFT:
+			case DOOR_RIGHT:
+			case DOOR_UP:
+				return true;
+			default:
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
