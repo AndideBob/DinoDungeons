@@ -18,7 +18,7 @@ import lwjgladapter.physics.PhysicsHelper;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.exceptions.CollisionNotSupportedException;
 
-public class TextInputLine extends UIElement {
+public class NumberInputLine extends UIElement {
 	
 	private int positionX;
 	
@@ -32,7 +32,7 @@ public class TextInputLine extends UIElement {
 	
 	private RectCollider selectionCollider;
 
-	public TextInputLine(int positionX, int positionY, int numberOfLetters) {
+	public NumberInputLine(int positionX, int positionY, int numberOfLetters) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.numberOfLetters = numberOfLetters;
@@ -61,7 +61,14 @@ public class TextInputLine extends UIElement {
 				}
 			}
 			else if(text.length() < numberOfLetters){
-				text += getTextInput();
+				String tempText = text + getTextInput();
+				try{
+					Integer.parseInt(tempText);
+					text = tempText;
+				}
+				catch(NumberFormatException e){
+					Logger.logError(e);
+				}
 			}
 		}
 	}
@@ -76,8 +83,19 @@ public class TextInputLine extends UIElement {
 		DrawTextManager.getInstance().drawText(positionX + 1, positionY + 1, shownText, numberOfLetters);
 	}
 	
-	public String getInput(){
-		return text;
+	public int getInput(){
+		try{
+			if(text.isEmpty()){
+				return 0;
+			}
+			else{
+				return Integer.parseInt(text);
+			}
+		}
+		catch(NumberFormatException e){
+			Logger.logError(e);
+			return 0;
+		}
 	}
 	
 	public void setColliderActive(boolean active) {
@@ -86,7 +104,6 @@ public class TextInputLine extends UIElement {
 	
 	private String getTextInput() {
 		HashSet<KeyboardKey> keySet = new HashSet<>();
-		keySet.addAll(Arrays.asList(KeyboardKey.letterButtons));
 		keySet.addAll(Arrays.asList(KeyboardKey.numberButtons));
 		keySet.addAll(Arrays.asList(KeyboardKey.numPadButtons));
 		for(KeyboardKey key : keySet) {
@@ -96,9 +113,9 @@ public class TextInputLine extends UIElement {
 		}
 		return "";
 	}
-
-	public void setInput(String text) {
-		this.text = text.substring(0,numberOfLetters);
+	
+	public void setInput(int value) {
+		this.text = ("" + value).substring(0,numberOfLetters);
 	}
 
 }

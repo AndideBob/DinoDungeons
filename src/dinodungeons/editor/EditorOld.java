@@ -146,34 +146,6 @@
 //			if(InputManager.instance.getKeyState(KeyboardKey.KEY_ENTER).equals(ButtonState.RELEASED)) {
 //				if(enteredText.length() > 0) {
 //					switch (textUsage) {
-//					case LOAD:
-//						currentMap = loader.loadMap(enteredText);
-//						infoText = "Load successfull!";
-//						switchToState(EditorState.INSPECTOR);
-//						break;
-//					case SAVING:
-//						if(saver.saveMap(enteredText, currentMap)) {
-//							infoText = "Save successfull!";
-//						}
-//						else {
-//							infoText = "An error occured during saving!";
-//						}
-//						switchToState(EditorState.INSPECTOR);
-//						break;
-//					case EXIT_EAST:
-//						switchToEnterTextMode(TextUsage.EXIT_SOUTH);
-//						break;
-//					case EXIT_NORTH:
-//						switchToEnterTextMode(TextUsage.EXIT_EAST);
-//						break;
-//					case EXIT_SOUTH:
-//						switchToEnterTextMode(TextUsage.EXIT_WEST);
-//						break;
-//					case EXIT_WEST:
-//						infoText = "Exits updated!";
-//						currentMap.setTransitionLeftID(enteredText);
-//						switchToState(EditorState.PLACE_BASELAYER);
-//						break;
 //					case EXIT_MAP_ID:
 //						switchToEnterTextMode(TextUsage.EXIT_MAP_X);
 //						break;
@@ -192,21 +164,6 @@
 //						}
 //						else{
 //							switchToState(EditorState.PLACE_EXITS);
-//						}
-//						break;
-//					case DUNGEON_ID:
-//						int dungeonID;
-//						try{
-//							dungeonID = Integer.parseInt(enteredText);
-//							if(dungeonID < 0 || dungeonID > 12){
-//								throw new NumberFormatException();
-//							}else{
-//								switchToState(EditorState.INSPECTOR);
-//								currentMap.setDungeonID(dungeonID);
-//							}
-//						}
-//						catch(NumberFormatException e){
-//							infoText = "Only [0-12] are valid!";
 //						}
 //						break;
 //					default:
@@ -266,14 +223,6 @@
 //					enemy.setEnemyType(enemyTypes[currentSelection]);
 //					currentMap.setMapObjectForPosition(x, y, enemy);
 //				}
-//			}
-//			break;
-//		case CHANGE_TILESET:
-//			//Selection
-//			int oldTileSetSelection = currentSelection;
-//			switchSelection(tileSets.length);
-//			if(oldTileSetSelection != currentSelection){
-//				currentMap.setTileSet(tileSets[currentSelection]);
 //			}
 //			break;
 //		case PLACE_EXITS:
