@@ -30,9 +30,9 @@ public class ExitSettingsUIGroup extends UIElement implements UIGroup {
 		active = true;
 		x = positionX;
 		y = positionY;
-		transportMapX = new NumberInputLine(positionX + 36, positionY + 4, 2);
-		transportMapY = new NumberInputLine(positionX + 36, positionY + 18, 2);
-		transportMapID = new TextInputLine(positionX + 18, positionY + 32, 4);
+		transportMapX = new NumberInputLine(positionX + 42, positionY + 26, 2);
+		transportMapY = new NumberInputLine(positionX + 42, positionY + 14, 2);
+		transportMapID = new TextInputLine(positionX + 22, positionY + 2, 4);
 		transportMapID.setInput("0000");
 		transportMapX.setInput(0);
 		transportMapY.setInput(0);
@@ -67,6 +67,9 @@ public class ExitSettingsUIGroup extends UIElement implements UIGroup {
 	}
 	
 	private void updateEditor(){
+		mapID = transportMapID.getInput();
+		mapX= transportMapX.getInput();
+		mapY = transportMapY.getInput();
 		exitPlacementUIGroup.setTarget(mapID, mapX, mapY);
 	}
 	

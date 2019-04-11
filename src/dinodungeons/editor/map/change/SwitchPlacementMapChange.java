@@ -62,10 +62,7 @@ public class SwitchPlacementMapChange extends AbstractMapChange {
 	@Override
 	public void applyTo(ScreenMap map) {
 		if(!shouldRevert) {
-			if(switchObject != null){
-				
-			}
-			else{
+			if(switchObject == null){
 				Logger.logError("Could not place unmapped Switch!");
 			}
 			previousObject = map.getMapObjectForPosition(getX(), getY());

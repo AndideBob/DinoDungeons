@@ -23,7 +23,7 @@ public class ExitPlacementUIGroup extends UIElement implements UIGroup{
 	
 	public ExitPlacementUIGroup(final Editor editorHandle) {
 		this.editorHandle = editorHandle;
-		exitSettingsUIGroup = new ExitSettingsUIGroup(256, 60, this);
+		exitSettingsUIGroup = new ExitSettingsUIGroup(256, 74, this);
 		transportTypeButtonGroup = new TransportTypeButtonGroup(editorHandle, this);
 		transportType = TransportationType.INSTANT_TELEPORT;
 		mapID = "0000";

@@ -17,6 +17,8 @@ public class MapChangeFactoryUtil {
 			return new SwitchMapChangeFactory();
 		case DOOR_PLACEMENT:
 			return new DoorMapChangeFactory();
+		case EXIT_PLACEMENT:
+			return new ExitMapChangeFactory();
 		}
 		Logger.logError("Could not retrieve MapChangeFactory for MapChangeType: " + mapChangeType.toString());
 		return null;

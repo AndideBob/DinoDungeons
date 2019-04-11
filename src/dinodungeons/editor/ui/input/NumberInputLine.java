@@ -63,8 +63,10 @@ public class NumberInputLine extends UIElement {
 			else if(text.length() < numberOfLetters){
 				String tempText = text + getTextInput();
 				try{
-					Integer.parseInt(tempText);
-					text = tempText;
+					if(!tempText.isEmpty()){
+						Integer.parseInt(tempText);
+						text = tempText;
+					}
 				}
 				catch(NumberFormatException e){
 					Logger.logError(e);
@@ -115,7 +117,13 @@ public class NumberInputLine extends UIElement {
 	}
 	
 	public void setInput(int value) {
-		this.text = ("" + value).substring(0,numberOfLetters);
+		String tempText = "" + value;
+		if(tempText.length() > numberOfLetters){
+			this.text = ("" + value).substring(0,numberOfLetters);
+		}
+		else{
+			this.text = tempText;
+		}
 	}
 
 }
