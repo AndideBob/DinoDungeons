@@ -41,7 +41,7 @@ public class CollectableItemObject extends GameObject {
 			return GameObjectTag.COLLECTABLE_ITEM_CLUB;
 		case BOOMERANG:
 			return GameObjectTag.COLLECTABLE_ITEM_BOOMERANG;
-		case ITEM_2:
+		case TORCH:
 			return GameObjectTag.COLLECTABLE_ITEM_ITEM_2;
 		case BOMB:
 			return GameObjectTag.COLLECTABLE_ITEM_BOMB;

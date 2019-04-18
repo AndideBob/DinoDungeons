@@ -19,7 +19,7 @@ public class CollectableItemPlacementButtonGroup extends UIButtonGroup {
 		ArrayList<BaseButton> buttons = new ArrayList<>();
 		buttons.add(new CollectableItemChangeButton(256, 208, editorHandle, this, ItemID.CLUB));
 		buttons.add(new CollectableItemChangeButton(272, 208, editorHandle, this, ItemID.BOOMERANG));
-		buttons.add(new CollectableItemChangeButton(288, 208, editorHandle, this, ItemID.ITEM_2));
+		buttons.add(new CollectableItemChangeButton(288, 208, editorHandle, this, ItemID.TORCH));
 		buttons.add(new CollectableItemChangeButton(304, 208, editorHandle, this, ItemID.BOMB));
 		buttons.add(new CollectableItemChangeButton(256, 192, editorHandle, this, ItemID.ITEM_4));
 		buttons.add(new CollectableItemChangeButton(272, 192, editorHandle, this, ItemID.ITEM_5));

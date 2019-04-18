@@ -38,7 +38,7 @@ public class CollectableItemChangeButton extends BaseButton {
 			return ButtonSprite.ITEM_BOOMERANG;
 		case CLUB:
 			return ButtonSprite.ITEM_CLUB;
-		case ITEM_2:
+		case TORCH:
 			return ButtonSprite.ITEM_2;
 		case ITEM_4:
 			return ButtonSprite.ITEM_4;

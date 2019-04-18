@@ -5,7 +5,7 @@ import dinodungeons.game.gameobjects.base.GameObjectTag;
 public enum ItemID {
 	CLUB("0",0),
 	BOOMERANG("1",1),
-	ITEM_2("2",2),
+	TORCH("2",2),
 	BOMB("3",3),
 	ITEM_4("4",4),
 	ITEM_5("5",5),
@@ -62,7 +62,7 @@ public enum ItemID {
 		case COLLECTABLE_ITEM_BOOMERANG:
 			return ItemID.BOOMERANG;
 		case COLLECTABLE_ITEM_ITEM_2:
-			return ItemID.ITEM_2;
+			return ItemID.TORCH;
 		case COLLECTABLE_ITEM_BOMB:
 			return ItemID.BOMB;
 		case COLLECTABLE_ITEM_ITEM_4:

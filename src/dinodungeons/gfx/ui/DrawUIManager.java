@@ -154,7 +154,7 @@ public class DrawUIManager {
 				x = 48;
 				y = yPosition+184;
 				break;
-			case ITEM_2:
+			case TORCH:
 				x = 80;
 				y = yPosition+184;
 				break;
