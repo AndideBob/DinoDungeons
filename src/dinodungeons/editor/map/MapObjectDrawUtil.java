@@ -118,6 +118,9 @@ public class MapObjectDrawUtil {
 		case BUSH_NORMAL:
 			SpriteManager.getInstance().getSprite(SpriteID.DESTRUCTABLES).draw(0 + colorVariation, x * 16, y * 16);
 			break;
+		case EXPLODABLE_ROCK:
+			SpriteManager.getInstance().getSprite(SpriteID.DESTRUCTABLES).draw(8 + colorVariation, x * 16, y * 16);
+			break;
 		}
 	}
 	

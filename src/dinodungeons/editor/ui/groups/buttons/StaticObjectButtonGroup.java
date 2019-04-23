@@ -39,20 +39,21 @@ public class StaticObjectButtonGroup extends UIButtonGroup {
 		switch (staticObjectType) {
 		case DESTRUCTABLE_GRASS:
 			editorHandle.setMapChange(MapChangeType.DESTRUCTIBLE_PLACEMENT, DestructableType.BUSH_NORMAL.getStringRepresentation());
-			break;
+			return;
+		case DESTRUCTABLE_STONE:
+			editorHandle.setMapChange(MapChangeType.DESTRUCTIBLE_PLACEMENT, DestructableType.EXPLODABLE_ROCK.getStringRepresentation());
+			return;
 		case SPIKES_METAL:
 			editorHandle.setMapChange(MapChangeType.SPIKE_PLACEMENT, "0");
-			break;
+			return;
 		case SPIKES_WOOD:
 			editorHandle.setMapChange(MapChangeType.SPIKE_PLACEMENT, "1");
-			break;
+			return;
 		case IMMOVABLE_BLOCK:
 			editorHandle.setMapChange(MapChangeType.IMMOVABLE_PLACEMENT, ImmovableType.STONE_BLOCK.getStringRepresentation());
-			break;
-		default:
-			Logger.logDebug(staticObjectType.toString() + " not implemented yet!");
-			break;
+			return;
 		}
+		Logger.logDebug(staticObjectType.toString() + " not implemented yet!");
 	}
 	
 	@Override

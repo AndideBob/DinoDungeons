@@ -20,6 +20,7 @@ import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
 import dinodungeons.game.gameobjects.enemies.EnemyBatObject;
 import dinodungeons.game.gameobjects.environment.BasicBushObject;
+import dinodungeons.game.gameobjects.environment.ExplodableStone;
 import dinodungeons.game.gameobjects.environment.StonePushSwitch;
 import dinodungeons.game.gameobjects.exits.ExplodableDoorObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
@@ -201,6 +202,8 @@ public class ScreenMapUtil {
 		switch (destructibleMapObject.getDestructableType()) {
 		case BUSH_NORMAL:
 			return new BasicBushObject(posX, posY, colorVariation);
+		case EXPLODABLE_ROCK:
+			return new ExplodableStone(posX, posY, colorVariation);
 		}
 		return null;
 	}
