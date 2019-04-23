@@ -21,6 +21,8 @@ public class MapChangeFactoryUtil {
 			return new ExitMapChangeFactory();
 		case DESTRUCTIBLE_PLACEMENT:
 			return new DestructapleMapChangeFactory();
+		case SPIKE_PLACEMENT:
+			return new SpikeMapChangeFactory();
 		}
 		Logger.logError("Could not retrieve MapChangeFactory for MapChangeType: " + mapChangeType.toString());
 		return null;

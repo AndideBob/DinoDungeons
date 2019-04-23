@@ -7,9 +7,7 @@ import dinodungeons.editor.Editor;
 import dinodungeons.editor.map.change.MapChangeType;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.mapchange.StaticObjectChangeButton;
-import dinodungeons.editor.ui.buttons.mapchange.SwitchObjectChangeButton;
 import dinodungeons.editor.ui.buttons.mapchange.StaticObjectChangeButton.StaticObjectType;
-import dinodungeons.editor.ui.groups.general.SwitchPlacementUIGroup;
 import dinodungeons.game.data.map.objects.DestructibleMapObject.DestructableType;
 import lwjgladapter.logging.Logger;
 
@@ -40,6 +38,12 @@ public class StaticObjectButtonGroup extends UIButtonGroup {
 		switch (staticObjectType) {
 		case DESTRUCTABLE_GRASS:
 			editorHandle.setMapChange(MapChangeType.DESTRUCTIBLE_PLACEMENT, DestructableType.BUSH_NORMAL.getStringRepresentation());
+			break;
+		case SPIKES_METAL:
+			editorHandle.setMapChange(MapChangeType.SPIKE_PLACEMENT, "0");
+			break;
+		case SPIKES_WOOD:
+			editorHandle.setMapChange(MapChangeType.SPIKE_PLACEMENT, "1");
 			break;
 		default:
 			Logger.logDebug(staticObjectType.toString() + " not implemented yet!");
