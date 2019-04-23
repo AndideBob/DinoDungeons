@@ -28,6 +28,14 @@ public class StaticObjectChangeButton extends BaseButton {
 		switch (staticObjectType) {
 		case IMMOVABLE_BLOCK:
 			return ButtonSprite.OBJECT_STONE_BLOCK;
+		case DESTRUCTABLE_GRASS:
+			return ButtonSprite.DESTRUTCTABLE_BUSH;
+		case DESTRUCTABLE_STONE:
+			return ButtonSprite.DESTRUTCTABLE_BLOCK;
+		case SPIKES_METAL:
+			return ButtonSprite.SPIKES_METAL;
+		case SPIKES_WOOD:
+			return ButtonSprite.SPIKES_WOOD;
 		}
 		return ButtonSprite.CANCEL;
 	}

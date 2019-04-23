@@ -14,7 +14,7 @@ public class StaticObjectPlacementSelectionButton extends SelectionButton {
 	private StaticObjectButtonGroup belongingButtonGroup;
 
 	public StaticObjectPlacementSelectionButton(int positionX, int positionY, final EditorUIHandler uiHandler, final Editor editorHandle) {
-		super(positionX, positionY, uiHandler, ButtonSprite.SELECTION_COLLECTABLE_ITEMS);
+		super(positionX, positionY, uiHandler, ButtonSprite.SELECTION_MISC);
 		belongingButtonGroup = new StaticObjectButtonGroup(editorHandle);
 		this.editorHandle = editorHandle;
 	}
