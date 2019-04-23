@@ -9,7 +9,6 @@ import dinodungeons.editor.EditorControlUtil;
 import dinodungeons.editor.EditorState;
 import dinodungeons.editor.map.change.AbstractMapChange;
 import dinodungeons.editor.map.change.MapChangeType;
-import dinodungeons.editor.map.factories.BaseLayerMapChangeFactory;
 import dinodungeons.editor.map.factories.MapChangeFactory;
 import dinodungeons.editor.map.factories.MapChangeFactoryUtil;
 import dinodungeons.editor.ui.pointer.MouseHandler;

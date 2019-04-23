@@ -199,7 +199,7 @@ public class ScreenMapUtil {
 	private static GameObject buildDestructibleMapObject(DestructibleMapObject destructibleMapObject, int posX, int posY,
 			int colorVariation) {
 		switch (destructibleMapObject.getDestructableType()) {
-		case 0:
+		case BUSH_NORMAL:
 			return new BasicBushObject(posX, posY, colorVariation);
 		}
 		return null;

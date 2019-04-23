@@ -114,7 +114,11 @@ public class MapObjectDrawUtil {
 	}
 	
 	private static void drawDestructibleMapObject(DestructibleMapObject destructibleMapObject, int colorVariation, int x, int y){
-		SpriteManager.getInstance().getSprite(SpriteID.DESTRUCTABLES).draw(destructibleMapObject.getDestructableType() * 8 + colorVariation, x * 16, y * 16);
+		switch(destructibleMapObject.getDestructableType()){
+		case BUSH_NORMAL:
+			SpriteManager.getInstance().getSprite(SpriteID.DESTRUCTABLES).draw(0 + colorVariation, x * 16, y * 16);
+			break;
+		}
 	}
 	
 	private static void drawEnemyMapObject(EnemyMapObject enemyMapObject, int x, int y){

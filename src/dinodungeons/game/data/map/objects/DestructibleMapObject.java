@@ -2,7 +2,7 @@ package dinodungeons.game.data.map.objects;
 
 public class DestructibleMapObject extends MapObject {
 
-	int destructableType;
+	DestructableType destructableType;
 	
 	public DestructibleMapObject() {
 		// TODO Auto-generated constructor stub
@@ -10,23 +10,39 @@ public class DestructibleMapObject extends MapObject {
 
 	@Override
 	public String getEditorInfo() {
-		return getDestructableName(destructableType);
+		return destructableType.getStringRepresentation();
 	}
 	
-	public int getDestructableType() {
+	public DestructableType getDestructableType() {
 		return destructableType;
 	}
 
-	public void setDestructableType(int destructableType) {
+	public void setDestructableType(DestructableType destructableType) {
 		this.destructableType = destructableType;
 	}
-
-	public static String getDestructableName(int destructableType){
-		switch (destructableType) {
-		case 0:
-			return "Bush[NRM]";
+	
+	public enum DestructableType{
+		BUSH_NORMAL("BSH_NRM"),
+		EXPLODABLE_ROCK("EXP_RCK");
+		
+		private String stringRepresentation;
+		
+		private DestructableType(String stringRepresentation) {
+			this.stringRepresentation = stringRepresentation;
 		}
-		return "Other Destructable";
+		
+		public String getStringRepresentation() {
+			return stringRepresentation;
+		}
+		
+		public static DestructableType getByStringRepresentation(String stringRepresentation) {
+			for(DestructableType type : values()) {
+				if(type.stringRepresentation.equals(stringRepresentation)) {
+					return type;
+				}
+			}
+			return BUSH_NORMAL;
+		}
 	}
 
 }

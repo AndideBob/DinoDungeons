@@ -3,6 +3,7 @@ package dinodungeons.game.data.map;
 import dinodungeons.game.data.map.objects.BlockMapObject;
 import dinodungeons.game.data.map.objects.BlockMapObject.BlockType;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
+import dinodungeons.game.data.map.objects.DestructibleMapObject.DestructableType;
 import dinodungeons.game.data.map.objects.DoorMapObject;
 import dinodungeons.game.data.map.objects.DoorMapObject.DoorType;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
@@ -76,7 +77,7 @@ public class MapObjectParser {
 		String result = "(";
 		result += destructableMapObjectID;
 		result += internalSplitter;
-		result += destructibleMapObject.getDestructableType();
+		result += destructibleMapObject.getDestructableType().getStringRepresentation();
 		result += ")";
 		return result;
 	}
@@ -158,7 +159,7 @@ public class MapObjectParser {
 		}
 		else if(stringParts[0].equals(destructableMapObjectID)){
 			DestructibleMapObject destructibleMapObject = new DestructibleMapObject();
-			destructibleMapObject.setDestructableType(Integer.parseInt(stringParts[1]));
+			destructibleMapObject.setDestructableType(DestructableType.getByStringRepresentation(stringParts[1]));
 			return destructibleMapObject;
 		}
 		else if(stringParts[0].equals(enemyMapObjectID)){
