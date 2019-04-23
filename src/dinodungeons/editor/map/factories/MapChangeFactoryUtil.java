@@ -23,6 +23,8 @@ public class MapChangeFactoryUtil {
 			return new DestructapleMapChangeFactory();
 		case SPIKE_PLACEMENT:
 			return new SpikeMapChangeFactory();
+		case IMMOVABLE_PLACEMENT:
+			return new ImmovableMapChangeFactory();
 		}
 		Logger.logError("Could not retrieve MapChangeFactory for MapChangeType: " + mapChangeType.toString());
 		return null;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import dinodungeons.editor.Editor;
+import dinodungeons.editor.map.change.ImmovablePlacementMapChange.ImmovableType;
 import dinodungeons.editor.map.change.MapChangeType;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.mapchange.StaticObjectChangeButton;
@@ -44,6 +45,9 @@ public class StaticObjectButtonGroup extends UIButtonGroup {
 			break;
 		case SPIKES_WOOD:
 			editorHandle.setMapChange(MapChangeType.SPIKE_PLACEMENT, "1");
+			break;
+		case IMMOVABLE_BLOCK:
+			editorHandle.setMapChange(MapChangeType.IMMOVABLE_PLACEMENT, ImmovableType.STONE_BLOCK.getStringRepresentation());
 			break;
 		default:
 			Logger.logDebug(staticObjectType.toString() + " not implemented yet!");
