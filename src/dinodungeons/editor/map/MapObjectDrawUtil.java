@@ -3,6 +3,7 @@ package dinodungeons.editor.map;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.objects.BlockMapObject;
+import dinodungeons.game.data.map.objects.CandleMapObject;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.DoorMapObject;
 import dinodungeons.game.data.map.objects.DoorMapObject.DoorType;
@@ -45,8 +46,40 @@ public class MapObjectDrawUtil {
 		else if(mapObject instanceof DoorMapObject){
 			drawDoorMapObject((DoorMapObject) mapObject, colorVariation, x, y);
 		}
+		else if(mapObject instanceof CandleMapObject){
+			drawCandleMapObject((CandleMapObject) mapObject, x, y);
+		}
 	}
 	
+	private static void drawCandleMapObject(CandleMapObject candleMapObject, int x, int y) {
+		SpriteManager.getInstance().getSprite(SpriteID.CANDLE).draw(0, x * 16, y * 16);
+		switch(candleMapObject.getTriggeredSwitch()){
+		case SWITCH_A:
+			drawTextOverlay(x, y, 'A');
+			break;
+		case SWITCH_AB:
+			drawTextOverlay(x, y, 'A', 'B');
+			break;
+		case SWITCH_ABC:
+			drawTextOverlay(x, y, 'A', 'B', 'C');
+			break;
+		case SWITCH_ABCD:
+			drawTextOverlay(x, y, 'A', 'B', 'C', 'D');
+			break;
+		case SWITCH_B:
+			drawTextOverlay(x, y, 'B');
+			break;
+		case SWITCH_C:
+			drawTextOverlay(x, y, 'C');
+			break;
+		case SWITCH_D:
+			drawTextOverlay(x, y, 'D');
+			break;
+		default:
+			break;
+		}
+	}
+
 	private static void drawTextOverlay(int x, int y, char... sings){
 		int counter = 0;
 		for(char c : sings){
