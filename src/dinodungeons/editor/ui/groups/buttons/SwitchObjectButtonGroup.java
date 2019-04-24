@@ -24,6 +24,7 @@ public class SwitchObjectButtonGroup extends UIButtonGroup {
 	protected Collection<? extends BaseButton> initializeButtons(final Editor editorHandle) {
 		ArrayList<BaseButton> buttons = new ArrayList<>();
 		buttons.add(new SwitchObjectChangeButton(256, 208, this, 0));
+		buttons.add(new SwitchObjectChangeButton(272, 208, this, 1));
 		return buttons;
 	}
 	

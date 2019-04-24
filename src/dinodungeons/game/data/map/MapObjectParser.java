@@ -1,6 +1,8 @@
 package dinodungeons.game.data.map;
 
+import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.objects.BlockMapObject;
+import dinodungeons.game.data.map.objects.CandleMapObject;
 import dinodungeons.game.data.map.objects.BlockMapObject.BlockType;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.DestructibleMapObject.DestructableType;
@@ -35,6 +37,8 @@ public class MapObjectParser {
 	private static final String blockMapObjectID = "B";
 
 	private static final String doorMapObjectID = "G";
+	
+	private static final String candleMapObjectID = "C";
 
 	public String parseMapObjectToString(MapObject mapObject){
 		if(mapObject instanceof EmptyMapObject){
@@ -61,9 +65,21 @@ public class MapObjectParser {
 		else if(mapObject instanceof DoorMapObject){
 			return parseDoorMapObject((DoorMapObject)mapObject);
 		}
+		else if(mapObject instanceof CandleMapObject) {
+			return parseCandleMapObject((CandleMapObject)mapObject);
+		}
 		return emptyMapObjectString;
 	}
 	
+	private String parseCandleMapObject(CandleMapObject candleMapObject) {
+		String result = "(";
+		result += candleMapObjectID;
+		result += internalSplitter;
+		result += candleMapObject.getTriggeredSwitch().getStringRepresentation();
+		result += ")";
+		return result;
+	}
+
 	private String parseEnemyMapObject(EnemyMapObject enemyMapObject) {
 		String result = "(";
 		result += enemyMapObjectID;
@@ -176,6 +192,11 @@ public class MapObjectParser {
 			DoorMapObject doorMapObject = new DoorMapObject();
 			doorMapObject.setDoorType(DoorType.getDoorTypeBySaveRepresentation(stringParts[1]));
 			return doorMapObject;
+		}
+		else if(stringParts[0].equals(candleMapObjectID)){
+			CandleMapObject candleMapObject = new CandleMapObject();
+			candleMapObject.setTriggeredSwitch(RoomEvent.getByStringRepresentation(stringParts[1]));
+			return candleMapObject;
 		}
 		return new EmptyMapObject();
 	}

@@ -4,6 +4,7 @@ import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.objects.BlockMapObject;
 import dinodungeons.game.data.map.objects.BlockMapObject.BlockType;
+import dinodungeons.game.data.map.objects.CandleMapObject;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
 import lwjgladapter.logging.Logger;
@@ -54,6 +55,10 @@ public class SwitchPlacementMapChange extends AbstractMapChange {
 				break;
 			}
 			return blockObject;
+		case 1:
+			CandleMapObject candleObject = new CandleMapObject();
+			candleObject.setTriggeredSwitch(switchEvent);
+			return candleObject;
 		}
 		Logger.logError("Could not map SwitchObjectID " + switchObjectID + " to object!");
 		return null;

@@ -8,6 +8,7 @@ import dinodungeons.game.DinoDungeons;
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.objects.BlockMapObject;
+import dinodungeons.game.data.map.objects.CandleMapObject;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.DoorMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
@@ -30,6 +31,7 @@ import dinodungeons.game.gameobjects.immovable.MetalSpikeObject;
 import dinodungeons.game.gameobjects.immovable.RoomSwitchDoorObject;
 import dinodungeons.game.gameobjects.immovable.UnpushableStone;
 import dinodungeons.game.gameobjects.immovable.WoodenSpikeObject;
+import dinodungeons.game.gameobjects.switches.CandleSwitch;
 import dinodungeons.game.gameobjects.switches.StonePushSwitch;
 
 public class ScreenMapUtil {
@@ -136,6 +138,9 @@ public class ScreenMapUtil {
 		else if(object instanceof DoorMapObject){
 			return buildDoorMapObject(map, (DoorMapObject) object, posX * 16, posY * 16); 
 		}
+		else if(object instanceof CandleMapObject) {
+			return buildCandleMapObject(map, (CandleMapObject) object, posX * 16, posY * 16);
+		}
 		return null;
 	}
 	
@@ -195,6 +200,10 @@ public class ScreenMapUtil {
 			return new RoomSwitchDoorObject(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_D);
 		}
 		return null;
+	}
+	
+	private static GameObject buildCandleMapObject(ScreenMap map, CandleMapObject candleMapObject, int posX, int posY) {
+		return new CandleSwitch(posX, posY, candleMapObject.getTriggeredSwitch());
 	}
 
 	private static GameObject buildDestructibleMapObject(DestructibleMapObject destructibleMapObject, int posX, int posY,

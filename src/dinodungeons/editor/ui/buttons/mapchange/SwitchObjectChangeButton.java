@@ -28,6 +28,8 @@ public class SwitchObjectChangeButton extends BaseButton {
 		switch (switchObjectID) {
 		case 0:
 			return ButtonSprite.OBJECT_STONE_BLOCK;
+		case 1:
+			return ButtonSprite.OBJECT_CANDLE;
 		}
 		return ButtonSprite.CANCEL;
 	}

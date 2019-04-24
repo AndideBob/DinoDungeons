@@ -25,7 +25,7 @@ public class CandleSwitch extends GameObject {
 	private long nextFrameCounter;
 	private RoomEvent switchEvent;
 	
-	public CandleSwitch(int positionX, int positionY, int colorVariant, RoomEvent switchEvent) {
+	public CandleSwitch(int positionX, int positionY, RoomEvent switchEvent) {
 		super(GameObjectTag.CANDLE_BLOCK);
 		collider = new RectCollider(positionX+2, positionY+2, 12, 12);
 		this.positionX = positionX;
@@ -58,7 +58,7 @@ public class CandleSwitch extends GameObject {
 
 	@Override
 	public void draw(int anchorX, int anchorY) {
-		SpriteManager.getInstance().getSprite(SpriteID.PUSHABLES).draw(frame, anchorX + positionX, anchorY + positionY);
+		SpriteManager.getInstance().getSprite(SpriteID.CANDLE).draw(frame, anchorX + positionX, anchorY + positionY);
 	}
 
 	@Override
