@@ -45,6 +45,7 @@ public enum GFXResourceID {
 	PARTICLES_A(FolderConstants.folderPARTICLES, "particlesA.png"),
 	PARTICLES_B(FolderConstants.folderPARTICLES, "particlesB.png"),
 	EXPLOSION(FolderConstants.folderPARTICLES, "explosion.png"),
+	FIRE(FolderConstants.folderPARTICLES, "fire.png"),
 	//IMMOVABLES
 	SPRITE_SPIKES(FolderConstants.folderIMMOVABLE, "spikes.png"),
 	//ENVIRONMENT

@@ -251,6 +251,9 @@ public class DinoDungeons extends Game {
 			PlayerInventoryManager.getInstance().collectItem(ItemID.BOOMERANG);
 		}
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_3).equals(ButtonState.RELEASED)){
+			PlayerInventoryManager.getInstance().collectItem(ItemID.TORCH);
+		}
+		if(InputManager.instance.getKeyState(KeyboardKey.KEY_4).equals(ButtonState.RELEASED)){
 			PlayerInventoryManager.getInstance().collectItem(ItemID.BOMB);
 		}
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_CRTL_RIGHT).equals(ButtonState.RELEASED)){

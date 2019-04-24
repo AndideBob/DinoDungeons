@@ -8,6 +8,7 @@ import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.item.ItemBombObject;
 import dinodungeons.game.gameobjects.item.ItemBoomerangObject;
 import dinodungeons.game.gameobjects.item.ItemClubObject;
+import dinodungeons.game.gameobjects.item.ItemTorchFireObject;
 import dinodungeons.sfx.sound.SoundEffect;
 import dinodungeons.sfx.sound.SoundManager;
 
@@ -54,6 +55,11 @@ public class ItemUsageManager {
 				GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
 				GameObjectManager.getInstance().addBoomerangObjectToCurrentMap(new ItemBoomerangObject(positionX + 8, positionY + 8, currentDirection));
 			}
+			break;
+		case TORCH:
+			weaponObject = new DropingWeaponObject(DinoDungeonsConstants.dropItemDuration);
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(weaponObject);
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(new ItemTorchFireObject(positionX, positionY, currentDirection));
 			break;
 		case BOMB:
 			if(!PlayerInventoryManager.getInstance().isEmpty(CollectableType.BOMBS)) {

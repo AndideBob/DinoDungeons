@@ -49,7 +49,8 @@ public enum GameObjectTag {
 	ENEMY_BAT(SortingLayers.sortingLayerMoving),
 	PARTICLE(SortingLayers.sortingLayerEffects),
 	EXPLOSION(SortingLayers.sortingLayerEffects),
-	PUSHABLE(SortingLayers.sortingLayerStatic);
+	PUSHABLE(SortingLayers.sortingLayerStatic),
+	ITEM_FIRE(SortingLayers.sortingLayerEffects);
 	
 	public static final Collection<GameObjectTag> playerDamagingObjects = Arrays.asList(EXPLOSION, DAMAGING_IMMOVABLE, ENEMY_BAT);
 	
