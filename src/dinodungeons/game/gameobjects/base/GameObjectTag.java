@@ -45,18 +45,19 @@ public enum GameObjectTag {
 	ITEM_CLUB(SortingLayers.sortingLayerEffects),
 	ITEM_BOMB(SortingLayers.sortingLayerStatic),
 	ITEM_BOOMERANG(SortingLayers.sortingLayerEffects),
+	ITEM_FIRE(SortingLayers.sortingLayerEffects),
 	DAMAGING_IMMOVABLE(SortingLayers.sortingLayerStatic),
 	ENEMY_BAT(SortingLayers.sortingLayerMoving),
 	PARTICLE(SortingLayers.sortingLayerEffects),
 	EXPLOSION(SortingLayers.sortingLayerEffects),
 	PUSHABLE(SortingLayers.sortingLayerStatic),
-	ITEM_FIRE(SortingLayers.sortingLayerEffects);
+	CANDLE_BLOCK(SortingLayers.sortingLayerStatic);
 	
 	public static final Collection<GameObjectTag> playerDamagingObjects = Arrays.asList(EXPLOSION, DAMAGING_IMMOVABLE, ENEMY_BAT);
 	
 	public static final Collection<GameObjectTag> enemyDamagingObjects = Arrays.asList(EXPLOSION, ITEM_CLUB);
 	
-	public static final Collection<GameObjectTag> movementBlockers = Arrays.asList(GENERAL_MOVEMENT_BLOCK, WALL, DAMAGING_IMMOVABLE, EXPLODABLE, PUSHABLE);
+	public static final Collection<GameObjectTag> movementBlockers = Arrays.asList(GENERAL_MOVEMENT_BLOCK, WALL, DAMAGING_IMMOVABLE, EXPLODABLE, PUSHABLE, CANDLE_BLOCK);
 	
 	public static final Collection<GameObjectTag> pickups = Arrays.asList(COLLECTABLE_STATUS_GAIN, COLLECTABLE_MONEY_OBJECT_VALUE_ONE, COLLECTABLE_MONEY_OBJECT_VALUE_FIVE, COLLECTABLE_MONEY_OBJECT_VALUE_TEN, COLLECTABLE_MONEY_OBJECT_VALUE_TWENTYFIVE);
 	

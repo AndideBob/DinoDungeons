@@ -21,7 +21,6 @@ import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
 import dinodungeons.game.gameobjects.enemies.EnemyBatObject;
 import dinodungeons.game.gameobjects.environment.BasicBushObject;
 import dinodungeons.game.gameobjects.environment.ExplodableStone;
-import dinodungeons.game.gameobjects.environment.StonePushSwitch;
 import dinodungeons.game.gameobjects.exits.ExplodableDoorObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
 import dinodungeons.game.gameobjects.exits.TransitionExitObject;
@@ -31,6 +30,7 @@ import dinodungeons.game.gameobjects.immovable.MetalSpikeObject;
 import dinodungeons.game.gameobjects.immovable.RoomSwitchDoorObject;
 import dinodungeons.game.gameobjects.immovable.UnpushableStone;
 import dinodungeons.game.gameobjects.immovable.WoodenSpikeObject;
+import dinodungeons.game.gameobjects.switches.StonePushSwitch;
 
 public class ScreenMapUtil {
 	

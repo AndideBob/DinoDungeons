@@ -75,7 +75,7 @@ public class ItemTorchFireObject extends GameObject {
 		float xChange = 0f;
 		float yChange = 0f;
 		if(movementAmount < movementDistance) {
-			if(hasCollisionWithObjectWithTag(GameObjectTag.WALL)
+			if(hasCollisionWithObjectWithTag(GameObjectTag.WALL, GameObjectTag.GENERAL_MOVEMENT_BLOCK)
 					|| positionX <= 0f
 					|| positionX >= DinoDungeonsConstants.mapWidth
 					|| positionY <= 0f

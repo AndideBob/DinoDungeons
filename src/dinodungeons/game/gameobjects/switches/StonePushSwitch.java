@@ -1,4 +1,4 @@
-package dinodungeons.game.gameobjects.environment;
+package dinodungeons.game.gameobjects.switches;
 
 import java.util.Collection;
 import java.util.Collections;
