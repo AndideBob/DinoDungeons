@@ -37,6 +37,13 @@ public class CandleSwitch extends GameObject {
 	}
 	
 	@Override
+	public void resetOnRoomEntry() {
+		isLit = false;
+		frame = 0;
+		nextFrameCounter = 0L;
+	}
+	
+	@Override
 	public void update(long deltaTimeInMs, InputInformation inputInformation) {
 		if(isLit){
 			nextFrameCounter -= deltaTimeInMs;

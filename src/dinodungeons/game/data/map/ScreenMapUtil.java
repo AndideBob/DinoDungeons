@@ -157,21 +157,21 @@ public class ScreenMapUtil {
 		case SOLID:
 			return new UnpushableStone(posX, posY, map.getTileSet().getColorVariation());
 		case NO_SWITCH:
-			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.NONE);
+			return new StonePushSwitch(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.NONE);
 		case SWITCH_A:
-			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_A);
+			return new StonePushSwitch(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_A);
 		case SWITCH_AB:
-			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_AB);
+			return new StonePushSwitch(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_AB);
 		case SWITCH_ABC:
-			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_ABC);
+			return new StonePushSwitch(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_ABC);
 		case SWITCH_ABCD:
-			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_ABCD);
+			return new StonePushSwitch(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_ABCD);
 		case SWITCH_B:
-			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_B);
+			return new StonePushSwitch(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_B);
 		case SWITCH_C:
-			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_C);
+			return new StonePushSwitch(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_C);
 		case SWITCH_D:
-			return new StonePushSwitch(posY, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_D);
+			return new StonePushSwitch(posX, posY, map.getTileSet().getColorVariation(), RoomEvent.SWITCH_D);
 		}
 		return null;
 	}

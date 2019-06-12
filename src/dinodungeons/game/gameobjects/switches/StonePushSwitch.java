@@ -47,6 +47,17 @@ public class StonePushSwitch extends BasePushable {
 		startY = positionY;
 		this.switchEvent = switchEvent;
 	}
+	
+	@Override
+	public void resetOnRoomEntry() {
+		positionX = startX;
+		positionY = startY;
+		collider = new RectCollider(positionX+2, positionY+2, 12, 12);
+		collider.setPositionX(positionX+2);
+		collider.setPositionY(positionY+2);
+		moving = false;
+		wasPushed = false;
+	}
 
 	@Override
 	protected void updateSpecific(long deltaTimeInMs, InputInformation inputInformation) {
