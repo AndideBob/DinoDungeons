@@ -11,6 +11,7 @@ import dinodungeons.editor.ui.buttons.filemanagement.ButtonSaveMap;
 import dinodungeons.editor.ui.buttons.selection.BaseLayerSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.CollectableItemPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.DoorPlacementSelectionButton;
+import dinodungeons.editor.ui.buttons.selection.EnemyPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.ExitPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.SelectionButton;
 import dinodungeons.editor.ui.buttons.selection.StaticObjectPlacementSelectionButton;
@@ -48,6 +49,7 @@ public class EditorUIHandler {
 		uiElements.add(new DoorPlacementSelectionButton(112, 224, this, editorHandle));
 		uiElements.add(new ExitPlacementSelectionButton(128, 224, this, editorHandle));
 		uiElements.add(new StaticObjectPlacementSelectionButton(144, 224, this, editorHandle));
+		uiElements.add(new EnemyPlacementSelectionButton(160, 224, this, editorHandle));
 		//Map Settings
 		uiElements.add(new MapSettingsUIGroup(256, 10, editorHandle));
 		//InputWindow (add last)

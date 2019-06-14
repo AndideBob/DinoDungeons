@@ -25,6 +25,8 @@ public class MapChangeFactoryUtil {
 			return new SpikeMapChangeFactory();
 		case IMMOVABLE_PLACEMENT:
 			return new ImmovableMapChangeFactory();
+		case ENEMY_PLACEMENT:
+			return new EnemyMapChangeFactory();
 		}
 		Logger.logError("Could not retrieve MapChangeFactory for MapChangeType: " + mapChangeType.toString());
 		return null;
