@@ -48,6 +48,7 @@ public enum GameObjectTag {
 	ITEM_FIRE(SortingLayers.sortingLayerEffects),
 	DAMAGING_IMMOVABLE(SortingLayers.sortingLayerStatic),
 	ENEMY_BAT(SortingLayers.sortingLayerMoving),
+	ENEMY_TRICERABLOB(SortingLayers.sortingLayerMoving),
 	PARTICLE(SortingLayers.sortingLayerEffects),
 	EXPLOSION(SortingLayers.sortingLayerEffects),
 	PUSHABLE(SortingLayers.sortingLayerStatic),
