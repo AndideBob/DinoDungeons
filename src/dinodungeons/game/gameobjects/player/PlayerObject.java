@@ -134,7 +134,6 @@ public class PlayerObject extends GameObject {
 		GameObjectTag firstDamageObjectTag = GameObjectTag.NONE;
 		for(GameObjectTag tag : GameObjectTag.playerDamagingObjects){
 			for(Collision collision : getCollisionsWithObjectsWithTag(tag)){
-				Logger.logDebug("Player collided with " + tag.toString());
 				damageCollision = collision;
 				firstDamageObjectTag = tag;
 				break;
