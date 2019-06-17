@@ -159,8 +159,10 @@ public class PlayerObject extends GameObject {
 		switch(tag){
 		case DAMAGING_IMMOVABLE:
 			return 1;
+		case ENEMY_TRICERABLOB:
 		case ENEMY_BAT:
 			return 1;
+		
 		case EXPLOSION:
 			return 1;
 		default:

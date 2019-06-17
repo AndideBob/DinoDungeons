@@ -5,15 +5,9 @@ import java.util.Collections;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
-import dinodungeons.game.data.gameplay.PlayerStatusManager;
-import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
-import dinodungeons.game.gameobjects.collectable.HealthPickupObject;
-import dinodungeons.game.gameobjects.particles.EnemyDestroyParticle;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
-import dinodungeons.sfx.sound.SoundEffect;
-import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
@@ -71,12 +65,7 @@ public class EnemyBatObject extends BaseEnemyObject {
 	
 	private void checkForDamage() {
 		if(hasDamagingCollision()) {
-			dead = true;
-			int x = (int)Math.round(positionX);
-			int y = (int)Math.round(positionY);
-			dropPickup();
-			GameObjectManager.getInstance().addGameObjectToCurrentMap(new EnemyDestroyParticle(x, y));
-			SoundManager.getInstance().playSoundEffect(SoundEffect.DESTROY_ENEMY);
+			die();
 		}
 	}
 	
@@ -87,14 +76,6 @@ public class EnemyBatObject extends BaseEnemyObject {
 			}
 		}
 		return false;
-	}
-	
-	private void dropPickup() {
-		if(PlayerStatusManager.getInstance().isHurt() && DinoDungeonsConstants.random.nextInt(3) == 0) {
-			int x = (int)Math.round(positionX + 4);
-			int y = (int)Math.round(positionY + 4);
-			GameObjectManager.getInstance().addGameObjectToCurrentMap(new HealthPickupObject(x, y));
-		}
 	}
 
 	private void setNewRandomBehaviour() {

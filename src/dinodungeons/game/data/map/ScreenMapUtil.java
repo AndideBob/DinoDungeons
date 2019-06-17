@@ -20,6 +20,7 @@ import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
 import dinodungeons.game.gameobjects.enemies.EnemyBatObject;
+import dinodungeons.game.gameobjects.enemies.EnemyTricerablobObject;
 import dinodungeons.game.gameobjects.environment.BasicBushObject;
 import dinodungeons.game.gameobjects.environment.ExplodableStone;
 import dinodungeons.game.gameobjects.exits.ExplodableDoorObject;
@@ -148,6 +149,8 @@ public class ScreenMapUtil {
 		switch (enemyMapObject.getEnemyType()) {
 		case GREEN_BAT:
 			return new EnemyBatObject(posX, posY);
+		case TRICERABLOB:
+			return new EnemyTricerablobObject(posX, posY);
 		}
 		return null;
 	}

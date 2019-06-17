@@ -54,7 +54,7 @@ public enum GameObjectTag {
 	PUSHABLE(SortingLayers.sortingLayerStatic),
 	CANDLE_BLOCK(SortingLayers.sortingLayerStatic);
 	
-	public static final Collection<GameObjectTag> playerDamagingObjects = Arrays.asList(EXPLOSION, DAMAGING_IMMOVABLE, ENEMY_BAT);
+	public static final Collection<GameObjectTag> playerDamagingObjects = Arrays.asList(EXPLOSION, DAMAGING_IMMOVABLE, ENEMY_BAT, ENEMY_TRICERABLOB);
 	
 	public static final Collection<GameObjectTag> enemyDamagingObjects = Arrays.asList(EXPLOSION, ITEM_CLUB);
 	

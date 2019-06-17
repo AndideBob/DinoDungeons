@@ -1,10 +1,16 @@
 package dinodungeons.game.gameobjects.enemies;
 
+import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.gameplay.PlayerStatusManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import dinodungeons.game.gameobjects.collectable.HealthPickupObject;
+import dinodungeons.game.gameobjects.particles.EnemyDestroyParticle;
 import dinodungeons.game.gameobjects.player.PlayerObject;
+import dinodungeons.sfx.sound.SoundEffect;
+import dinodungeons.sfx.sound.SoundManager;
 
 public abstract class BaseEnemyObject extends GameObject {
 
@@ -65,6 +71,23 @@ public abstract class BaseEnemyObject extends GameObject {
 	
 	public boolean isRelevantForRoomSwitch(){
 		return true;
+	}
+	
+	protected final void die(){
+		dead = true;
+		int x = (int)Math.round(positionX);
+		int y = (int)Math.round(positionY);
+		dropPickup();
+		GameObjectManager.getInstance().addGameObjectToCurrentMap(new EnemyDestroyParticle(x, y));
+		SoundManager.getInstance().playSoundEffect(SoundEffect.DESTROY_ENEMY);
+	}
+	
+	private void dropPickup() {
+		if(PlayerStatusManager.getInstance().isHurt() && DinoDungeonsConstants.random.nextInt(3) == 0) {
+			int x = (int)Math.round(positionX + 4);
+			int y = (int)Math.round(positionY + 4);
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(new HealthPickupObject(x, y));
+		}
 	}
 	
 	protected final double getDistanceToPlayer() {
