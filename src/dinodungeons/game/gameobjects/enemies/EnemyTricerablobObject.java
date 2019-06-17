@@ -2,13 +2,14 @@ package dinodungeons.game.gameobjects.enemies;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import dinodungeons.game.gameobjects.enemies.utility.MovementChecker;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import lwjgladapter.physics.collision.RectCollider;
@@ -29,30 +30,22 @@ public class EnemyTricerablobObject extends BaseEnemyObject {
 	
 	private RectCollider colliderHead;
 	private RectCollider colliderBack;
-	private RectCollider predictionColliderUp;
-	private RectCollider predictionColliderDown;
-	private RectCollider predictionColliderLeft;
-	private RectCollider predictionColliderRight;
-	private HashSet<Collider> colliders; 
+	private HashSet<Collider> colliders;
+	
+	private MovementChecker movementChecker;
 	
 	public EnemyTricerablobObject(int positionX, int positionY) {
 		super(GameObjectTag.ENEMY_TRICERABLOB, positionX, positionY);
 		direction = DinoDungeonsConstants.directionDown;
 		showWalkingFrame = false;
 		resetWaitTimer();
+		movementChecker = new MovementChecker(positionX, positionY, 16, 16);
+		GameObjectManager.getInstance().addGameObjectToCurrentMap(movementChecker);
 		colliderHead = new RectCollider(0, 0, 16, 16);
 		colliderBack = new RectCollider(0, 0, 16, 16);
-		predictionColliderUp = new RectCollider(0, 0, 16, 16);
-		predictionColliderDown = new RectCollider(0, 0, 16, 16);
-		predictionColliderLeft = new RectCollider(0, 0, 16, 16);
-		predictionColliderRight = new RectCollider(0, 0, 16, 16);
 		colliders = new HashSet<>();
 		colliders.add(colliderHead);
 		colliders.add(colliderBack);
-		colliders.add(predictionColliderUp);
-		colliders.add(predictionColliderDown);
-		colliders.add(predictionColliderLeft);
-		colliders.add(predictionColliderRight);
 		updateColliders();
 		myState = EnemyState.IDLE;
 	}
@@ -69,32 +62,7 @@ public class EnemyTricerablobObject extends BaseEnemyObject {
 			return -1;
 		}
 		int newDir = possibleDirections.get(DinoDungeonsConstants.random.nextInt(possibleDirections.size()));
-		Collection<GameObjectTag> collisionTags;
-		switch (newDir) {
-		case DinoDungeonsConstants.directionDown:
-			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderDown.getID());
-			break;
-		case DinoDungeonsConstants.directionLeft:
-			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderLeft.getID());
-			break;
-		case DinoDungeonsConstants.directionRight:
-			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderRight.getID());
-			break;
-		case DinoDungeonsConstants.directionUp:
-			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderUp.getID());
-			break;
-		default:
-			collisionTags = Collections.emptyList();
-			break;
-		}
-		boolean hasHinderingCollision = false;
-		for(GameObjectTag tag : collisionTags) {
-			if(GameObjectTag.movementBlockers.contains(tag)){
-				hasHinderingCollision = true;
-				break;
-			}
-		}
-		if(!hasHinderingCollision){
+		if(!movementChecker.hasWallInDirection(newDir)){
 			return newDir;
 		}
 		else{
@@ -152,22 +120,7 @@ public class EnemyTricerablobObject extends BaseEnemyObject {
 			colliderBack.setHeight(10);
 			break;
 		}
-		predictionColliderUp.setPositionX(x + 4);
-		predictionColliderUp.setPositionY(y + 8);
-		predictionColliderUp.setWidth(8);
-		predictionColliderUp.setHeight(12);
-		predictionColliderDown.setPositionX(x + 4);
-		predictionColliderDown.setPositionY(y - 4);
-		predictionColliderDown.setWidth(8);
-		predictionColliderDown.setHeight(12);
-		predictionColliderRight.setPositionX(x + 8);
-		predictionColliderRight.setPositionY(y + 4);
-		predictionColliderRight.setWidth(12);
-		predictionColliderRight.setHeight(8);
-		predictionColliderLeft.setPositionX(x - 4);
-		predictionColliderLeft.setPositionY(y + 4);
-		predictionColliderLeft.setWidth(12);
-		predictionColliderLeft.setHeight(8);
+		movementChecker.updateColliders(x, y);
 	}
 	
 	private boolean hasDamagingCollision() {
