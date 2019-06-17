@@ -14,6 +14,7 @@ import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.sfx.sound.SoundEffect;
 import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.input.ButtonState;
+import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 import lwjgladapter.physics.collision.base.Collision;
@@ -128,6 +129,7 @@ public class PlayerObject extends GameObject {
 		GameObjectTag firstDamageObjectTag = GameObjectTag.NONE;
 		for(GameObjectTag tag : GameObjectTag.playerDamagingObjects){
 			for(Collision collision : getCollisionsWithObjectsWithTag(tag)){
+				Logger.logDebug("Player collided with " + tag.toString());
 				damageCollision = collision;
 				firstDamageObjectTag = tag;
 				break;
@@ -171,7 +173,7 @@ public class PlayerObject extends GameObject {
 	}
 	
 	private void takeDamage(int amount, int sourceX, int sourceY) {
-		if(playerState != PlayerState.DAMAGE_TAKEN && stateTimer > 0){
+		if(playerState != PlayerState.DAMAGE_TAKEN && stateTimer <= 0){
 			SoundManager.getInstance().playSoundEffect(SoundEffect.PLAYER_DAMAGE);
 			PlayerStatusManager.getInstance().damage(amount);
 			playerState = PlayerState.DAMAGE_TAKEN;
