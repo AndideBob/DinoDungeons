@@ -28,6 +28,8 @@ public class EnemyMapObject extends MapObject {
 		switch (enemyType) {
 		case GREEN_BAT:
 			return "Bat Grn";
+		case TRICERABLOB:
+			return "TRI BLB";
 		}
 		return "Enemey";
 	}
@@ -37,11 +39,15 @@ public class EnemyMapObject extends MapObject {
 		case GREEN_BAT:
 			SpriteManager.getInstance().getSprite(SpriteID.ENEMY_BAT_GREEN).draw(0, x - 4, y);
 			break;
+		case TRICERABLOB:
+			SpriteManager.getInstance().getSprite(SpriteID.ENEMY_TRICERABLOB).draw(0, x, y);
+			break;
 		}
 	}
 	
 	public enum EnemyType{
-		GREEN_BAT("0001");
+		GREEN_BAT("0001"),
+		TRICERABLOB("0002");
 		
 		private String saveRepresentation;
 		
