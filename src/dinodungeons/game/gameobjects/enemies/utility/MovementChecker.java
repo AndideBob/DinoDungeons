@@ -63,19 +63,19 @@ public class MovementChecker extends GameObject{
 			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderDown.getID());
 			break;
 		case DinoDungeonsConstants.directionLeft:
-			if(predictionColliderDown.getPositionX() < 0) {
+			if(predictionColliderLeft.getPositionX() < 0) {
 				return false;
 			}
 			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderLeft.getID());
 			break;
 		case DinoDungeonsConstants.directionRight:
-			if(predictionColliderDown.getPositionX() + 2 >= GameWindowConstants.DEFAULT_SCREEN_WIDTH) {
+			if(predictionColliderRight.getPositionX() + 2 >= GameWindowConstants.DEFAULT_SCREEN_WIDTH) {
 				return false;
 			}
 			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderRight.getID());
 			break;
 		case DinoDungeonsConstants.directionUp:
-			if(predictionColliderDown.getPositionY() + 2 >= GameWindowConstants.DEFAULT_SCREEN_HEIGHT) {
+			if(predictionColliderUp.getPositionY() + 2 >= GameWindowConstants.DEFAULT_SCREEN_HEIGHT) {
 				return false;
 			}
 			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderUp.getID());
