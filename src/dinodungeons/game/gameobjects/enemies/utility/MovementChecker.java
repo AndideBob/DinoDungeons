@@ -8,6 +8,7 @@ import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import lwjgladapter.GameWindowConstants;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
@@ -52,19 +53,31 @@ public class MovementChecker extends GameObject{
 		return colliders;
 	}
 	
-	public boolean hasWallInDirection(int direction){
+	public boolean canWalkInDirection(int direction){
 		Collection<GameObjectTag> collisionTags;
 		switch (direction) {
 		case DinoDungeonsConstants.directionDown:
+			if(predictionColliderDown.getPositionY() < 0) {
+				return false;
+			}
 			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderDown.getID());
 			break;
 		case DinoDungeonsConstants.directionLeft:
+			if(predictionColliderDown.getPositionX() < 0) {
+				return false;
+			}
 			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderLeft.getID());
 			break;
 		case DinoDungeonsConstants.directionRight:
+			if(predictionColliderDown.getPositionX() + 2 >= GameWindowConstants.DEFAULT_SCREEN_WIDTH) {
+				return false;
+			}
 			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderRight.getID());
 			break;
 		case DinoDungeonsConstants.directionUp:
+			if(predictionColliderDown.getPositionY() + 2 >= GameWindowConstants.DEFAULT_SCREEN_HEIGHT) {
+				return false;
+			}
 			collisionTags = getCollisionTagsForSpecificCollider(predictionColliderUp.getID());
 			break;
 		default:
@@ -73,10 +86,10 @@ public class MovementChecker extends GameObject{
 		}
 		for(GameObjectTag tag : collisionTags) {
 			if(GameObjectTag.movementBlockers.contains(tag)){
-				return true;
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	public void updateColliders(int x, int y){

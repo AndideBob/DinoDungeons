@@ -76,6 +76,11 @@ public class PlayerObject extends GameObject {
 		}
 		handleCollisions();
 		switch (playerState) {
+		case STUNNED:
+			if(stateTimer <= DinoDungeonsConstants.stunTime - DinoDungeonsConstants.stunKnockbackTime) {
+				movementChangeX = 0;
+				movementChangeY = 0;
+			}
 		case DAMAGE_TAKEN:
 			if(stateTimer <= 0){
 				playerState = PlayerState.DEFAULT;
@@ -173,7 +178,7 @@ public class PlayerObject extends GameObject {
 	}
 	
 	private void takeDamage(int amount, int sourceX, int sourceY) {
-		if(playerState != PlayerState.DAMAGE_TAKEN && stateTimer <= 0){
+		if(playerState != PlayerState.DAMAGE_TAKEN && (playerState == PlayerState.STUNNED || stateTimer <= 0)){
 			SoundManager.getInstance().playSoundEffect(SoundEffect.PLAYER_DAMAGE);
 			PlayerStatusManager.getInstance().damage(amount);
 			playerState = PlayerState.DAMAGE_TAKEN;
@@ -184,6 +189,20 @@ public class PlayerObject extends GameObject {
 			movementChangeX = positionX + 8 - sourceX;
 			movementChangeY = positionY + 8 - sourceY;
 			stateTimer = DinoDungeonsConstants.invulnerabilityTime;
+		}
+	}
+	
+	public void tryStun(int sourceX, int sourceY) {
+		if(playerState != PlayerState.DAMAGE_TAKEN && stateTimer <= 0){
+			SoundManager.getInstance().playSoundEffect(SoundEffect.PLAYER_DAMAGE);
+			playerState = PlayerState.STUNNED;
+			if(weaponObject != null) {
+				GameObjectManager.getInstance().destroyGameObjectImmediately(weaponObject);
+				weaponObject = null;
+			}
+			movementChangeX = positionX + 8 - sourceX;
+			movementChangeY = positionY + 8 - sourceY;
+			stateTimer = DinoDungeonsConstants.stunTime;
 		}
 	}
 
@@ -360,6 +379,7 @@ public class PlayerObject extends GameObject {
 		PUSHING,
 		ITEM_COLLECTED,
 		DAMAGE_TAKEN,
+		STUNNED,
 		USING_ITEM;
 	}
 }

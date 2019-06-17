@@ -64,6 +64,7 @@ public class PlayerDrawManager {
 			if(frameChange && hasMoved){
 				showEvenFrame = !showEvenFrame;
 			}
+			isBlinking = false;
 			break;
 		case PUSHING:
 			actionNumber = 1;
@@ -71,12 +72,15 @@ public class PlayerDrawManager {
 			if(frameChange){
 				showEvenFrame = !showEvenFrame;
 			}
+			isBlinking = false;
 			break;
 		case ITEM_COLLECTED:
 			actionNumber = 3;
 			directionNumber = 0;
 			showEvenFrame = false;
+			isBlinking = false;
 			break;
+		case STUNNED:
 		case DAMAGE_TAKEN:
 			if(msSinceLastBlink > 0){
 				msSinceLastBlink -= deltaTimeInMs;
@@ -91,6 +95,7 @@ public class PlayerDrawManager {
 		case USING_ITEM:
 			actionNumber = 3;
 			showEvenFrame = true;
+			isBlinking = false;
 			break;
 		}
 		frameNumber = (actionNumber * 8) + (directionNumber * 2) + (showEvenFrame ? 0 : 1);
@@ -99,7 +104,12 @@ public class PlayerDrawManager {
 	public void draw(int x, int y){
 		SpriteMap characterSprite = SpriteManager.getInstance().getSprite(SpriteID.PLAYER);
 		if(isBlinking){
-			characterSprite.setColorValues(1f, 0f, 0f, 1f);
+			if(playerState == PlayerState.STUNNED) {
+				characterSprite.setColorValues(0f, 0.5f, 1f, 1f);
+			}
+			else {
+				characterSprite.setColorValues(1f, 0f, 0f, 1f);
+			}
 			characterSprite.draw(frameNumber, x, y);
 			characterSprite.setColorValues(1f, 1f, 1f, 1f);
 		}

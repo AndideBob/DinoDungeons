@@ -1,5 +1,6 @@
 package dinodungeons.game.gameobjects.enemies;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -54,24 +55,21 @@ public class EnemyTricerablobObject extends BaseEnemyObject {
 		waitTimer = 500 + DinoDungeonsConstants.random.nextInt(1500);
 	}
 	
-	private int selectNewDirection(int... blockedDirections){
-		List<Integer> possibleDirections = Arrays.asList(DinoDungeonsConstants.directionDown, DinoDungeonsConstants.directionLeft,
-				DinoDungeonsConstants.directionRight, DinoDungeonsConstants.directionUp);
-		possibleDirections.removeAll(Arrays.asList(blockedDirections));
+	private int selectNewDirection(Collection<Integer> blockedDirections){
+		List<Integer> possibleDirections = new ArrayList<>();
+		possibleDirections.addAll(Arrays.asList(DinoDungeonsConstants.directionDown, DinoDungeonsConstants.directionLeft,
+				DinoDungeonsConstants.directionRight, DinoDungeonsConstants.directionUp));
+		possibleDirections.removeAll(blockedDirections);
 		if(possibleDirections.isEmpty()){
 			return -1;
 		}
 		int newDir = possibleDirections.get(DinoDungeonsConstants.random.nextInt(possibleDirections.size()));
-		if(!movementChecker.hasWallInDirection(newDir)){
+		if(movementChecker.canWalkInDirection(newDir)){
 			return newDir;
 		}
 		else{
-			int[] newBlockedDirs = new int[blockedDirections.length + 1];
-			for(int i = 0; i < blockedDirections.length; i++){
-				newBlockedDirs[i] = blockedDirections[i];
-			}
-			newBlockedDirs[blockedDirections.length] = newDir;
-			return selectNewDirection(newBlockedDirs);
+			blockedDirections.add(newDir);
+			return selectNewDirection(blockedDirections);
 		}
 	}
 	
@@ -83,41 +81,41 @@ public class EnemyTricerablobObject extends BaseEnemyObject {
 			colliderHead.setPositionX(x + 1);
 			colliderHead.setPositionY(y + 1);
 			colliderHead.setWidth(14);
-			colliderHead.setHeight(10);
-			colliderBack.setPositionX(x + 3);
-			colliderBack.setPositionY(y + 15);
-			colliderBack.setWidth(10);
-			colliderBack.setHeight(14);
+			colliderHead.setHeight(7);
+			colliderBack.setPositionX(x + 1);
+			colliderBack.setPositionY(y + 8);
+			colliderBack.setWidth(14);
+			colliderBack.setHeight(7);
 			break;
 		case DinoDungeonsConstants.directionUp:
 			colliderHead.setPositionX(x + 1);
-			colliderHead.setPositionY(y + 10);
+			colliderHead.setPositionY(y + 8);
 			colliderHead.setWidth(14);
-			colliderHead.setHeight(6);
-			colliderBack.setPositionX(x + 2);
-			colliderBack.setPositionY(y);
-			colliderBack.setWidth(12);
-			colliderBack.setHeight(10);
+			colliderHead.setHeight(7);
+			colliderBack.setPositionX(x + 1);
+			colliderBack.setPositionY(y + 1);
+			colliderBack.setWidth(14);
+			colliderBack.setHeight(7);
 			break;
 		case DinoDungeonsConstants.directionLeft:
-			colliderHead.setPositionX(x);
+			colliderHead.setPositionX(x + 1);
 			colliderHead.setPositionY(y + 1);
-			colliderHead.setWidth(11);
+			colliderHead.setWidth(7);
 			colliderHead.setHeight(14);
 			colliderBack.setPositionX(x + 8);
 			colliderBack.setPositionY(y + 1);
-			colliderBack.setWidth(8);
-			colliderBack.setHeight(10);
+			colliderBack.setWidth(7);
+			colliderBack.setHeight(14);
 			break;
 		case DinoDungeonsConstants.directionRight:
-			colliderHead.setPositionX(x + 5);
+			colliderHead.setPositionX(x + 8);
 			colliderHead.setPositionY(y + 1);
-			colliderHead.setWidth(11);
+			colliderHead.setWidth(7);
 			colliderHead.setHeight(14);
-			colliderBack.setPositionX(x);
+			colliderBack.setPositionX(x + 1);
 			colliderBack.setPositionY(y + 1);
-			colliderBack.setWidth(8);
-			colliderBack.setHeight(10);
+			colliderBack.setWidth(7);
+			colliderBack.setHeight(14);
 			break;
 		}
 		movementChecker.updateColliders(x, y);
@@ -125,9 +123,12 @@ public class EnemyTricerablobObject extends BaseEnemyObject {
 	
 	private boolean hasDamagingCollision() {
 		boolean blockDamage = false;
+		int x = (int)Math.round(positionX);
+		int y = (int)Math.round(positionY);
 		for(GameObjectTag tag : getCollisionTagsForSpecificCollider(colliderHead.getID())) {
 			if(GameObjectTag.enemyDamagingObjects.contains(tag)){
 				blockDamage = true;
+				GameObjectManager.getInstance().getPlayerObject().tryStun(x + 8, y + 8);
 				break;
 			}
 		}
@@ -184,7 +185,7 @@ public class EnemyTricerablobObject extends BaseEnemyObject {
 		showWalkingFrame = false;
 		waitTimer -= deltaTimeInMs;
 		if(waitTimer <= 0){
-			direction = selectNewDirection();
+			direction = selectNewDirection(new ArrayList<Integer>());
 			if(direction != -1){
 				movementInThisPhase = 0f;
 				myState = EnemyState.AWARE;
