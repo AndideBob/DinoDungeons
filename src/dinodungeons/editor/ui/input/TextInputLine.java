@@ -98,7 +98,12 @@ public class TextInputLine extends UIElement {
 	}
 
 	public void setInput(String text) {
-		this.text = text.substring(0,numberOfLetters);
+		if(text.length() > numberOfLetters){
+			this.text = text.substring(0,numberOfLetters);
+		}
+		else{
+			this.text = text;
+		}
 	}
 
 }

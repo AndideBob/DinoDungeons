@@ -95,9 +95,10 @@ public class EditorUIHandler {
 		}
 	}
 	
-	public void openInputWindow(String prompt, InputUsage usage){
+	public void openInputWindow(String prompt, InputUsage usage, String prefilledInput){
 		textInputWindow.setPrompt(prompt);
 		textInputWindow.setUsage(usage);
+		textInputWindow.setInput(prefilledInput);
 		textInputWindow.open();
 	}
 

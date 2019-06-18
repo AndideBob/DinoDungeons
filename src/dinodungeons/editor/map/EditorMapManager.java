@@ -89,6 +89,10 @@ public class EditorMapManager {
 		}
 	}
 	
+	public String getCurrentMapID(){
+		return currentMap.getID();
+	}
+	
 	public void applyMapChanges(Collection<AbstractMapChange> changes){
 		for(AbstractMapChange change : changes){
 			change.applyTo(currentMap);
@@ -111,9 +115,26 @@ public class EditorMapManager {
 			break;
 		}
 	}
+	
+	public String getCurrentTransitionInDirection(int direction){
+		switch (direction) {
+		case DinoDungeonsConstants.directionDown:
+			return currentMap.getTransitionDownID();
+		case DinoDungeonsConstants.directionUp:
+			return currentMap.getTransitionUpID();
+		case DinoDungeonsConstants.directionLeft:
+			return currentMap.getTransitionLeftID();
+		default:
+			return currentMap.getTransitionRightID();
+		}
+	}
 
 	public void setDungeonID(int id) {
 		currentMap.setDungeonID(id);
+	}
+	
+	public int getCurrentDungeonID(){
+		return currentMap.getDungeonID();
 	}
 	
 	public void setTileset(TileSet tileSet){
@@ -123,4 +144,5 @@ public class EditorMapManager {
 	public TileSet getCurrentTileset() {
 		return currentMap.getTileSet();
 	}
+	
 }

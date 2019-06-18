@@ -59,7 +59,30 @@ public class Editor extends Game {
 	
 	public void waitForInput(String prompt, InputUsage usage){
 		currentState = EditorState.WAIT_FOR_INPUT;
-		uiHandler.openInputWindow(prompt, usage);
+		String prefilledInput = "";
+		switch(usage){
+		case DUNGEON_ID:
+			prefilledInput = "" + mapManager.getCurrentDungeonID();
+			break;
+		case SAVING:
+			prefilledInput = mapManager.getCurrentMapID();
+			break;
+		case TRANSITION_DOWN:
+			prefilledInput = mapManager.getCurrentTransitionInDirection(DinoDungeonsConstants.directionDown);
+			break;
+		case TRANSITION_LEFT:
+			prefilledInput = mapManager.getCurrentTransitionInDirection(DinoDungeonsConstants.directionLeft);
+			break;
+		case TRANSITION_RIGHT:
+			prefilledInput = mapManager.getCurrentTransitionInDirection(DinoDungeonsConstants.directionRight);
+			break;
+		case TRANSITION_UP:
+			prefilledInput = mapManager.getCurrentTransitionInDirection(DinoDungeonsConstants.directionUp);
+			break;
+		default:
+			break;
+		}
+		uiHandler.openInputWindow(prompt, usage, prefilledInput);
 	}
 	
 	public void reactToInput(String input, InputUsage usage){

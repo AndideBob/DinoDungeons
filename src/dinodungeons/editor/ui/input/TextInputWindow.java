@@ -88,6 +88,10 @@ public class TextInputWindow extends UIElement implements EditorWindow {
 		this.usage = usage;
 	}
 	
+	public void setInput(String input){
+		inputLine.setInput(input);
+	}
+	
 	@Override
 	public void closeConfirm(){
 		editorHandle.reactToInput(inputLine.getInput(), usage);
