@@ -40,6 +40,7 @@ public enum GFXResourceID {
 	CHARACTER(FolderConstants.folderCHARACTERS, "character.png"),
 	ENEMY_BAT_GREEN(FolderConstants.folderCHARACTERS, "bat_green.png"),
 	ENEMY_TRICERABLOB(FolderConstants.folderCHARACTERS, "tricerablob.png"),
+	ENEMY_CROCDROP(FolderConstants.folderCHARACTERS, "crocdrop.png"),
 	//SPRITES-------------
 	ITEMS(FolderConstants.folderSPRITES, "items.png"),
 	COLLECTABLES(FolderConstants.folderSPRITES, "collectables.png"),

@@ -24,6 +24,7 @@ public class EnemyButtonGroup extends UIButtonGroup {
 		//Basic Enemies
 		buttons.add(new EnemyChangeButton(256, 208, this, EnemyType.GREEN_BAT));
 		buttons.add(new EnemyChangeButton(272, 208, this, EnemyType.TRICERABLOB));
+		buttons.add(new EnemyChangeButton(288, 208, this, EnemyType.CROCDROP));
 		return buttons;
 	}
 	

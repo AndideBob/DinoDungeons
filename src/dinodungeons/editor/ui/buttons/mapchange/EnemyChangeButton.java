@@ -31,6 +31,8 @@ public class EnemyChangeButton extends BaseButton {
 			return ButtonSprite.ENEMY_BAT_GREEN;
 		case TRICERABLOB:
 			return ButtonSprite.ENEMY_TRICERABLOB;
+		case CROCDROP:
+			return ButtonSprite.ENEMY_CROCDROP;
 		}
 		return ButtonSprite.CANCEL;
 	}

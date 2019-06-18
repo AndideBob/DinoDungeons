@@ -20,6 +20,7 @@ import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.collectable.CollectableItemObject;
 import dinodungeons.game.gameobjects.enemies.EnemyBatObject;
+import dinodungeons.game.gameobjects.enemies.EnemyCrocDropObject;
 import dinodungeons.game.gameobjects.enemies.EnemyTricerablobObject;
 import dinodungeons.game.gameobjects.environment.BasicBushObject;
 import dinodungeons.game.gameobjects.environment.ExplodableStone;
@@ -148,9 +149,11 @@ public class ScreenMapUtil {
 	private static GameObject buildEnemyMapObject(EnemyMapObject enemyMapObject, int posX, int posY) {
 		switch (enemyMapObject.getEnemyType()) {
 		case GREEN_BAT:
-			return new EnemyBatObject(posX, posY);
+			return new EnemyBatObject(posX - 4, posY);
 		case TRICERABLOB:
 			return new EnemyTricerablobObject(posX, posY);
+		case CROCDROP:
+			return new EnemyCrocDropObject(posX + 2, posY + 1);
 		}
 		return null;
 	}

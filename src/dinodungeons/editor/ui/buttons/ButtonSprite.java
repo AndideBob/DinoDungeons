@@ -80,7 +80,8 @@ public enum ButtonSprite {
 	SPIKES_METAL(105),
 	SELECTION_ENEMY(112),
 	ENEMY_BAT_GREEN(113),
-	ENEMY_TRICERABLOB(114);
+	ENEMY_TRICERABLOB(114),
+	ENEMY_CROCDROP(115);
 	
 	private int positionOnSpriteSheet;
 	
