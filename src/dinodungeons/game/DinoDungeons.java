@@ -15,6 +15,7 @@ import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.CollisionInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
+import dinodungeons.game.gameobjects.environment.signs.StoneSignObject;
 import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.game.gameobjects.text.TextBoxContent;
 import dinodungeons.game.utils.MenuManager;
@@ -282,11 +283,8 @@ public class DinoDungeons extends Game {
 			testTextBox.setLine(2, "A looooooooooooooooooooooooooooooooong line is this");
 			testTextBox.setLine(3, "Well I need more text");
 			testTextBox.setLine(4, "The end!");
-			GameObjectManager.getInstance().queueTextBox(testTextBox);
-			TextBoxContent testTextBox2 = new TextBoxContent();
-			testTextBox2.setLine(0, "Oh and this is the");
-			testTextBox2.setLine(1, "second text box!");
-			GameObjectManager.getInstance().queueTextBox(testTextBox2);
+			StoneSignObject stoneSign = new StoneSignObject(80, 80, 0, testTextBox);
+			GameObjectManager.getInstance().addGameObjectToCurrentMap(stoneSign);
 		}
 	}
 
