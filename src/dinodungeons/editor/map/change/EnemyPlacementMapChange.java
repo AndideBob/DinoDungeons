@@ -5,7 +5,6 @@ import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject.EnemyType;
 import dinodungeons.game.data.map.objects.MapObject;
-import dinodungeons.game.data.map.objects.SpikeMapObject;
 
 public class EnemyPlacementMapChange extends AbstractMapChange {
 	

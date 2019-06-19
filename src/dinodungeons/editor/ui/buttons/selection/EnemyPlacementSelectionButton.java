@@ -5,7 +5,6 @@ import dinodungeons.editor.map.change.MapChangeType;
 import dinodungeons.editor.ui.EditorUIHandler;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
 import dinodungeons.editor.ui.groups.buttons.EnemyButtonGroup;
-import dinodungeons.editor.ui.groups.buttons.StaticObjectButtonGroup;
 import dinodungeons.game.data.gameplay.InputInformation;
 
 public class EnemyPlacementSelectionButton extends SelectionButton {

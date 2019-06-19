@@ -6,20 +6,16 @@ import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.data.gameplay.PlayerInventoryManager;
-import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.MapManager;
 import dinodungeons.game.data.map.ScreenMap;
-import dinodungeons.game.data.map.ScreenMapUtil;
 import dinodungeons.game.data.transitions.ScreenTransition;
 import dinodungeons.game.data.transitions.TransitionType;
 import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.CollisionInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
-import dinodungeons.game.gameobjects.immovable.RoomSwitchDoorObject;
 import dinodungeons.game.gameobjects.player.ItemID;
-import dinodungeons.game.gameobjects.switches.StonePushSwitch;
 import dinodungeons.game.gameobjects.text.TextBoxContent;
 import dinodungeons.game.utils.MenuManager;
 import dinodungeons.game.utils.ScreenFadingHelper;
@@ -65,7 +61,6 @@ public class DinoDungeons extends Game {
 		scrollHelper = new ScreenScrollingHelper();
 		fadingHelper = new ScreenFadingHelper();
 		inputInformation = new InputInformation();
-		ScreenMapUtil.setGameHandle(this);
 		gameState = GameState.DEFAULT;
 	}
 	

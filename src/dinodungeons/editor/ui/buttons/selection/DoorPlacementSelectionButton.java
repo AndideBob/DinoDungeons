@@ -4,7 +4,6 @@ import dinodungeons.editor.Editor;
 import dinodungeons.editor.map.change.MapChangeType;
 import dinodungeons.editor.ui.EditorUIHandler;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
-import dinodungeons.editor.ui.groups.buttons.CollectableItemPlacementButtonGroup;
 import dinodungeons.editor.ui.groups.buttons.DoorPlacementButtonGroup;
 import dinodungeons.game.data.gameplay.InputInformation;
 

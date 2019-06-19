@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import dinodungeons.game.DinoDungeons;
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.objects.BlockMapObject;
@@ -37,12 +36,6 @@ import dinodungeons.game.gameobjects.switches.CandleSwitch;
 import dinodungeons.game.gameobjects.switches.StonePushSwitch;
 
 public class ScreenMapUtil {
-	
-	private static DinoDungeons gameHandle = null;
-	
-	public static void setGameHandle(DinoDungeons newGameHandle){
-		gameHandle = newGameHandle;
-	}
 
 	public static Collection<GameObject> createGameObjectsForMap(ScreenMap map){
 		ArrayList<GameObject> gameObjects = new ArrayList<>();
