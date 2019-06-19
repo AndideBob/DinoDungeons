@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import dinodungeons.game.data.gameplay.GameEventManager;
 import dinodungeons.game.data.gameplay.InputInformation;
@@ -18,6 +19,8 @@ import dinodungeons.game.gameobjects.base.GameObjectTag;
 import dinodungeons.game.gameobjects.enemies.BaseEnemyObject;
 import dinodungeons.game.gameobjects.item.ItemBoomerangObject;
 import dinodungeons.game.gameobjects.player.PlayerObject;
+import dinodungeons.game.gameobjects.text.TextBoxContent;
+import dinodungeons.game.gameobjects.text.TextBoxObject;
 import lwjgladapter.physics.collision.base.Collider;
 
 public class GameObjectManager {
@@ -35,6 +38,10 @@ public class GameObjectManager {
 	private PlayerObject player;
 	private ItemBoomerangObject boomerang;
 	
+	//TextBox
+	private TextBoxObject currentTextBox;
+	private LinkedList<TextBoxContent> queuedTextBoxes;
+	
 	private String currentMapID;
 	
 	private int lastPlayerSpawnX;
@@ -49,6 +56,7 @@ public class GameObjectManager {
 		boomerang = null;
 		gameObjectsToBeDeletedDeliberately = new ArrayList<>();
 		gameObjectsToBeAddedToCurrentMap = new ArrayList<>();
+		queuedTextBoxes = new LinkedList<>();
 	}
 	
 	public PlayerObject getPlayerObject(){
@@ -111,6 +119,9 @@ public class GameObjectManager {
 			ArrayList<GameObject> sortedObjects = new ArrayList<>(gameObjects.get(map.getID()));
 			if(drawPlayer) {
 				sortedObjects.add(player);
+			}
+			if(currentTextBox != null){
+				sortedObjects.add(currentTextBox);
 			}
 			Collections.sort(sortedObjects, new GameObjectDrawComparator());
 			for(GameObject o : sortedObjects){
@@ -211,6 +222,35 @@ public class GameObjectManager {
 
 	public void destroyGameObjectImmediately(GameObject gameObject) {
 		gameObjectsToBeDeletedDeliberately.add(gameObject);
+	}
+	
+	public void queueTextBox(TextBoxContent content){
+		queuedTextBoxes.addLast(content);
+	}
+
+	public boolean isTextBoxQueued() {
+		return currentTextBox != null || !queuedTextBoxes.isEmpty();
+	}
+
+	public void updateCurrentTextBox(long deltaTimeInMs, InputInformation inputInformation) {
+		if(currentTextBox != null){
+			if(currentTextBox.shouldBeDeleted()){
+				currentTextBox = null;
+				if(!queuedTextBoxes.isEmpty()){
+					TextBoxContent content = queuedTextBoxes.poll();
+					currentTextBox = new TextBoxObject(content);
+				}
+			}
+			else{
+				currentTextBox.update(deltaTimeInMs, inputInformation);
+			}
+		}
+		else{
+			if(!queuedTextBoxes.isEmpty()){
+				TextBoxContent content = queuedTextBoxes.poll();
+				currentTextBox = new TextBoxObject(content);
+			}
+		}
 	}
 
 }

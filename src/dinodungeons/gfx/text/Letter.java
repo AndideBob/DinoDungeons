@@ -51,7 +51,8 @@ public enum Letter {
 	SLASH("/",46),
 	PLUS("+",47),
 	BRAKET_OPEN("[",48),
-	BRAKET_CLOSE("]",49);
+	BRAKET_CLOSE("]",49),
+	ARROW_DOWN("*",50);
 	
 	private String character;
 	private int idOnTileMap;

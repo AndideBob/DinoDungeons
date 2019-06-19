@@ -17,12 +17,10 @@ public class DrawUIManager {
 	private static final int healthPerLine = 12;
 
 	private SpriteMap healthSprite;
-	private SpriteMap borderSprite;
 	private SpriteMap collectableSprites;
 	
 	public void loadResources(){
 		healthSprite = new SpriteMap(GFXResourceID.UI_HEALTH.getFilePath(), 8, 8);
-		borderSprite = new SpriteMap(GFXResourceID.UI_BORDERS.getFilePath(), 8, 8);
 		collectableSprites = SpriteManager.getInstance().getSprite(SpriteID.COLLECTABLES);
 	}
 	
@@ -67,10 +65,10 @@ public class DrawUIManager {
 
 	private void drawBorders(int yPosition){
 		//Bottom Border
-		borderSprite.draw(0, 0, yPosition);
-		borderSprite.draw(1, 31*8, yPosition);
+		SpriteManager.getInstance().getSprite(SpriteID.UI_BORDERS).draw(0, 0, yPosition);
+		SpriteManager.getInstance().getSprite(SpriteID.UI_BORDERS).draw(1, 31*8, yPosition);
 		for(int x = 1; x < 31; x++){
-			borderSprite.draw(4, x * 8, yPosition);
+			SpriteManager.getInstance().getSprite(SpriteID.UI_BORDERS).draw(4, x * 8, yPosition);
 		}
 	}
 	
@@ -91,15 +89,15 @@ public class DrawUIManager {
 	
 	private void drawItemBorder(int x, int y){
 		//Bottom
-		borderSprite.draw(6, x, y);
-		borderSprite.draw(4, x + 8, y);
-		borderSprite.draw(4, x + 16, y);
-		borderSprite.draw(7, x + 24, y);
+		SpriteManager.getInstance().getSprite(SpriteID.UI_BORDERS).draw(6, x, y);
+		SpriteManager.getInstance().getSprite(SpriteID.UI_BORDERS).draw(4, x + 8, y);
+		SpriteManager.getInstance().getSprite(SpriteID.UI_BORDERS).draw(4, x + 16, y);
+		SpriteManager.getInstance().getSprite(SpriteID.UI_BORDERS).draw(7, x + 24, y);
 		//Top
-		borderSprite.draw(8, x, y + 24);
-		borderSprite.draw(4, x + 8, y + 24);
-		borderSprite.draw(4, x + 16, y + 24);
-		borderSprite.draw(9, x + 24, y + 24);
+		SpriteManager.getInstance().getSprite(SpriteID.UI_BORDERS).draw(8, x, y + 24);
+		SpriteManager.getInstance().getSprite(SpriteID.UI_BORDERS).draw(4, x + 8, y + 24);
+		SpriteManager.getInstance().getSprite(SpriteID.UI_BORDERS).draw(4, x + 16, y + 24);
+		SpriteManager.getInstance().getSprite(SpriteID.UI_BORDERS).draw(9, x + 24, y + 24);
 	}
 	
 	private void drawBubbles(int yPosition, int maxValue, int currentValue, int color){

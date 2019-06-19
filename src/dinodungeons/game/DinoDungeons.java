@@ -20,6 +20,7 @@ import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.immovable.RoomSwitchDoorObject;
 import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.game.gameobjects.switches.StonePushSwitch;
+import dinodungeons.game.gameobjects.text.TextBoxContent;
 import dinodungeons.game.utils.MenuManager;
 import dinodungeons.game.utils.ScreenFadingHelper;
 import dinodungeons.game.utils.ScreenScrollingHelper;
@@ -77,6 +78,7 @@ public class DinoDungeons extends Game {
 	public void draw() {
 		switch(gameState){
 		case MENU_TRANSITION:
+		case TEXTBOX:
 		case DEFAULT:
 			//DrawMap
 			if(currentMap != null){
@@ -150,8 +152,11 @@ public class DinoDungeons extends Game {
 			updateCollisions();
 			GameObjectManager.getInstance().updateCurrentGameObjects(deltaTimeInMs, inputInformation);
 			menuManager.update(deltaTimeInMs, inputInformation);
-			checkMenuStatusChange();
-			switchMapIfNecessary();
+			if(!checkMenuStatusChange()){
+				if(!switchMapIfNecessary()){
+					checkTextBoxTriggered();
+				}
+			}
 			break;
 		case MENU_TRANSITION:
 			menuManager.update(deltaTimeInMs, inputInformation);
@@ -167,6 +172,10 @@ public class DinoDungeons extends Game {
 		case MENU:
 			menuManager.update(deltaTimeInMs, inputInformation);
 			checkMenuStatusChange();
+			break;
+		case TEXTBOX:
+			GameObjectManager.getInstance().updateCurrentTextBox(deltaTimeInMs, inputInformation);
+			checkTextBoxTriggered();
 			break;
 		case FADING:
 			fadingHelper.update(deltaTimeInMs);
@@ -192,7 +201,7 @@ public class DinoDungeons extends Game {
 		
 	}
 	
-	private void switchMapIfNecessary() throws InvalidMapIDException {
+	private boolean switchMapIfNecessary() throws InvalidMapIDException {
 		if(TransitionManager.getInstance().shouldTransition()){
 			ScreenTransition transition = TransitionManager.getInstance().getNextTransition();
 			Logger.logDebug(transition.getTransitionType().toString() + "-Transition to Map[" + transition.getDestinationMapID() + "] at [" +
@@ -206,13 +215,15 @@ public class DinoDungeons extends Game {
 				gameState = GameState.FADING;
 				fadingHelper.setDestination(transition.getDestinationMapID(), transition.getDestinationXPosition(), transition.getDestinationYPosition());
 				fadingHelper.startFading(transition.getTransitionType(), GameObjectManager.getInstance().getPlayerObject().getPositionX() + 8, GameObjectManager.getInstance().getPlayerObject().getPositionY() + 8);
-				return;
+				return true;
 			}
 			currentMap = mapManager.getMapById(transition.getDestinationMapID());
 			GameObjectManager.getInstance().setCurrentMap(currentMap, false);
 			GameObjectManager.getInstance().setPlayerPosition(transition.getDestinationXPosition(), transition.getDestinationYPosition());
 			TransitionManager.getInstance().setCurrentMap(currentMap);
+			return true;
 		}
+		return false;
 	}
 	
 	private void updateCollisions() throws CollisionNotSupportedException{
@@ -237,9 +248,22 @@ public class DinoDungeons extends Game {
 		}
 	}
 	
-	private void checkMenuStatusChange() {
+	private boolean checkMenuStatusChange() {
 		if(menuManager.isInTransition()){
 			gameState = GameState.MENU_TRANSITION;
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean checkTextBoxTriggered() {
+		if(GameObjectManager.getInstance().isTextBoxQueued()){
+			gameState = GameState.TEXTBOX;
+			return true;
+		}
+		else{
+			gameState = GameState.DEFAULT;
+			return false;
 		}
 	}
 	
@@ -257,9 +281,17 @@ public class DinoDungeons extends Game {
 			PlayerInventoryManager.getInstance().collectItem(ItemID.BOMB);
 		}
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_CRTL_RIGHT).equals(ButtonState.RELEASED)){
-			GameObjectManager.getInstance().addGameObjectToCurrentMap(new StonePushSwitch(80,80,0,RoomEvent.SWITCH_A));
-			GameObjectManager.getInstance().addGameObjectToCurrentMap(new RoomSwitchDoorObject(128,0,0,RoomEvent.SWITCH_A));
-			GameObjectManager.getInstance().addGameObjectToCurrentMap(new RoomSwitchDoorObject(144,0,0,RoomEvent.SWITCH_A));
+			TextBoxContent testTextBox = new TextBoxContent();
+			testTextBox.setLine(0, "Hello, this is a test");
+			testTextBox.setLine(1, "Short");
+			testTextBox.setLine(2, "A looooooooooooooooooooooooooooooooong line is this");
+			testTextBox.setLine(3, "Well I need more text");
+			testTextBox.setLine(4, "The end!");
+			GameObjectManager.getInstance().queueTextBox(testTextBox);
+			TextBoxContent testTextBox2 = new TextBoxContent();
+			testTextBox2.setLine(0, "Oh and this is the");
+			testTextBox2.setLine(1, "second text box!");
+			GameObjectManager.getInstance().queueTextBox(testTextBox2);
 		}
 	}
 

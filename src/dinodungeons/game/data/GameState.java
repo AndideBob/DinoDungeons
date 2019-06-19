@@ -5,5 +5,6 @@ public enum GameState {
 	SCROLLING,
 	FADING,
 	MENU_TRANSITION,
-	MENU
+	MENU,
+	TEXTBOX
 }

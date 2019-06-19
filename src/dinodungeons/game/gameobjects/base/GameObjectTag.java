@@ -9,10 +9,12 @@ class SortingLayers{
 	public static final int sortingLayerMoving = 1;
 	public static final int sortingLayerPlayer = 2;
 	public static final int sortingLayerEffects = 3;
+	public static final int sortingLayerTextBox = 4;
 }
 
 public enum GameObjectTag {
 	NONE(SortingLayers.sortingLayerUndrawn),
+	TEXT_BOX(SortingLayers.sortingLayerTextBox),
 	PLAYER(SortingLayers.sortingLayerPlayer),
 	WALL(SortingLayers.sortingLayerUndrawn),
 	EXPLODABLE(SortingLayers.sortingLayerStatic),

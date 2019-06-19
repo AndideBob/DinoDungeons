@@ -19,6 +19,18 @@ public class DinoDungeonsConstants {
 	public static final int scrollPositionChangeY = scrollBoundryUp - scrollBoundryDown;
 	public static final int scrollPositionChangeX = scrollBoundryRight - scrollBoundryLeft;
 	
+	// UI-RELEATED CONSTANTS
+	public static final int textboxCharactersPerSecond = 21;
+	
+	public static final int textboxPosX = 16;
+	public static final int textboxPosY = 16;
+	
+	public static final int textboxWidth = 224;
+	public static final int textboxHeight = 64;
+	
+	public static final int textboxLettersPerLine = 21;
+	public static final int textboxLineAmount = 5;
+	
 	// TIMING-RELEATED CONSTANTS
 	public static final long menuTransitionDurationInMs = 1000;
 	public static final long fadeTransitionDurationInMs = 750;
