@@ -38,6 +38,8 @@ public class PlayerObject extends GameObject {
 	
 	private int movementDirection;
 	
+	private boolean willTriggerTextBoxOnAPress;
+	
 	//Combat base Variables
 	private long stateTimer;
 	private GameObject weaponObject;
@@ -67,6 +69,7 @@ public class PlayerObject extends GameObject {
 		stateTimer = 0;
 		itemUsageManager = new ItemUsageManager();
 		playerDrawManager = new PlayerDrawManager();
+		willTriggerTextBoxOnAPress = false;
 	}
 
 	@Override
@@ -144,6 +147,33 @@ public class PlayerObject extends GameObject {
 		}
 		if(damageCollision != null){
 			takeDamage(getDamageByTag(firstDamageObjectTag), damageCollision.getPositionX(), damageCollision.getPositionY());
+		}
+		//Handle TextTriggering
+		willTriggerTextBoxOnAPress = false;
+		if(hasCollisionWithObjectWithTag(GameObjectTag.TEXT_TRIGGER)){
+			for(Collision collision : getCollisionsWithObjectsWithTag(GameObjectTag.TEXT_TRIGGER)){
+				float offsetX = positionX + 8 - collision.getPositionX();
+				float offsetY = positionY + 8 - collision.getPositionY();
+				if(Math.abs(offsetX) > Math.abs(offsetY)){
+					if(offsetX > 0){
+						willTriggerTextBoxOnAPress = movementDirection == DinoDungeonsConstants.directionLeft;
+					}
+					else{
+						willTriggerTextBoxOnAPress = movementDirection == DinoDungeonsConstants.directionRight;
+					}
+				}
+				else{
+					if(offsetY > 0){
+						willTriggerTextBoxOnAPress = movementDirection == DinoDungeonsConstants.directionDown;
+					}
+					else{
+						willTriggerTextBoxOnAPress = movementDirection == DinoDungeonsConstants.directionUp;
+					}
+				}
+				if(willTriggerTextBoxOnAPress){
+					break;
+				}
+			}
 		}
 	}
 
@@ -270,7 +300,7 @@ public class PlayerObject extends GameObject {
 			movementChangeY = 0;
 			boolean dontMoveAfterItemUse = false;
 			if(playerState == PlayerState.DEFAULT){
-				if(inputInformation.getA().equals(ButtonState.PRESSED)) {
+				if(!willTriggerTextBoxOnAPress && inputInformation.getA().equals(ButtonState.PRESSED)) {
 					dontMoveAfterItemUse = useItem(true);
 				}
 				if(inputInformation.getB().equals(ButtonState.PRESSED)) {
@@ -371,6 +401,10 @@ public class PlayerObject extends GameObject {
 	
 	public int getPositionY() {
 		return (int)Math.round(positionY);
+	}
+	
+	public int getMovementDirection(){
+		return movementDirection;
 	}
 
 	public enum PlayerState{

@@ -15,6 +15,7 @@ class SortingLayers{
 public enum GameObjectTag {
 	NONE(SortingLayers.sortingLayerUndrawn),
 	TEXT_BOX(SortingLayers.sortingLayerTextBox),
+	TEXT_TRIGGER(SortingLayers.sortingLayerUndrawn),
 	PLAYER(SortingLayers.sortingLayerPlayer),
 	WALL(SortingLayers.sortingLayerUndrawn),
 	EXPLODABLE(SortingLayers.sortingLayerStatic),
