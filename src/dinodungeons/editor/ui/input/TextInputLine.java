@@ -68,7 +68,7 @@ public class TextInputLine extends UIElement {
 
 	@Override
 	public void draw() {
-		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(selected ? 3 : 4, positionX, positionY, numberOfLetters * 10, 10);
+		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(selected ? 3 : 4, positionX, positionY, numberOfLetters * 10 - 2, 10);
 		String shownText = text;
 		if(shownText.length() < 4 && selected){
 			shownText += "_";
