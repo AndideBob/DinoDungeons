@@ -3,6 +3,7 @@ package dinodungeons.editor.ui.groups.general;
 import java.util.ArrayList;
 
 import dinodungeons.editor.Editor;
+import dinodungeons.editor.map.EditorMapManager;
 import dinodungeons.editor.ui.UIElement;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.mapsettings.ButtonSetMapDungeon;
@@ -23,19 +24,19 @@ public class MapSettingsUIGroup extends UIElement implements UIGroup {
 	
 	private ArrayList<BaseButton> buttons;
 
-	public MapSettingsUIGroup(int posX, int posY, final Editor editorHandle) {
+	public MapSettingsUIGroup(int posX, int posY, final Editor editorHandle, final EditorMapManager mapManagerHandle) {
 		active = true;
 		x = posX;
 		y = posY;
-		initializeButtons(editorHandle);
+		initializeButtons(editorHandle, mapManagerHandle);
 	}
 	
-	private void initializeButtons(final Editor editorHandle){
+	private void initializeButtons(final Editor editorHandle, final EditorMapManager mapManagerHandle){
 		buttons = new ArrayList<>();
-		buttons.add(new ButtonSetMapTransition(x + 4, y + 24, editorHandle, DinoDungeonsConstants.directionLeft));
-		buttons.add(new ButtonSetMapTransition(x + 44, y + 24, editorHandle, DinoDungeonsConstants.directionRight));
-		buttons.add(new ButtonSetMapTransition(x + 24, y + 4, editorHandle, DinoDungeonsConstants.directionDown));
-		buttons.add(new ButtonSetMapTransition(x + 24, y + 44, editorHandle, DinoDungeonsConstants.directionUp));
+		buttons.add(new ButtonSetMapTransition(x + 4, y + 24, editorHandle, mapManagerHandle, DinoDungeonsConstants.directionLeft));
+		buttons.add(new ButtonSetMapTransition(x + 44, y + 24, editorHandle, mapManagerHandle, DinoDungeonsConstants.directionRight));
+		buttons.add(new ButtonSetMapTransition(x + 24, y + 4, editorHandle, mapManagerHandle, DinoDungeonsConstants.directionDown));
+		buttons.add(new ButtonSetMapTransition(x + 24, y + 44, editorHandle, mapManagerHandle, DinoDungeonsConstants.directionUp));
 		buttons.add(new ButtonSetMapDungeon(x + 24, y + 24, editorHandle));
 	}
 

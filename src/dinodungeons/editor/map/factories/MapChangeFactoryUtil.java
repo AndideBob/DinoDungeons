@@ -9,6 +9,8 @@ public class MapChangeFactoryUtil {
 		switch (mapChangeType) {
 		case NONE:
 			return null;
+		case ERASE:
+			return new EraseMapChangeFactory();
 		case BASE_LAYER:
 			return new BaseLayerMapChangeFactory();
 		case COLLECTABLE_ITEM:

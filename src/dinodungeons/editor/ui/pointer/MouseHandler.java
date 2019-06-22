@@ -17,6 +17,8 @@ public class MouseHandler extends UIElement {
 	
 	private int positionY;
 	
+	private boolean drawText;
+	
 	public static MouseHandler getInstance() {
 		if(instance == null) {
 			instance = new MouseHandler();
@@ -32,17 +34,22 @@ public class MouseHandler extends UIElement {
 
 	@Override
 	public void update(InputInformation inputInformation) {
+		updateSpecial(inputInformation, true);
+	}
+	
+	public void updateSpecial(InputInformation inputInformation, boolean drawText) {
 		positionX = inputInformation.getMouseX();
 		positionY = inputInformation.getMouseY();
 		clickCollider.setPositionX(positionX - 1);
 		clickCollider.setPositionY(positionY - 1);
+		this.drawText = drawText;
 	}
 
 	@Override
 	public void draw() {
 		//Draw Position On Map
 		SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(0, 256, 0, 64, 10);
-		if(isOnMap()){
+		if(isOnMap() && drawText){
 			int x = MouseHandler.getInstance().getPositionX() / 16;
 			int y = MouseHandler.getInstance().getPositionY() / 16;
 			String posX = String.format("%02d", x);

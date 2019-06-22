@@ -1,22 +1,31 @@
 package dinodungeons.editor.ui.buttons.mapsettings;
 
 import dinodungeons.editor.Editor;
+import dinodungeons.editor.map.EditorMapManager;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
 import dinodungeons.editor.ui.input.InputUsage;
+import dinodungeons.editor.ui.pointer.MouseHandler;
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.gfx.text.DrawTextManager;
+import lwjgladapter.logging.Logger;
+import lwjgladapter.physics.PhysicsHelper;
+import lwjgladapter.physics.collision.exceptions.CollisionNotSupportedException;
 
 public class ButtonSetMapTransition extends BaseButton {
 	
 	private Editor editorHandle;
 	
+	private EditorMapManager mapManagerHandle;
+	
 	private int direction;
 
-	public ButtonSetMapTransition(int positionX, int positionY, Editor editorHandle, int direction) {
+	public ButtonSetMapTransition(int positionX, int positionY, Editor editorHandle, EditorMapManager mapManagerHandle, int direction) {
 		super(positionX, positionY, getButtonSpriteForDirection(direction));
 		this.direction = direction;
 		this.editorHandle = editorHandle;
+		this.mapManagerHandle = mapManagerHandle;
 	}
 	
 	private static ButtonSprite getButtonSpriteForDirection(int direction){
@@ -48,7 +57,6 @@ public class ButtonSetMapTransition extends BaseButton {
 			editorHandle.waitForInput("Enter map id", InputUsage.TRANSITION_RIGHT);
 			break;
 		}
-		
 	}
 
 	@Override
@@ -58,6 +66,8 @@ public class ButtonSetMapTransition extends BaseButton {
 
 	@Override
 	protected void drawInternal() {
-		//Do nothing
+		if(hovering) {
+			DrawTextManager.getInstance().drawText(258, 1, mapManagerHandle.getCurrentTransitionInDirection(direction), 6);
+		}
 	}
 }

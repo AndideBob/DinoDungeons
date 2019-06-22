@@ -12,6 +12,7 @@ import dinodungeons.editor.ui.buttons.selection.BaseLayerSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.CollectableItemPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.DoorPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.EnemyPlacementSelectionButton;
+import dinodungeons.editor.ui.buttons.selection.EraserSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.ExitPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.SelectionButton;
 import dinodungeons.editor.ui.buttons.selection.StaticObjectPlacementSelectionButton;
@@ -41,17 +42,19 @@ public class EditorUIHandler {
 		uiElements.add(new ButtonNewMap(0, 224, editorHandle));
 		uiElements.add(new ButtonLoadMap(16, 224, editorHandle));
 		uiElements.add(new ButtonSaveMap(32, 224, editorHandle));
+		//Erase
+		uiElements.add(new EraserSelectionButton(48, 224, this, editorHandle));
 		//Placement Selections
-		uiElements.add(new TileSetSelectionButton(48, 224, this, editorHandle, mapManagerHandle));
-		uiElements.add(new BaseLayerSelectionButton(64, 224, this, editorHandle));
-		uiElements.add(new CollectableItemPlacementSelectionButton(80, 224, this, editorHandle));
-		uiElements.add(new SwitchPlacementSelectionButton(96, 224, this, editorHandle));
-		uiElements.add(new DoorPlacementSelectionButton(112, 224, this, editorHandle));
-		uiElements.add(new ExitPlacementSelectionButton(128, 224, this, editorHandle));
-		uiElements.add(new StaticObjectPlacementSelectionButton(144, 224, this, editorHandle));
-		uiElements.add(new EnemyPlacementSelectionButton(160, 224, this, editorHandle));
+		uiElements.add(new TileSetSelectionButton(64, 224, this, editorHandle, mapManagerHandle));
+		uiElements.add(new BaseLayerSelectionButton(80, 224, this, editorHandle));
+		uiElements.add(new CollectableItemPlacementSelectionButton(96, 224, this, editorHandle));
+		uiElements.add(new SwitchPlacementSelectionButton(112, 224, this, editorHandle));
+		uiElements.add(new DoorPlacementSelectionButton(128, 224, this, editorHandle));
+		uiElements.add(new ExitPlacementSelectionButton(144, 224, this, editorHandle));
+		uiElements.add(new StaticObjectPlacementSelectionButton(160, 224, this, editorHandle));
+		uiElements.add(new EnemyPlacementSelectionButton(176, 224, this, editorHandle));
 		//Map Settings
-		uiElements.add(new MapSettingsUIGroup(256, 10, editorHandle));
+		uiElements.add(new MapSettingsUIGroup(256, 10, editorHandle, mapManagerHandle));
 		//InputWindow (add last)
 		textInputWindow = new TextInputWindow(96, 102, editorHandle);
 		uiElements.add(textInputWindow);
@@ -85,7 +88,7 @@ public class EditorUIHandler {
 	}
 	
 	private void updateInputWindow(InputInformation currentInput){
-		MouseHandler.getInstance().update(currentInput);
+		MouseHandler.getInstance().updateSpecial(currentInput, false);;
 		textInputWindow.update(currentInput);
 	}
 	
