@@ -2,6 +2,7 @@ package dinodungeons.editor.ui.input;
 
 import dinodungeons.editor.Editor;
 import dinodungeons.editor.EditorControlUtil;
+import dinodungeons.editor.map.change.SignPlacementMapChange.SignType;
 import dinodungeons.editor.ui.UIElement;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.window.ButtonWindowCancel;
@@ -126,8 +127,7 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 		result.setLine(2, inputLine3.getInput());
 		result.setLine(3, inputLine4.getInput());
 		result.setLine(4, inputLine5.getInput());
-		//TODO: Actually react to the input using currentPage to know which page you are on
-		//editorHandle.reactToInput(inputLine.getInput(), usage);
+		editorHandle.reactToInput(SignType.SIGN, result);
 		close();
 	}
 	

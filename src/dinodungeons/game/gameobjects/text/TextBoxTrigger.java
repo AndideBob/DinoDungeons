@@ -23,7 +23,7 @@ public class TextBoxTrigger extends GameObject {
 	
 	private LinkedList<TextBoxContent> textBoxContents;
 	
-	public TextBoxTrigger(int posX, int posY, int width, int height, TextBoxContent... textBoxContents) {
+	public TextBoxTrigger(int posX, int posY, int width, int height, Collection<TextBoxContent> textBoxContents) {
 		super(GameObjectTag.TEXT_TRIGGER);
 		centerX = posX + (width / 2);
 		centerY = posY + (height / 2);

@@ -13,6 +13,7 @@ import dinodungeons.game.data.map.objects.DoorMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
+import dinodungeons.game.data.map.objects.SignMapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.gameobjects.base.GameObject;
@@ -23,6 +24,8 @@ import dinodungeons.game.gameobjects.enemies.EnemyCrocDropObject;
 import dinodungeons.game.gameobjects.enemies.EnemyTricerablobObject;
 import dinodungeons.game.gameobjects.environment.BasicBushObject;
 import dinodungeons.game.gameobjects.environment.ExplodableStone;
+import dinodungeons.game.gameobjects.environment.signs.StoneSignObject;
+import dinodungeons.game.gameobjects.environment.signs.WoodenSignObject;
 import dinodungeons.game.gameobjects.exits.ExplodableDoorObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
 import dinodungeons.game.gameobjects.exits.TransitionExitObject;
@@ -136,6 +139,9 @@ public class ScreenMapUtil {
 		else if(object instanceof CandleMapObject) {
 			return buildCandleMapObject(map, (CandleMapObject) object, posX * 16, posY * 16);
 		}
+		else if(object instanceof SignMapObject) {
+			return buildSignGameObject((SignMapObject) object, posX * 16, posY * 16);
+		}
 		return null;
 	}
 	
@@ -222,6 +228,18 @@ public class ScreenMapUtil {
 			return new MetalSpikeObject(posX, posY);
 		case 1:
 			return new WoodenSpikeObject(posX, posY);
+		}
+		return null;
+	}
+	
+	private static GameObject buildSignGameObject(SignMapObject signMapObject, int posX, int posY) {
+		switch (signMapObject.getSignType()) {
+		case SIGN:
+			WoodenSignObject woodSign = new WoodenSignObject(80, 80, 0, signMapObject.getTextBoxContent());
+			return woodSign;
+		case STONE_BLOCK:
+			StoneSignObject stoneSign = new StoneSignObject(80, 80, 0, signMapObject.getTextBoxContent());
+			return stoneSign;
 		}
 		return null;
 	}

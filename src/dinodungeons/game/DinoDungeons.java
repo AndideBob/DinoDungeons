@@ -1,6 +1,7 @@
 package dinodungeons.game;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
@@ -283,7 +284,7 @@ public class DinoDungeons extends Game {
 			testTextBox.setLine(2, "A looooooooooooooooooooooooooooooooong line is this");
 			testTextBox.setLine(3, "Well I need more text");
 			testTextBox.setLine(4, "The end!");
-			StoneSignObject stoneSign = new StoneSignObject(80, 80, 0, testTextBox);
+			StoneSignObject stoneSign = new StoneSignObject(80, 80, 0, Collections.singleton(testTextBox));
 			GameObjectManager.getInstance().addGameObjectToCurrentMap(stoneSign);
 		}
 	}

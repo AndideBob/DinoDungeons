@@ -3,10 +3,12 @@ package dinodungeons.editor;
 import dinodungeons.editor.map.EditorMapManager;
 import dinodungeons.editor.map.MapChangeManager;
 import dinodungeons.editor.map.change.MapChangeType;
+import dinodungeons.editor.map.change.SignPlacementMapChange.SignType;
 import dinodungeons.editor.ui.EditorUIHandler;
 import dinodungeons.editor.ui.input.InputUsage;
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.gameobjects.text.TextBoxContent;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.text.DrawTextManager;
 import dinodungeons.gfx.tilesets.TilesetManager;
@@ -85,6 +87,11 @@ public class Editor extends Game {
 		uiHandler.openInputWindow(prompt, usage, prefilledInput);
 	}
 	
+	public void waitForPageInput(String prompt, TextBoxContent prefilledInput){
+		currentState = EditorState.WAIT_FOR_INPUT;
+		uiHandler.openPageInputWindow(prompt, prefilledInput);
+	}
+	
 	public void reactToInput(String input, InputUsage usage){
 		currentState = EditorState.DEFAULT;
 		switch(usage){
@@ -118,6 +125,15 @@ public class Editor extends Game {
 		case NOTHING:
 			break;
 		}
+	}
+	
+	public void reactToInput(SignType signType, TextBoxContent... input){
+		currentState = EditorState.DEFAULT;
+		String contents = TextBoxContent.parseToString(input[0]);
+		for(int i = 1; i < input.length; i++) {
+			contents += "|" + TextBoxContent.parseToString(input[1]);
+		}
+		mapChangeManager.setMapChange(MapChangeType.SIGN_CHANGE, signType.getStringRepresentation(), contents);
 	}
 	
 	public void setMapChange(MapChangeType mapChangeType, String... params) {

@@ -1,5 +1,6 @@
 package dinodungeons.game.data.map;
 
+import dinodungeons.editor.map.change.SignPlacementMapChange.SignType;
 import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.objects.BlockMapObject;
 import dinodungeons.game.data.map.objects.CandleMapObject;
@@ -13,10 +14,12 @@ import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject.EnemyType;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
+import dinodungeons.game.data.map.objects.SignMapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
 import dinodungeons.game.gameobjects.player.ItemID;
+import dinodungeons.game.gameobjects.text.TextBoxContent;
 
 public class MapObjectParser {
 	
@@ -39,6 +42,8 @@ public class MapObjectParser {
 	private static final String doorMapObjectID = "G";
 	
 	private static final String candleMapObjectID = "C";
+	
+	private static final String signMapObjectID = "X";
 
 	public String parseMapObjectToString(MapObject mapObject){
 		if(mapObject instanceof EmptyMapObject){
@@ -67,6 +72,9 @@ public class MapObjectParser {
 		}
 		else if(mapObject instanceof CandleMapObject) {
 			return parseCandleMapObject((CandleMapObject)mapObject);
+		}
+		else if(mapObject instanceof SignMapObject) {
+			return parseSignMapObject((SignMapObject)mapObject);
 		}
 		return emptyMapObjectString;
 	}
@@ -148,6 +156,17 @@ public class MapObjectParser {
 		result += ")";
 		return result;
 	}
+	
+	private String parseSignMapObject(SignMapObject signMapObject) {
+		String result = "(";
+		result += signMapObjectID;
+		result += internalSplitter;
+		result += signMapObject.getSignType().getStringRepresentation();
+		result += internalSplitter;
+		result += TextBoxContent.parseMultipleToString(signMapObject.getTextBoxContent());
+		result += ")";
+		return result;
+	}
 
 	public MapObject parseStringToMapObject(String string){
 		if(string.equals(emptyMapObjectString)){
@@ -197,6 +216,12 @@ public class MapObjectParser {
 			CandleMapObject candleMapObject = new CandleMapObject();
 			candleMapObject.setTriggeredSwitch(RoomEvent.getByStringRepresentation(stringParts[1]));
 			return candleMapObject;
+		}
+		else if(stringParts[0].equals(signMapObjectID)){
+			SignMapObject signMapObject = new SignMapObject();
+			signMapObject.setSignType(SignType.getByStringRepresentation(stringParts[1]));
+			signMapObject.setTextBoxContent(TextBoxContent.parseStringToMultiple(stringParts[2]));
+			return signMapObject;
 		}
 		return new EmptyMapObject();
 	}

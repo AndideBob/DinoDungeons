@@ -27,6 +27,8 @@ public class MapChangeManager {
 	private boolean changing;
 	
 	private boolean canChange;
+	
+	private MapChangeType lastMapChangeType;
 
 	public MapChangeManager() {
 		currentChanges = new HashSet<>();
@@ -37,11 +39,15 @@ public class MapChangeManager {
 	}
 	
 	public void setMapChange(MapChangeType mapChangeType, String... params) {
-		currentChangeFactory = MapChangeFactoryUtil.getMapChangeFactory(mapChangeType);
+		if(lastMapChangeType == null || lastMapChangeType != mapChangeType) {
+			currentChangeFactory = MapChangeFactoryUtil.getMapChangeFactory(mapChangeType);
+		}
 		if(currentChangeFactory == null){
+			lastMapChangeType = mapChangeType;
 			canChange = false;
 		}
 		else{
+			lastMapChangeType = mapChangeType;
 			canChange = true;
 			currentChangeFactory.handleParams(params);
 		}

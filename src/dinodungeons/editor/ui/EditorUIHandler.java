@@ -20,15 +20,19 @@ import dinodungeons.editor.ui.buttons.selection.SwitchPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.TileSetSelectionButton;
 import dinodungeons.editor.ui.groups.general.MapSettingsUIGroup;
 import dinodungeons.editor.ui.input.InputUsage;
+import dinodungeons.editor.ui.input.PageTextInputWindow;
 import dinodungeons.editor.ui.input.TextInputWindow;
 import dinodungeons.editor.ui.pointer.MouseHandler;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.gameobjects.text.TextBoxContent;
 
 public class EditorUIHandler {
 	
 	private ArrayList<UIElement> uiElements;
 	
 	private TextInputWindow textInputWindow;
+	
+	private PageTextInputWindow pageTextInputWindow;
 
 	public EditorUIHandler(final Editor editorHandle, final EditorMapManager mapManagerHandle) {
 		initialize(editorHandle, mapManagerHandle);
@@ -57,7 +61,9 @@ public class EditorUIHandler {
 		uiElements.add(new MapSettingsUIGroup(256, 10, editorHandle, mapManagerHandle));
 		//InputWindow (add last)
 		textInputWindow = new TextInputWindow(96, 102, editorHandle);
+		pageTextInputWindow = new PageTextInputWindow(16, 16, editorHandle);
 		uiElements.add(textInputWindow);
+		uiElements.add(pageTextInputWindow);
 		switchOffAllSelections();
 	}
 	
@@ -103,6 +109,12 @@ public class EditorUIHandler {
 		textInputWindow.setUsage(usage);
 		textInputWindow.setInput(prefilledInput);
 		textInputWindow.open();
+	}
+	
+	public void openPageInputWindow(String prompt, TextBoxContent prefilledInput) {
+		pageTextInputWindow.setPrompt(prompt);
+		pageTextInputWindow.setInput(prefilledInput);
+		pageTextInputWindow.open();
 	}
 
 }

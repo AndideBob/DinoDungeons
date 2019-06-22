@@ -31,7 +31,7 @@ public abstract class BaseSignObject extends GameObject {
 	
 	private RectCollider collider;
 	
-	public BaseSignObject(int positionX, int positionY, int colorVariant, TextBoxContent text) {
+	public BaseSignObject(int positionX, int positionY, int colorVariant, Collection<TextBoxContent> text) {
 		super(GameObjectTag.GENERAL_MOVEMENT_BLOCK);
 		this.positionX = positionX;
 		this.positionY = positionY;

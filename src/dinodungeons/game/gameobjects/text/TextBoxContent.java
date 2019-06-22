@@ -1,5 +1,9 @@
 package dinodungeons.game.gameobjects.text;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import dinodungeons.game.data.DinoDungeonsConstants;
 import lwjgladapter.logging.Logger;
 
@@ -53,5 +57,47 @@ public class TextBoxContent {
 			return lines[index];
 		}
 		return "";
+	}
+	
+	public static String parseToString(TextBoxContent content) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("<");
+		builder.append(content.lines[0]);
+		for(int i = 1; i < content.lines.length; i++) {
+			builder.append("-");
+			builder.append(content.lines[i]);
+		}
+		builder.append(">");
+		return builder.toString();
+	}
+	
+	public static TextBoxContent parseFromString(String string) {
+		if(!string.startsWith("<") || !string.endsWith(">")) {
+			throw new IllegalArgumentException("Could not parse '" + string + "' to TextBoxContent");
+		}
+		string = string.substring(0, string.length() - 3);
+		String[] parts = string.split("-");
+		TextBoxContent result = new TextBoxContent();
+		for(int i = 0; i < parts.length && i < DinoDungeonsConstants.textboxLineAmount; i++) {
+			result.setLine(i, parts[i]);
+		}
+		return result;
+	}
+	
+	public static String parseMultipleToString(Collection<TextBoxContent> content) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("<");
+		builder.append(content.stream().map(n -> parseToString(n)).collect(Collectors.joining("|")));
+		builder.append(">");
+		return builder.toString();
+	}
+	
+	public static Collection<TextBoxContent> parseStringToMultiple(String string) {
+		String[] parts = string.split("|");
+		Collection<TextBoxContent> result = new ArrayList<>();
+		for(String s : parts) {
+			result.add(parseFromString(s));
+		}
+		return result;
 	}
 }

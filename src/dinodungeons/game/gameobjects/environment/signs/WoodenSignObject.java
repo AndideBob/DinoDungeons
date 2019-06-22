@@ -1,5 +1,7 @@
 package dinodungeons.game.gameobjects.environment.signs;
 
+import java.util.Collection;
+
 import dinodungeons.game.gameobjects.text.TextBoxContent;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -8,7 +10,7 @@ public class WoodenSignObject extends BaseSignObject {
 
 	private int colorVariant;
 	
-	public WoodenSignObject(int positionX, int positionY, int colorVariant, TextBoxContent text) {
+	public WoodenSignObject(int positionX, int positionY, int colorVariant, Collection<TextBoxContent> text) {
 		super(positionX, positionY, colorVariant, text);
 	}
 	
