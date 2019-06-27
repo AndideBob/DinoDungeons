@@ -15,6 +15,10 @@ public class TextBoxContent {
 	
 	public TextBoxContent() {
 		lines = new String[DinoDungeonsConstants.textboxLineAmount];
+		for(int i = 0; i < lines.length; i++){
+			lines[i] = "";
+		}
+		updateNumberOfTotalCharacters();
 	}
 
 	public void setLine(int index, String content){
@@ -59,6 +63,11 @@ public class TextBoxContent {
 		return "";
 	}
 	
+	@Override
+	public String toString(){
+		return parseToString(this);
+	}
+	
 	public static String parseToString(TextBoxContent content) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("<");
@@ -75,7 +84,7 @@ public class TextBoxContent {
 		if(!string.startsWith("<") || !string.endsWith(">")) {
 			throw new IllegalArgumentException("Could not parse '" + string + "' to TextBoxContent");
 		}
-		string = string.substring(0, string.length() - 3);
+		string = string.substring(1, string.length() - 1);
 		String[] parts = string.split("-");
 		TextBoxContent result = new TextBoxContent();
 		for(int i = 0; i < parts.length && i < DinoDungeonsConstants.textboxLineAmount; i++) {
@@ -86,15 +95,13 @@ public class TextBoxContent {
 	
 	public static String parseMultipleToString(Collection<TextBoxContent> content) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("<");
 		builder.append(content.stream().map(n -> parseToString(n)).collect(Collectors.joining("|")));
-		builder.append(">");
 		return builder.toString();
 	}
 	
-	public static Collection<TextBoxContent> parseStringToMultiple(String string) {
-		String[] parts = string.split("|");
-		Collection<TextBoxContent> result = new ArrayList<>();
+	public static ArrayList<TextBoxContent> parseStringToMultiple(String string) {
+		String[] parts = string.split("\\|");
+		ArrayList<TextBoxContent> result = new ArrayList<>();
 		for(String s : parts) {
 			result.add(parseFromString(s));
 		}

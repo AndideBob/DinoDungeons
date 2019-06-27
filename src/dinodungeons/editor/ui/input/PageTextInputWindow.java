@@ -1,6 +1,7 @@
 package dinodungeons.editor.ui.input;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dinodungeons.editor.Editor;
 import dinodungeons.editor.EditorControlUtil;
@@ -9,6 +10,10 @@ import dinodungeons.editor.ui.UIElement;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.window.ButtonWindowCancel;
 import dinodungeons.editor.ui.buttons.window.ButtonWindowConfirm;
+import dinodungeons.editor.ui.buttons.window.ButtonWindowPageAdd;
+import dinodungeons.editor.ui.buttons.window.ButtonWindowPageBackwards;
+import dinodungeons.editor.ui.buttons.window.ButtonWindowPageForward;
+import dinodungeons.editor.ui.buttons.window.ButtonWindowPageRemove;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.gameobjects.text.TextBoxContent;
 import dinodungeons.gfx.sprites.SpriteID;
@@ -21,10 +26,10 @@ import lwjgladapter.input.KeyboardKey;
 public class PageTextInputWindow extends UIElement implements EditorWindow {
 	
 	private static final int windowWidth = 224;
-	private static final int windowHeight = 80;
+	private static final int windowHeight = 160;
+	private static final int promptYPosition = windowHeight - 18;
 	
-	private BaseButton confirmButton;
-	private BaseButton cancelButton;
+	private List<BaseButton> windowButtons;
 	private TextInputLine inputLine1;
 	private TextInputLine inputLine2;
 	private TextInputLine inputLine3;
@@ -39,6 +44,8 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 	
 	private String prompt;
 	private int promptXPosition;
+	private String currentPageText = "";
+	private int currentPageXPosition = 0;
 	
 	private int currentPage;
 	private ArrayList<TextBoxContent> contents;
@@ -50,16 +57,24 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 		this.positionY = positionY;
 		this.editorHandle = editorHandle;
 		this.contents = new ArrayList<>();
+		this.windowButtons = new ArrayList<>();
 		
+		inputLine1 = new TextInputLine(positionX + 8, positionY + 120, 21, true);
+		inputLine2 = new TextInputLine(positionX + 8, positionY + 106, 21, true);
+		inputLine3 = new TextInputLine(positionX + 8, positionY + 92, 21, true);
+		inputLine4 = new TextInputLine(positionX + 8, positionY + 78, 21, true);
+		inputLine5 = new TextInputLine(positionX + 8, positionY + 64, 21, true);
 		
-		inputLine1 = new TextInputLine(positionX + 8, positionY + 64, 21);
-		inputLine2 = new TextInputLine(positionX + 8, positionY + 54, 21);
-		inputLine3 = new TextInputLine(positionX + 8, positionY + 44, 21);
-		inputLine4 = new TextInputLine(positionX + 8, positionY + 34, 21);
-		inputLine5 = new TextInputLine(positionX + 8, positionY + 24, 21);
-		
-		confirmButton = new ButtonWindowConfirm(positionX + windowWidth - 24, positionY + 8, this);
-		cancelButton = new ButtonWindowCancel(positionX + 8, positionY + 8, this);
+		//ConfirmButton
+		windowButtons.add(new ButtonWindowConfirm(positionX + windowWidth - 24, positionY + 8, this));
+		//CancelButton
+		windowButtons.add(new ButtonWindowCancel(positionX + 8, positionY + 8, this));
+		int middleX = positionX + windowWidth / 2;
+		//PageButtons
+		windowButtons.add(new ButtonWindowPageAdd(middleX - 18, positionY + 8, this));
+		windowButtons.add(new ButtonWindowPageRemove(middleX + 2, positionY + 8, this));
+		windowButtons.add(new ButtonWindowPageForward(middleX - 38, positionY + 8, this));
+		windowButtons.add(new ButtonWindowPageBackwards(middleX + 22, positionY + 8, this));
 		
 		setPrompt("Input");
 		resetPages();
@@ -74,8 +89,9 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 			inputLine3.update(inputInformation);
 			inputLine4.update(inputInformation);
 			inputLine5.update(inputInformation);
-			confirmButton.update(inputInformation);
-			cancelButton.update(inputInformation);
+			for(BaseButton button : windowButtons){
+				button.update(inputInformation);
+			}
 			if(isOpen){
 				if(InputManager.instance.getKeyState(KeyboardKey.KEY_ENTER) == ButtonState.RELEASED){
 					closeConfirm();
@@ -91,14 +107,16 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 	public void draw() {
 		if(isOpen){
 			SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(0, positionX, positionY, windowWidth, windowHeight);
-			DrawTextManager.getInstance().drawText(positionX + promptXPosition, positionY + 50, prompt, 12);
+			DrawTextManager.getInstance().drawText(positionX + promptXPosition, positionY + promptYPosition, prompt, 12);
 			inputLine1.draw();
 			inputLine2.draw();
 			inputLine3.draw();
 			inputLine4.draw();
 			inputLine5.draw();
-			confirmButton.draw();
-			cancelButton.draw();
+			DrawTextManager.getInstance().drawText(positionX + currentPageXPosition, positionY + 32, currentPageText, 20);
+			for(BaseButton button : windowButtons){
+				button.draw();
+			}
 		}
 	}
 	
@@ -109,7 +127,7 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 		else{
 			this.prompt = prompt;
 		}
-		promptXPosition = 64 - (int)((0.5f * prompt.length()) * 10);
+		promptXPosition = (windowWidth / 2) - (int)((0.5f * prompt.length()) * 10);
 	}
 	
 	public void setInput(TextBoxContent content){
@@ -121,11 +139,13 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 	}
 	
 	public void switchPageUp() {
+		saveCurrentPage();
 		currentPage = (currentPage + 1) % contents.size();
 		setInputToCurrentPage();
 	}
 	
 	public void switchPageDown() {
+		saveCurrentPage();
 		currentPage--;
 		if(currentPage < 0) {
 			currentPage += contents.size();
@@ -134,6 +154,7 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 	}
 	
 	public void addPageBehindCurrent() {
+		saveCurrentPage();
 		TextBoxContent newPage = new TextBoxContent();
 		currentPage = currentPage + 1;
 		contents.add(currentPage, newPage);
@@ -159,6 +180,8 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 		inputLine3.setInput(contents.get(currentPage).getLine(2));
 		inputLine4.setInput(contents.get(currentPage).getLine(3));
 		inputLine5.setInput(contents.get(currentPage).getLine(4));
+		currentPageText = "page: " + currentPage;
+		currentPageXPosition = (windowWidth / 2) - (int)((0.5f * currentPageText.length()) * 10);
 	}
 	
 	public void saveCurrentPage() {
@@ -171,9 +194,8 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 	
 	@Override
 	public void closeConfirm(){
-		TextBoxContent[] contentArray = new TextBoxContent[contents.size()];
-		contentArray = contents.toArray(contentArray);
-		editorHandle.reactToInput(SignType.SIGN, contentArray);
+		saveCurrentPage();
+		editorHandle.reactToInput(SignType.SIGN, contents);
 		close();
 	}
 	
@@ -186,8 +208,9 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 	@Override
 	public void open(){
 		isOpen = true;
-		confirmButton.setColliderActive(true);
-		cancelButton.setColliderActive(true);
+		for(BaseButton button : windowButtons){
+			button.setColliderActive(true);
+		}
 		inputLine1.setColliderActive(true);
 		inputLine1.setSelected(true);
 		inputLine2.setColliderActive(true);
@@ -206,8 +229,9 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 	
 	private void close(){
 		isOpen = false;
-		confirmButton.setColliderActive(false);
-		cancelButton.setColliderActive(false);
+		for(BaseButton button : windowButtons){
+			button.setColliderActive(false);
+		}
 		inputLine1.setColliderActive(false);
 		inputLine2.setColliderActive(false);
 		inputLine3.setColliderActive(false);

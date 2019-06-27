@@ -31,11 +31,14 @@ public class TextInputLine extends UIElement {
 	private boolean selected;
 	
 	private RectCollider selectionCollider;
+	
+	private boolean isSpaceAllowed;
 
-	public TextInputLine(int positionX, int positionY, int numberOfLetters) {
+	public TextInputLine(int positionX, int positionY, int numberOfLetters, boolean isSpaceAllowed) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.numberOfLetters = numberOfLetters;
+		this.isSpaceAllowed = isSpaceAllowed;
 		text = "";
 		selected = false;
 		selectionCollider = new RectCollider(positionX, positionY, numberOfLetters * 10, 10);
@@ -93,6 +96,11 @@ public class TextInputLine extends UIElement {
 			if(InputManager.instance.getKeyState(key).equals(ButtonState.RELEASED)) {
 				return KeyboardKeyUtil.convertKeyboardKeyToString(key);
 			}			
+		}
+		if(isSpaceAllowed ){
+			if(InputManager.instance.getKeyState(KeyboardKey.KEY_SPACE).equals(ButtonState.RELEASED)){
+				return " ";
+			}
 		}
 		return "";
 	}

@@ -1,5 +1,7 @@
 package dinodungeons.editor;
 
+import java.util.Collection;
+
 import dinodungeons.editor.map.EditorMapManager;
 import dinodungeons.editor.map.MapChangeManager;
 import dinodungeons.editor.map.change.MapChangeType;
@@ -14,6 +16,9 @@ import dinodungeons.gfx.text.DrawTextManager;
 import dinodungeons.gfx.tilesets.TilesetManager;
 import lwjgladapter.datatypes.LWJGLAdapterException;
 import lwjgladapter.game.Game;
+import lwjgladapter.input.ButtonState;
+import lwjgladapter.input.InputManager;
+import lwjgladapter.input.KeyboardKey;
 import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.PhysicsHelper;
 
@@ -44,6 +49,7 @@ public class Editor extends Game {
 
 	@Override
 	public void update(long deltaTimeInMs) throws LWJGLAdapterException {
+		updateDebug();
 		PhysicsHelper.getInstance().resetCollisions();
 		PhysicsHelper.getInstance().checkCollisions();
 		currentInput.update();
@@ -127,12 +133,9 @@ public class Editor extends Game {
 		}
 	}
 	
-	public void reactToInput(SignType signType, TextBoxContent... input){
+	public void reactToInput(SignType signType, Collection<TextBoxContent> input){
 		currentState = EditorState.DEFAULT;
-		String contents = TextBoxContent.parseToString(input[0]);
-		for(int i = 1; i < input.length; i++) {
-			contents += "|" + TextBoxContent.parseToString(input[1]);
-		}
+		String contents = TextBoxContent.parseMultipleToString(input);
 		mapChangeManager.setMapChange(MapChangeType.SIGN_CHANGE, signType.getStringRepresentation(), contents);
 	}
 	
@@ -142,6 +145,12 @@ public class Editor extends Game {
 
 	public void openNewMap() {
 		mapManager.newMap();
+	}
+	
+	private void updateDebug(){
+		if(InputManager.instance.getKeyState(KeyboardKey.KEY_F5).equals(ButtonState.RELEASED)){
+			waitForPageInput("Debug Window", new TextBoxContent());
+		}
 	}
 
 }

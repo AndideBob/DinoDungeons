@@ -32,7 +32,7 @@ public class ExitSettingsUIGroup extends UIElement implements UIGroup {
 		y = positionY;
 		transportMapX = new NumberInputLine(positionX + 42, positionY + 26, 2);
 		transportMapY = new NumberInputLine(positionX + 42, positionY + 14, 2);
-		transportMapID = new TextInputLine(positionX + 22, positionY + 2, 4);
+		transportMapID = new TextInputLine(positionX + 22, positionY + 2, 4, false);
 		transportMapID.setInput("0000");
 		transportMapX.setInput(0);
 		transportMapY.setInput(0);

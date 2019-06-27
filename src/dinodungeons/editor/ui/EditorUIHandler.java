@@ -96,6 +96,7 @@ public class EditorUIHandler {
 	private void updateInputWindow(InputInformation currentInput){
 		MouseHandler.getInstance().updateSpecial(currentInput, false);;
 		textInputWindow.update(currentInput);
+		pageTextInputWindow.update(currentInput);
 	}
 	
 	public void draw(){

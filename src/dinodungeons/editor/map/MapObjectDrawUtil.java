@@ -11,6 +11,7 @@ import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
+import dinodungeons.game.data.map.objects.SignMapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.gfx.sprites.SpriteID;
@@ -49,8 +50,26 @@ public class MapObjectDrawUtil {
 		else if(mapObject instanceof CandleMapObject){
 			drawCandleMapObject((CandleMapObject) mapObject, x, y);
 		}
+		else if(mapObject instanceof CandleMapObject){
+			drawCandleMapObject((CandleMapObject) mapObject, x, y);
+		}
+		else if(mapObject instanceof SignMapObject){
+			drawSignMapObject((SignMapObject) mapObject, colorVariation, x, y);
+		}
 	}
 	
+	private static void drawSignMapObject(SignMapObject signMapObject, int colorVariation, int x, int y) {
+		switch(signMapObject.getSignType()){
+		case SIGN:
+			SpriteManager.getInstance().getSprite(SpriteID.SIGNS).draw(8 + colorVariation, x * 16, y * 16);
+			break;
+		case STONE_BLOCK:
+			SpriteManager.getInstance().getSprite(SpriteID.SIGNS).draw(0 + colorVariation, x * 16, y * 16);
+			break;
+		}
+		
+	}
+
 	private static void drawCandleMapObject(CandleMapObject candleMapObject, int x, int y) {
 		SpriteManager.getInstance().getSprite(SpriteID.CANDLE).draw(0, x * 16, y * 16);
 		switch(candleMapObject.getTriggeredSwitch()){

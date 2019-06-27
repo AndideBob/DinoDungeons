@@ -18,6 +18,7 @@ public class TextInputWindow extends UIElement implements EditorWindow {
 	
 	private static final int windowWidth = 128;
 	private static final int windowHeight = 68;
+	private static final int promptYPosition = windowHeight - 18;
 	
 	private BaseButton confirmButton;
 	private BaseButton cancelButton;
@@ -41,7 +42,7 @@ public class TextInputWindow extends UIElement implements EditorWindow {
 		this.editorHandle = editorHandle;
 		confirmButton = new ButtonWindowConfirm(positionX + windowWidth - 24, positionY + 8, this);
 		cancelButton = new ButtonWindowCancel(positionX + 8, positionY + 8, this);
-		inputLine = new TextInputLine(positionX + 44, positionY + 32, 4);
+		inputLine = new TextInputLine(positionX + 44, positionY + 32, 4, false);
 		setPrompt("Input");
 		close();
 	}
@@ -67,7 +68,7 @@ public class TextInputWindow extends UIElement implements EditorWindow {
 	public void draw() {
 		if(isOpen){
 			SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(0, positionX, positionY, windowWidth, windowHeight);
-			DrawTextManager.getInstance().drawText(positionX + promptXPosition, positionY + 50, prompt, 12);
+			DrawTextManager.getInstance().drawText(positionX + promptXPosition, positionY + promptYPosition, prompt, 12);
 			inputLine.draw();
 			confirmButton.draw();
 			cancelButton.draw();
@@ -81,7 +82,7 @@ public class TextInputWindow extends UIElement implements EditorWindow {
 		else{
 			this.prompt = prompt;
 		}
-		promptXPosition = 64 - (int)((0.5f * prompt.length()) * 10);
+		promptXPosition = (windowWidth / 2) - (int)((0.5f * prompt.length()) * 10);
 	}
 	
 	public void setUsage(InputUsage usage){

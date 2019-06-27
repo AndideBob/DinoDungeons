@@ -140,7 +140,7 @@ public class ScreenMapUtil {
 			return buildCandleMapObject(map, (CandleMapObject) object, posX * 16, posY * 16);
 		}
 		else if(object instanceof SignMapObject) {
-			return buildSignGameObject((SignMapObject) object, posX * 16, posY * 16);
+			return buildSignGameObject((SignMapObject) object, posX * 16, posY * 16, map.getTileSet().getColorVariation());
 		}
 		return null;
 	}
@@ -232,13 +232,13 @@ public class ScreenMapUtil {
 		return null;
 	}
 	
-	private static GameObject buildSignGameObject(SignMapObject signMapObject, int posX, int posY) {
+	private static GameObject buildSignGameObject(SignMapObject signMapObject, int posX, int posY, int colorVariation) {
 		switch (signMapObject.getSignType()) {
 		case SIGN:
-			WoodenSignObject woodSign = new WoodenSignObject(80, 80, 0, signMapObject.getTextBoxContent());
+			WoodenSignObject woodSign = new WoodenSignObject(posX, posY, colorVariation, signMapObject.getTextBoxContent());
 			return woodSign;
 		case STONE_BLOCK:
-			StoneSignObject stoneSign = new StoneSignObject(80, 80, 0, signMapObject.getTextBoxContent());
+			StoneSignObject stoneSign = new StoneSignObject(posX, posY, colorVariation, signMapObject.getTextBoxContent());
 			return stoneSign;
 		}
 		return null;

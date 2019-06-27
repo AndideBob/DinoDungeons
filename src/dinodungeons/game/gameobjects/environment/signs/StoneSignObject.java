@@ -7,8 +7,6 @@ import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 
 public class StoneSignObject extends BaseSignObject {
-
-	private int colorVariant;
 	
 	public StoneSignObject(int positionX, int positionY, int colorVariant, Collection<TextBoxContent> text) {
 		super(positionX, positionY, colorVariant, text);
