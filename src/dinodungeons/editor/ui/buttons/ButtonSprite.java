@@ -86,7 +86,9 @@ public enum ButtonSprite {
 	PAGE_ADD(137),
 	PAGE_REMOVE(138),
 	PAGE_FORWARD(139),
-	PAGE_BACKWARDS(140);
+	PAGE_BACKWARDS(140),
+	SIGN_WOODEN(144),
+	SIGN_STONE(145);
 	
 	private int positionOnSpriteSheet;
 	

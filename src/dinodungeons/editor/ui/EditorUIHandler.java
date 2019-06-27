@@ -16,6 +16,7 @@ import dinodungeons.editor.ui.buttons.selection.EnemyPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.EraserSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.ExitPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.SelectionButton;
+import dinodungeons.editor.ui.buttons.selection.SignPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.StaticObjectPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.SwitchPlacementSelectionButton;
 import dinodungeons.editor.ui.buttons.selection.TileSetSelectionButton;
@@ -58,6 +59,7 @@ public class EditorUIHandler {
 		uiElements.add(new ExitPlacementSelectionButton(144, 224, this, editorHandle));
 		uiElements.add(new StaticObjectPlacementSelectionButton(160, 224, this, editorHandle));
 		uiElements.add(new EnemyPlacementSelectionButton(176, 224, this, editorHandle));
+		uiElements.add(new SignPlacementSelectionButton(192, 224, this, editorHandle));
 		//Map Settings
 		uiElements.add(new MapSettingsUIGroup(256, 10, editorHandle, mapManagerHandle));
 		//InputWindow (add last)
