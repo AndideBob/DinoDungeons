@@ -93,9 +93,9 @@ public class Editor extends Game {
 		uiHandler.openInputWindow(prompt, usage, prefilledInput);
 	}
 	
-	public void waitForPageInput(String prompt, TextBoxContent prefilledInput){
+	public void waitForPageInput(SignType signType, String prompt, TextBoxContent prefilledInput){
 		currentState = EditorState.WAIT_FOR_INPUT;
-		uiHandler.openPageInputWindow(prompt, prefilledInput);
+		uiHandler.openPageInputWindow(signType, prompt, prefilledInput);
 	}
 	
 	public void reactToInput(String input, InputUsage usage){
@@ -149,7 +149,7 @@ public class Editor extends Game {
 	
 	private void updateDebug(){
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_F5).equals(ButtonState.RELEASED)){
-			waitForPageInput("Debug Window", new TextBoxContent());
+			waitForPageInput(SignType.SIGN, "Debug Window", new TextBoxContent());
 		}
 	}
 

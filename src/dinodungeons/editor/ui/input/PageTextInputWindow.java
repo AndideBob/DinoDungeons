@@ -47,6 +47,8 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 	private String currentPageText = "";
 	private int currentPageXPosition = 0;
 	
+	private SignType signType;
+	
 	private int currentPage;
 	private ArrayList<TextBoxContent> contents;
 	
@@ -58,6 +60,7 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 		this.editorHandle = editorHandle;
 		this.contents = new ArrayList<>();
 		this.windowButtons = new ArrayList<>();
+		this.signType = SignType.SIGN;
 		
 		inputLine1 = new TextInputLine(positionX + 8, positionY + 120, 21, true);
 		inputLine2 = new TextInputLine(positionX + 8, positionY + 106, 21, true);
@@ -117,7 +120,20 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 			for(BaseButton button : windowButtons){
 				button.draw();
 			}
+			SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(4, positionX + 8, positionY + 32, 24, 24);
+			switch(signType){
+			case SIGN:
+				SpriteManager.getInstance().getSprite(SpriteID.SIGNS).draw(8, positionX + 12, positionY + 36);
+				break;
+			case STONE_BLOCK:
+				SpriteManager.getInstance().getSprite(SpriteID.SIGNS).draw(0, positionX + 12, positionY + 36);
+				break;
+			}
 		}
+	}
+	
+	public void setSignType(SignType signType){
+		this.signType = signType;
 	}
 	
 	public void setPrompt(String prompt){
@@ -195,7 +211,7 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 	@Override
 	public void closeConfirm(){
 		saveCurrentPage();
-		editorHandle.reactToInput(SignType.SIGN, contents);
+		editorHandle.reactToInput(signType, contents);
 		close();
 	}
 	

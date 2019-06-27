@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import dinodungeons.editor.Editor;
 import dinodungeons.editor.EditorState;
 import dinodungeons.editor.map.EditorMapManager;
+import dinodungeons.editor.map.change.SignPlacementMapChange.SignType;
 import dinodungeons.editor.ui.buttons.filemanagement.ButtonLoadMap;
 import dinodungeons.editor.ui.buttons.filemanagement.ButtonNewMap;
 import dinodungeons.editor.ui.buttons.filemanagement.ButtonSaveMap;
@@ -112,9 +113,10 @@ public class EditorUIHandler {
 		textInputWindow.open();
 	}
 	
-	public void openPageInputWindow(String prompt, TextBoxContent prefilledInput) {
+	public void openPageInputWindow(SignType signType, String prompt, TextBoxContent prefilledInput) {
 		pageTextInputWindow.setPrompt(prompt);
 		pageTextInputWindow.setInput(prefilledInput);
+		pageTextInputWindow.setSignType(signType);
 		pageTextInputWindow.open();
 	}
 
