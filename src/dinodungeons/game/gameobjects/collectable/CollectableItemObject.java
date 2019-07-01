@@ -28,11 +28,19 @@ public class CollectableItemObject extends GameObject {
 	public CollectableItemObject(int positionX, int positionY, ItemID itemID) {
 		super(getGameObjectTagForItemID(itemID));
 		collider = new RectCollider(positionX, positionY, 16, 16);
-		//TODO: If player already owns the item don't spawn again
-		isValid = true;
+		updateValidity();
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.itemID = itemID;
+	}
+	
+	private void updateValidity() {
+		if(PlayerInventoryManager.getInstance() != null) {
+			isValid = !PlayerInventoryManager.getInstance().getCollectedItems().contains(itemID);
+		}
+		else {
+			isValid = true;
+		}
 	}
 
 	private static GameObjectTag getGameObjectTagForItemID(ItemID itemID) {
@@ -75,7 +83,13 @@ public class CollectableItemObject extends GameObject {
 
 	@Override
 	public void update(long deltaTimeInMs, InputInformation inputInformation) {
-		isValid = !PlayerInventoryManager.getInstance().getCollectedItems().contains(itemID);
+		
+		if(isValid) {
+			updateValidity();
+			if(hasCollisionWithObjectWithTag(GameObjectTag.PLAYER)) {
+				isValid = false;
+			}
+		}
 	}
 
 	@Override

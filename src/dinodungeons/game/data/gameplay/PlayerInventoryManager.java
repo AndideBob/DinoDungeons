@@ -120,7 +120,7 @@ public class PlayerInventoryManager {
 	}
 	
 	public void decrease(CollectableType collectable, int amount){
-		collectables.get(collectable).increase(amount);
+		collectables.get(collectable).decrease(amount);
 	}
 	
 	public boolean hasKeysForCurrentDungeon(){
@@ -181,4 +181,11 @@ public class PlayerInventoryManager {
 		return maps.get(currentDungeon);
 	}
 
+	public String toString() {
+		String result = "Player Inventory:";
+		for(CollectableType ct : collectables.keySet()) {
+			result += "\n" + ct.toString() + ":" + collectables.get(ct).getValue();
+		}
+		return result;
+	}
 }

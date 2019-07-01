@@ -253,4 +253,10 @@ public class GameObjectManager {
 		}
 	}
 
+	public void queueTextBoxes(ArrayList<TextBoxContent> textBoxes) {
+		for(TextBoxContent tbc : textBoxes) {
+			queueTextBox(tbc);
+		}
+	}
+
 }

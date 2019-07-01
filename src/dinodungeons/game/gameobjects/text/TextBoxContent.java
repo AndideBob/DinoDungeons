@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import dinodungeons.game.data.DinoDungeonsConstants;
+import dinodungeons.game.utils.GameTextUtils;
 import lwjgladapter.logging.Logger;
 
 public class TextBoxContent {
@@ -106,5 +107,17 @@ public class TextBoxContent {
 			result.add(parseFromString(s));
 		}
 		return result;
+	}
+
+	public void setText(String text) {
+		ArrayList<String> textLines = GameTextUtils.splitTextToLines(text, DinoDungeonsConstants.textboxLettersPerLine);
+		for(int i = 0; i < lines.length; i++) {
+			if(textLines.isEmpty() || i >= textLines.size()) {
+				setLine(i, "");
+			}
+			else {
+				setLine(i, textLines.get(i));
+			}
+		}
 	}
 }

@@ -11,10 +11,10 @@ import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import dinodungeons.game.utils.GameTextUtils;
 import dinodungeons.sfx.sound.SoundEffect;
 import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.input.ButtonState;
-import lwjgladapter.logging.Logger;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 import lwjgladapter.physics.collision.base.Collision;
@@ -178,10 +178,13 @@ public class PlayerObject extends GameObject {
 	}
 
 	private void collectItem(ItemID itemID){
-		playerState = PlayerState.ITEM_COLLECTED;
-		PlayerInventoryManager.getInstance().collectItem(itemID);
-		playerDrawManager.setCollectedItem(itemID);
-		stateTimer = DinoDungeonsConstants.itemCollectionCharacterFreeze;
+		if(!PlayerInventoryManager.getInstance().getCollectedItems().contains(itemID)) {
+			playerState = PlayerState.ITEM_COLLECTED;
+			PlayerInventoryManager.getInstance().collectItem(itemID);
+			playerDrawManager.setCollectedItem(itemID);
+			stateTimer = DinoDungeonsConstants.itemCollectionCharacterFreeze;
+			GameObjectManager.getInstance().queueTextBoxes(GameTextUtils.getItemCollectionTextBox(itemID));
+		}
 	}
 	
 	private void collectItem(DungeonItemID itemID){
