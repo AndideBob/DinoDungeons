@@ -60,10 +60,14 @@ public class TextBoxTrigger extends GameObject {
 				break;
 			}
 			if(triggerText){
-				for(TextBoxContent tbc : textBoxContents){
-					GameObjectManager.getInstance().queueTextBox(tbc);
-				}
+				trigger();
 			}
+		}
+	}
+	
+	protected void trigger() {
+		for(TextBoxContent tbc : textBoxContents){
+			GameObjectManager.getInstance().queueTextBox(tbc);
 		}
 	}
 
