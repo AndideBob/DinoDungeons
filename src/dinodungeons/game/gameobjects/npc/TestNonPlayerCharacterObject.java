@@ -15,7 +15,7 @@ public class TestNonPlayerCharacterObject extends BaseNonPlayerCharacterObject {
 
 	@Override
 	public void draw(int anchorX, int anchorY) {
-		SpriteManager.getInstance().getSprite(SpriteID.PLAYER).draw(direction, anchorX + positionX, anchorY + positionY);
+		SpriteManager.getInstance().getSprite(SpriteID.NPC_OLD_MAN).draw(direction, anchorX + positionX, anchorY + positionY);
 
 	}
 
