@@ -39,6 +39,8 @@ public enum GFXResourceID {
 	//CHARACTERS
 	CHARACTER(FolderConstants.folderCHARACTERS, "character.png"),
 	NPC_OLD_MAN(FolderConstants.folderCHARACTERS, "npc_OldMan.png"),
+	NPC_TIKI_VILAGER_A(FolderConstants.folderCHARACTERS, "npc_TikiVillagerA.png"),
+	NPC_TIKI_VILAGER_B(FolderConstants.folderCHARACTERS, "npc_TikiVillagerB.png"),
 	ENEMY_BAT_GREEN(FolderConstants.folderCHARACTERS, "bat_green.png"),
 	ENEMY_TRICERABLOB(FolderConstants.folderCHARACTERS, "tricerablob.png"),
 	ENEMY_CROCDROP(FolderConstants.folderCHARACTERS, "crocdrop.png"),
