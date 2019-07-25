@@ -28,6 +28,8 @@ public class ButtonSetMapTileSet extends BaseButton {
 			return ButtonSprite.TILESET_DUNGEON_ORANGE;
 		case DUNGEON_PINK:
 			return ButtonSprite.TILESET_DUNGEON_PINK;
+		case INTERIOR_HUT:
+			return ButtonSprite.BUILDING_BASIC_HUT;
 		}
 		return ButtonSprite.CANCEL;
 	}
