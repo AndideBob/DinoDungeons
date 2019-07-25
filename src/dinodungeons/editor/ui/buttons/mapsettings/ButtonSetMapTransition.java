@@ -5,13 +5,9 @@ import dinodungeons.editor.map.EditorMapManager;
 import dinodungeons.editor.ui.buttons.BaseButton;
 import dinodungeons.editor.ui.buttons.ButtonSprite;
 import dinodungeons.editor.ui.input.InputUsage;
-import dinodungeons.editor.ui.pointer.MouseHandler;
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.gfx.text.DrawTextManager;
-import lwjgladapter.logging.Logger;
-import lwjgladapter.physics.PhysicsHelper;
-import lwjgladapter.physics.collision.exceptions.CollisionNotSupportedException;
 
 public class ButtonSetMapTransition extends BaseButton {
 	

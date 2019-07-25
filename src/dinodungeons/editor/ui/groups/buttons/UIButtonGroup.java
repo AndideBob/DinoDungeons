@@ -58,7 +58,7 @@ public abstract class UIButtonGroup extends UIElement implements UIGroup {
 		//Can be overwritten
 	}
 	
-	public final void unpressAll() {
+	public void unpressAll() {
 		for(BaseButton button : buttons){
 			button.setPressed(false);
 		}

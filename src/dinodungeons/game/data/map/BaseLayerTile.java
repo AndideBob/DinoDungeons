@@ -1,5 +1,8 @@
 package dinodungeons.game.data.map;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum BaseLayerTile {
 	NOTHING(0),
 	FLOOR_NORMAL(1),
@@ -41,6 +44,8 @@ public enum BaseLayerTile {
 	BLOCKED_DOOR_UP(35),
 	BLOCKED_DOOR_RIGHT(38),
 	BLOCKED_DOOR_LEFT(39);
+	
+	public static final List<BaseLayerTile> floorTiles = Arrays.asList(FLOOR_NORMAL, FLOOR_ALT_A, FLOOR_ALT_B);
 	
 	private int tileSetPosition;
 	

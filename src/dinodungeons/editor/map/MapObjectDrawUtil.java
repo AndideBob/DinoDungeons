@@ -3,6 +3,7 @@ package dinodungeons.editor.map;
 import dinodungeons.game.data.map.BaseLayerTile;
 import dinodungeons.game.data.map.ScreenMap;
 import dinodungeons.game.data.map.objects.BlockMapObject;
+import dinodungeons.game.data.map.objects.BuildingMapObject;
 import dinodungeons.game.data.map.objects.CandleMapObject;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.DoorMapObject;
@@ -55,6 +56,12 @@ public class MapObjectDrawUtil {
 		}
 		else if(mapObject instanceof SignMapObject){
 			drawSignMapObject((SignMapObject) mapObject, colorVariation, x, y);
+		}
+		else if(mapObject instanceof SignMapObject){
+			drawSignMapObject((SignMapObject) mapObject, colorVariation, x, y);
+		}
+		else if(mapObject instanceof BuildingMapObject){
+			drawBuildingMapObject((BuildingMapObject) mapObject, x, y);
 		}
 	}
 	
@@ -247,5 +254,10 @@ public class MapObjectDrawUtil {
 				break;
 			}
 		}
+	}
+	
+	private static void drawBuildingMapObject(BuildingMapObject buildingMapObject, int x, int y){
+		SpriteManager.getInstance().getSprite(buildingMapObject.getBuildingType().getSpriteID()).draw(0, x * 16 - 16, y * 16);
+		drawTextOverlay(x, y, buildingMapObject.getDestinationMapID().toCharArray());
 	}
 }

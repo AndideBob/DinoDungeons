@@ -38,9 +38,18 @@ public class TransportTypeButtonGroup extends UIButtonGroup {
 	}
 	
 	@Override
+	public void unpressAll(){
+		super.unpressAll();
+		selectedTransportationType = null;
+	}
+	
+	@Override
 	protected void onActivate() {
+		if(selectedTransportationType == null){
+			unpressAll();
+			return;
+		}
 		belongingGroup.setTransportType(selectedTransportationType);
-		unpressAll();
 		switch(selectedTransportationType){
 		case INSTANT_TELEPORT:
 			buttons.get(0).setPressed(true);

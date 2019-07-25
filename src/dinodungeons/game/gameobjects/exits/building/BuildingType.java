@@ -3,7 +3,8 @@ package dinodungeons.game.gameobjects.exits.building;
 import dinodungeons.gfx.sprites.SpriteID;
 
 public enum BuildingType {
-	BASIC_HUT(SpriteID.BUILDING_BASIC_HUT, "BH");
+	BASIC_HUT(SpriteID.BUILDING_BASIC_HUT, "BH"),
+	STORE_A(SpriteID.BUILDING_STORE_A, "SA");
 	
 	private SpriteID spriteID;
 	

@@ -54,6 +54,7 @@ public enum GFXResourceID {
 	FIRE(FolderConstants.folderPARTICLES, "fire.png"),
 	//BUILDINGS
 	BUILDING_BASIC_HUT(FolderConstants.folderBUILDINGS, "basic_hut.png"),
+	BUILDING_STORE_A(FolderConstants.folderBUILDINGS, "storeA.png"),
 	//IMMOVABLES
 	SPRITE_SPIKES(FolderConstants.folderIMMOVABLE, "spikes.png"),
 	//ENVIRONMENT

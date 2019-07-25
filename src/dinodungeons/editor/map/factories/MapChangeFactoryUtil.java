@@ -31,6 +31,8 @@ public class MapChangeFactoryUtil {
 			return new EnemyMapChangeFactory();
 		case SIGN_CHANGE:
 			return new SignMapChangeFactory();
+		case BUILDING_PLACEMENT:
+			return new BuildingMapChangeFactory();
 		}
 		Logger.logError("Could not retrieve MapChangeFactory for MapChangeType: " + mapChangeType.toString());
 		return null;
