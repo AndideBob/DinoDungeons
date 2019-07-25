@@ -10,6 +10,7 @@ import dinodungeons.editor.ui.EditorUIHandler;
 import dinodungeons.editor.ui.input.InputUsage;
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.map.objects.NonPlayerCharacterMapObject.NPCType;
 import dinodungeons.game.gameobjects.text.TextBoxContent;
 import dinodungeons.gfx.sprites.SpriteManager;
 import dinodungeons.gfx.text.DrawTextManager;
@@ -98,6 +99,11 @@ public class Editor extends Game {
 		uiHandler.openPageInputWindow(signType, prompt, prefilledInput);
 	}
 	
+	public void waitForPageInput(NPCType npcType, String prompt, TextBoxContent prefilledInput){
+		currentState = EditorState.WAIT_FOR_INPUT;
+		uiHandler.openPageInputWindow(npcType, prompt, prefilledInput);
+	}
+	
 	public void reactToInput(String input, InputUsage usage){
 		currentState = EditorState.DEFAULT;
 		switch(usage){
@@ -137,6 +143,12 @@ public class Editor extends Game {
 		currentState = EditorState.DEFAULT;
 		String contents = TextBoxContent.parseMultipleToString(input);
 		mapChangeManager.setMapChange(MapChangeType.SIGN_CHANGE, signType.getStringRepresentation(), contents);
+	}
+	
+	public void reactToInput(NPCType npcType, Collection<TextBoxContent> input){
+		currentState = EditorState.DEFAULT;
+		String contents = TextBoxContent.parseMultipleToString(input);
+		mapChangeManager.setMapChange(MapChangeType.NPC_PLACEMENT, npcType.getStringRepresentation(), contents);
 	}
 	
 	public void setMapChange(MapChangeType mapChangeType, String... params) {

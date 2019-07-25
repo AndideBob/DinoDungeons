@@ -90,7 +90,10 @@ public enum ButtonSprite {
 	SIGN_WOODEN(144),
 	SIGN_STONE(145),
 	BUILDING_BASIC_HUT(152),
-	BUILDING_STORE_A(153);
+	BUILDING_STORE_A(153),
+	NPC_OLD_MAN(168),
+	NPC_TIKI_VILLAGER_A(169),
+	NPC_TIKI_VILLAGER_B(170);
 	
 	private int positionOnSpriteSheet;
 	

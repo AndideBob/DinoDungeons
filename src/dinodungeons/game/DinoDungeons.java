@@ -1,7 +1,6 @@
 package dinodungeons.game;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import dinodungeons.game.data.GameState;
 import dinodungeons.game.data.exceptions.InvalidMapIDException;
@@ -16,10 +15,7 @@ import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.CollisionInformation;
 import dinodungeons.game.gameobjects.base.GameObject;
-import dinodungeons.game.gameobjects.environment.signs.StoneSignObject;
-import dinodungeons.game.gameobjects.npc.TestNonPlayerCharacterObject;
 import dinodungeons.game.gameobjects.player.ItemID;
-import dinodungeons.game.gameobjects.text.TextBoxContent;
 import dinodungeons.game.utils.MenuManager;
 import dinodungeons.game.utils.ScreenFadingHelper;
 import dinodungeons.game.utils.ScreenScrollingHelper;
@@ -279,14 +275,7 @@ public class DinoDungeons extends Game {
 			PlayerInventoryManager.getInstance().collectItem(ItemID.BOMB);
 		}
 		if(InputManager.instance.getKeyState(KeyboardKey.KEY_CRTL_RIGHT).equals(ButtonState.RELEASED)){
-			TextBoxContent testTextBox = new TextBoxContent();
-			testTextBox.setLine(0, "Hello, this is a test");
-			testTextBox.setLine(1, "Short");
-			testTextBox.setLine(2, "A looooooooooooooooooooooooooooooooong line is this");
-			testTextBox.setLine(3, "Well I need more text");
-			testTextBox.setLine(4, "The end!");
-			GameObject testObject = new TestNonPlayerCharacterObject(80, 80, Collections.singleton(testTextBox));
-			GameObjectManager.getInstance().addGameObjectToCurrentMap(testObject);
+			//DO NOTHING
 		}
 	}
 

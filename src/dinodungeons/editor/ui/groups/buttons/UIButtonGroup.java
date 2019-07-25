@@ -34,7 +34,7 @@ public abstract class UIButtonGroup extends UIElement implements UIGroup {
 	}
 
 	@Override
-	public final void draw() {
+	public void draw() {
 		if(visible){
 			for(BaseButton button : buttons){
 				button.draw();

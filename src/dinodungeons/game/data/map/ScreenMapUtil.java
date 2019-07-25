@@ -14,6 +14,7 @@ import dinodungeons.game.data.map.objects.DoorMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
+import dinodungeons.game.data.map.objects.NonPlayerCharacterMapObject;
 import dinodungeons.game.data.map.objects.SignMapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
@@ -37,6 +38,7 @@ import dinodungeons.game.gameobjects.immovable.MetalSpikeObject;
 import dinodungeons.game.gameobjects.immovable.RoomSwitchDoorObject;
 import dinodungeons.game.gameobjects.immovable.UnpushableStone;
 import dinodungeons.game.gameobjects.immovable.WoodenSpikeObject;
+import dinodungeons.game.gameobjects.npc.DefaultNonPlayerCharacterObject;
 import dinodungeons.game.gameobjects.switches.CandleSwitch;
 import dinodungeons.game.gameobjects.switches.StonePushSwitch;
 
@@ -147,6 +149,9 @@ public class ScreenMapUtil {
 		else if(object instanceof BuildingMapObject) {
 			return buildBuildingGameObject((BuildingMapObject) object, posX * 16, posY * 16);
 		}
+		else if(object instanceof NonPlayerCharacterMapObject) {
+			return buildNPCGameObject((NonPlayerCharacterMapObject) object, posX * 16, posY * 16);
+		}
 		return null;
 	}
 	
@@ -247,6 +252,10 @@ public class ScreenMapUtil {
 			return stoneSign;
 		}
 		return null;
+	}
+	
+	private static GameObject buildNPCGameObject(NonPlayerCharacterMapObject npcMapObject, int posX, int posY) {
+		return new DefaultNonPlayerCharacterObject(posX, posY, npcMapObject.getNPCType(), npcMapObject.getTextBoxContent());
 	}
 
 	private static GameObject buildItemGameObject(ItemMapObject itemMapObject, int posX, int posY) {

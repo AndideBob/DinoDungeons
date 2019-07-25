@@ -26,6 +26,7 @@ import dinodungeons.editor.ui.input.PageTextInputWindow;
 import dinodungeons.editor.ui.input.TextInputWindow;
 import dinodungeons.editor.ui.pointer.MouseHandler;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.map.objects.NonPlayerCharacterMapObject.NPCType;
 import dinodungeons.game.gameobjects.text.TextBoxContent;
 
 public class EditorUIHandler {
@@ -119,6 +120,13 @@ public class EditorUIHandler {
 		pageTextInputWindow.setPrompt(prompt);
 		pageTextInputWindow.setInput(prefilledInput);
 		pageTextInputWindow.setSignType(signType);
+		pageTextInputWindow.open();
+	}
+	
+	public void openPageInputWindow(NPCType npcType, String prompt, TextBoxContent prefilledInput) {
+		pageTextInputWindow.setPrompt(prompt);
+		pageTextInputWindow.setInput(prefilledInput);
+		pageTextInputWindow.setNPCType(npcType);
 		pageTextInputWindow.open();
 	}
 

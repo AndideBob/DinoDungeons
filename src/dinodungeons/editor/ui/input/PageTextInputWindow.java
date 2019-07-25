@@ -15,6 +15,7 @@ import dinodungeons.editor.ui.buttons.window.ButtonWindowPageBackwards;
 import dinodungeons.editor.ui.buttons.window.ButtonWindowPageForward;
 import dinodungeons.editor.ui.buttons.window.ButtonWindowPageRemove;
 import dinodungeons.game.data.gameplay.InputInformation;
+import dinodungeons.game.data.map.objects.NonPlayerCharacterMapObject.NPCType;
 import dinodungeons.game.gameobjects.text.TextBoxContent;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
@@ -48,6 +49,7 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 	private int currentPageXPosition = 0;
 	
 	private SignType signType;
+	private NPCType npcType;
 	
 	private int currentPage;
 	private ArrayList<TextBoxContent> contents;
@@ -61,6 +63,7 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 		this.contents = new ArrayList<>();
 		this.windowButtons = new ArrayList<>();
 		this.signType = SignType.SIGN;
+		this.npcType = null;
 		
 		inputLine1 = new TextInputLine(positionX + 8, positionY + 120, 21, true);
 		inputLine2 = new TextInputLine(positionX + 8, positionY + 106, 21, true);
@@ -121,19 +124,30 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 				button.draw();
 			}
 			SpriteManager.getInstance().getSprite(SpriteID.BACKGROUNDS).draw(4, positionX + 8, positionY + 32, 24, 24);
-			switch(signType){
-			case SIGN:
-				SpriteManager.getInstance().getSprite(SpriteID.SIGNS).draw(8, positionX + 12, positionY + 36);
-				break;
-			case STONE_BLOCK:
-				SpriteManager.getInstance().getSprite(SpriteID.SIGNS).draw(0, positionX + 12, positionY + 36);
-				break;
+			if(signType != null){
+				switch(signType){
+				case SIGN:
+					SpriteManager.getInstance().getSprite(SpriteID.SIGNS).draw(8, positionX + 12, positionY + 36);
+					break;
+				case STONE_BLOCK:
+					SpriteManager.getInstance().getSprite(SpriteID.SIGNS).draw(0, positionX + 12, positionY + 36);
+					break;
+				}
+			}
+			else if(npcType != null){
+				SpriteManager.getInstance().getSprite(npcType.getSpriteID()).draw(0, positionX + 12, positionY + 36);
 			}
 		}
 	}
 	
 	public void setSignType(SignType signType){
 		this.signType = signType;
+		this.npcType = null;
+	}
+	
+	public void setNPCType(NPCType npcType){
+		this.npcType = npcType;
+		this.signType = null;
 	}
 	
 	public void setPrompt(String prompt){
@@ -211,7 +225,12 @@ public class PageTextInputWindow extends UIElement implements EditorWindow {
 	@Override
 	public void closeConfirm(){
 		saveCurrentPage();
-		editorHandle.reactToInput(signType, contents);
+		if(signType != null){
+			editorHandle.reactToInput(signType, contents);
+		}
+		else if(npcType != null){
+			editorHandle.reactToInput(npcType, contents);
+		}
 		close();
 	}
 	

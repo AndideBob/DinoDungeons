@@ -8,10 +8,12 @@ import dinodungeons.game.data.map.objects.CandleMapObject;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.DoorMapObject;
 import dinodungeons.game.data.map.objects.DoorMapObject.DoorType;
+import dinodungeons.game.data.map.objects.NonPlayerCharacterMapObject.NPCType;
 import dinodungeons.game.data.map.objects.EmptyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
+import dinodungeons.game.data.map.objects.NonPlayerCharacterMapObject;
 import dinodungeons.game.data.map.objects.SignMapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
@@ -59,6 +61,9 @@ public class MapObjectDrawUtil {
 		}
 		else if(mapObject instanceof SignMapObject){
 			drawSignMapObject((SignMapObject) mapObject, colorVariation, x, y);
+		}
+		else if(mapObject instanceof NonPlayerCharacterMapObject){
+			drawNonPlayerCharacterMapObject((NonPlayerCharacterMapObject) mapObject, x, y);
 		}
 		else if(mapObject instanceof BuildingMapObject){
 			drawBuildingMapObject((BuildingMapObject) mapObject, x, y);
@@ -259,5 +264,12 @@ public class MapObjectDrawUtil {
 	private static void drawBuildingMapObject(BuildingMapObject buildingMapObject, int x, int y){
 		SpriteManager.getInstance().getSprite(buildingMapObject.getBuildingType().getSpriteID()).draw(0, x * 16 - 16, y * 16);
 		drawTextOverlay(x, y, buildingMapObject.getDestinationMapID().toCharArray());
+	}
+	
+	private static void drawNonPlayerCharacterMapObject(NonPlayerCharacterMapObject npcMapObject, int x, int y){
+		SpriteManager.getInstance().getSprite(npcMapObject.getNPCType().getSpriteID()).draw(0, x * 16, y * 16);
+		if(!NPCType.isDefault(npcMapObject.getNPCType())){
+			drawTextOverlay(x, y, 'E', 'V', 'N', 'T');
+		}
 	}
 }

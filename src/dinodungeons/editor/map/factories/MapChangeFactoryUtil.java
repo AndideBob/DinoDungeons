@@ -33,6 +33,8 @@ public class MapChangeFactoryUtil {
 			return new SignMapChangeFactory();
 		case BUILDING_PLACEMENT:
 			return new BuildingMapChangeFactory();
+		case NPC_PLACEMENT:
+			return new NPCMapChangeFactory();
 		}
 		Logger.logError("Could not retrieve MapChangeFactory for MapChangeType: " + mapChangeType.toString());
 		return null;

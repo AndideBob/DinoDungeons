@@ -15,6 +15,8 @@ import dinodungeons.game.data.map.objects.EnemyMapObject;
 import dinodungeons.game.data.map.objects.EnemyMapObject.EnemyType;
 import dinodungeons.game.data.map.objects.ItemMapObject;
 import dinodungeons.game.data.map.objects.MapObject;
+import dinodungeons.game.data.map.objects.NonPlayerCharacterMapObject;
+import dinodungeons.game.data.map.objects.NonPlayerCharacterMapObject.NPCType;
 import dinodungeons.game.data.map.objects.SignMapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
@@ -48,6 +50,8 @@ public class MapObjectParser {
 	private static final String signMapObjectID = "X";
 	
 	private static final String buildingMapObjectID = "O";
+	
+	private static final String npcMapObjectID = "NPC";
 
 	public String parseMapObjectToString(MapObject mapObject){
 		if(mapObject instanceof EmptyMapObject){
@@ -82,6 +86,9 @@ public class MapObjectParser {
 		}
 		else if(mapObject instanceof BuildingMapObject) {
 			return parseBuildingMapObject((BuildingMapObject)mapObject);
+		}
+		else if(mapObject instanceof NonPlayerCharacterMapObject) {
+			return parseNonPlayerCharacterMapObject((NonPlayerCharacterMapObject)mapObject);
 		}
 		return emptyMapObjectString;
 	}
@@ -189,6 +196,17 @@ public class MapObjectParser {
 		result += ")";
 		return result;
 	}
+	
+	private String parseNonPlayerCharacterMapObject(NonPlayerCharacterMapObject npcMapObject) {
+		String result = "(";
+		result += npcMapObjectID;
+		result += internalSplitter;
+		result += npcMapObject.getNPCType().getStringRepresentation();
+		result += internalSplitter;
+		result += TextBoxContent.parseMultipleToString(npcMapObject.getTextBoxContent());
+		result += ")";
+		return result;
+	}
 
 	public MapObject parseStringToMapObject(String string){
 		if(string.equals(emptyMapObjectString)){
@@ -252,6 +270,12 @@ public class MapObjectParser {
 			buildingMapObject.setY(Integer.parseInt(stringParts[3]));
 			buildingMapObject.setBuildingType(BuildingType.getByStringRepresentation(stringParts[4]));
 			return buildingMapObject;
+		}
+		else if(stringParts[0].equals(npcMapObjectID)){
+			NonPlayerCharacterMapObject npcMapObject = new NonPlayerCharacterMapObject();
+			npcMapObject.setNPCType(NPCType.getByStringRepresentation(stringParts[1]));
+			npcMapObject.setTextBoxContent(TextBoxContent.parseStringToMultiple(stringParts[2]));
+			return npcMapObject;
 		}
 		return new EmptyMapObject();
 	}
