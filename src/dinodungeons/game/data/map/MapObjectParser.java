@@ -3,6 +3,7 @@ package dinodungeons.game.data.map;
 import dinodungeons.editor.map.change.SignPlacementMapChange.SignType;
 import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.objects.BlockMapObject;
+import dinodungeons.game.data.map.objects.BuildingMapObject;
 import dinodungeons.game.data.map.objects.CandleMapObject;
 import dinodungeons.game.data.map.objects.BlockMapObject.BlockType;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
@@ -18,6 +19,7 @@ import dinodungeons.game.data.map.objects.SignMapObject;
 import dinodungeons.game.data.map.objects.SpikeMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject;
 import dinodungeons.game.data.map.objects.TransportMapObject.TransportationType;
+import dinodungeons.game.gameobjects.exits.building.BuildingType;
 import dinodungeons.game.gameobjects.player.ItemID;
 import dinodungeons.game.gameobjects.text.TextBoxContent;
 
@@ -44,6 +46,8 @@ public class MapObjectParser {
 	private static final String candleMapObjectID = "C";
 	
 	private static final String signMapObjectID = "X";
+	
+	private static final String buildingMapObjectID = "O";
 
 	public String parseMapObjectToString(MapObject mapObject){
 		if(mapObject instanceof EmptyMapObject){
@@ -75,6 +79,9 @@ public class MapObjectParser {
 		}
 		else if(mapObject instanceof SignMapObject) {
 			return parseSignMapObject((SignMapObject)mapObject);
+		}
+		else if(mapObject instanceof BuildingMapObject) {
+			return parseBuildingMapObject((BuildingMapObject)mapObject);
 		}
 		return emptyMapObjectString;
 	}
@@ -167,6 +174,21 @@ public class MapObjectParser {
 		result += ")";
 		return result;
 	}
+	
+	private String parseBuildingMapObject(BuildingMapObject buildingMapObject) {
+		String result = "(";
+		result += buildingMapObjectID;
+		result += internalSplitter;
+		result += buildingMapObject.getDestinationMapID();
+		result += internalSplitter;
+		result += buildingMapObject.getX();
+		result += internalSplitter;
+		result += buildingMapObject.getY();
+		result += internalSplitter;
+		result += buildingMapObject.getBuildingType().getStringRepresentation();
+		result += ")";
+		return result;
+	}
 
 	public MapObject parseStringToMapObject(String string){
 		if(string.equals(emptyMapObjectString)){
@@ -222,6 +244,14 @@ public class MapObjectParser {
 			signMapObject.setSignType(SignType.getByStringRepresentation(stringParts[1]));
 			signMapObject.setTextBoxContent(TextBoxContent.parseStringToMultiple(stringParts[2]));
 			return signMapObject;
+		}
+		else if(stringParts[0].equals(buildingMapObjectID)){
+			BuildingMapObject buildingMapObject = new BuildingMapObject();
+			buildingMapObject.setDestinationMapID(stringParts[1]);
+			buildingMapObject.setX(Integer.parseInt(stringParts[2]));
+			buildingMapObject.setY(Integer.parseInt(stringParts[3]));
+			buildingMapObject.setBuildingType(BuildingType.getByStringRepresentation(stringParts[4]));
+			return buildingMapObject;
 		}
 		return new EmptyMapObject();
 	}

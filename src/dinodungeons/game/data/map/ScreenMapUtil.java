@@ -7,6 +7,7 @@ import java.util.HashSet;
 import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.RoomEvent;
 import dinodungeons.game.data.map.objects.BlockMapObject;
+import dinodungeons.game.data.map.objects.BuildingMapObject;
 import dinodungeons.game.data.map.objects.CandleMapObject;
 import dinodungeons.game.data.map.objects.DestructibleMapObject;
 import dinodungeons.game.data.map.objects.DoorMapObject;
@@ -29,6 +30,7 @@ import dinodungeons.game.gameobjects.environment.signs.WoodenSignObject;
 import dinodungeons.game.gameobjects.exits.ExplodableDoorObject;
 import dinodungeons.game.gameobjects.exits.InstantExitObject;
 import dinodungeons.game.gameobjects.exits.TransitionExitObject;
+import dinodungeons.game.gameobjects.exits.building.BuildingExitObject;
 import dinodungeons.game.gameobjects.general.WallObject;
 import dinodungeons.game.gameobjects.immovable.KeyDoorObject;
 import dinodungeons.game.gameobjects.immovable.MetalSpikeObject;
@@ -141,6 +143,9 @@ public class ScreenMapUtil {
 		}
 		else if(object instanceof SignMapObject) {
 			return buildSignGameObject((SignMapObject) object, posX * 16, posY * 16, map.getTileSet().getColorVariation());
+		}
+		else if(object instanceof BuildingMapObject) {
+			return buildBuildingGameObject((BuildingMapObject) object, posX * 16, posY * 16);
 		}
 		return null;
 	}
@@ -285,6 +290,12 @@ public class ScreenMapUtil {
 					transportMapObject.getDestinationMapID(), transportMapObject.getX(), transportMapObject.getY());	
 		}
 		return null;
+	}
+	
+	private static GameObject buildBuildingGameObject(BuildingMapObject buildingMapObject, int posX, int posY){
+		BuildingExitObject building = new BuildingExitObject(posX, posY, buildingMapObject.getBuildingType(),
+				buildingMapObject.getDestinationMapID(), buildingMapObject.getX(), buildingMapObject.getY());
+		return building;
 	}
 	
 	private static String getPositionString(int x, int y){

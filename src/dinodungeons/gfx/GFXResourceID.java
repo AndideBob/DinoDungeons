@@ -18,6 +18,7 @@ class FolderConstants{
 	static final String folderIMMOVABLE = folderSPRITES + File.separator + "immovable";
 	static final String folderENVIRONMENT = folderSPRITES + File.separator + "environment";
 	static final String folderPARTICLES = folderSPRITES + File.separator + "particles";
+	static final String folderBUILDINGS = folderSPRITES + File.separator + "buildings";
 }
 
 public enum GFXResourceID {
@@ -51,6 +52,8 @@ public enum GFXResourceID {
 	PARTICLES_B(FolderConstants.folderPARTICLES, "particlesB.png"),
 	EXPLOSION(FolderConstants.folderPARTICLES, "explosion.png"),
 	FIRE(FolderConstants.folderPARTICLES, "fire.png"),
+	//BUILDINGS
+	BUILDING_BASIC_HUT(FolderConstants.folderBUILDINGS, "basic_hut.png"),
 	//IMMOVABLES
 	SPRITE_SPIKES(FolderConstants.folderIMMOVABLE, "spikes.png"),
 	//ENVIRONMENT
