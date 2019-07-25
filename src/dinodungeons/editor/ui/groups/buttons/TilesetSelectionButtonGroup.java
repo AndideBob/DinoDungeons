@@ -25,7 +25,7 @@ public class TilesetSelectionButtonGroup extends UIButtonGroup {
 		buttons.add(new ButtonSetMapTileSet(272, 208, this, TileSet.CAVE_RED));
 		buttons.add(new ButtonSetMapTileSet(288, 208, this, TileSet.DUNGEON_ORANGE));
 		buttons.add(new ButtonSetMapTileSet(304, 208, this, TileSet.DUNGEON_PINK));
-		buttons.add(new ButtonSetMapTileSet(320, 208, this, TileSet.INTERIOR_HUT));
+		buttons.add(new ButtonSetMapTileSet(256, 192, this, TileSet.INTERIOR_HUT));
 		return buttons;
 	}
 	
@@ -44,6 +44,9 @@ public class TilesetSelectionButtonGroup extends UIButtonGroup {
 			break;
 		case DUNGEON_PINK:
 			buttons.get(3).setPressed(true);
+			break;
+		case INTERIOR_HUT:
+			buttons.get(4).setPressed(true);
 			break;
 		}
 	}
