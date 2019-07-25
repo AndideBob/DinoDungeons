@@ -42,7 +42,7 @@ public class BuildingExitObject extends GameObject {
 
 	@Override
 	public void draw(int anchorX, int anchorY) {
-		SpriteManager.getInstance().getSprite(buildingType.getSpriteID()).draw(0, positionX, positionY);
+		SpriteManager.getInstance().getSprite(buildingType.getSpriteID()).draw(0, anchorX + positionX, anchorY + positionY);
 	}
 
 	@Override

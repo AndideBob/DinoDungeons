@@ -88,6 +88,10 @@ public class ScreenMap {
 	public String getID() {
 		return id;
 	}
+	
+	public void setID(String mapID) {
+		id = mapID;
+	}
 
 	public int getSizeX() {
 		return sizeX;

@@ -294,7 +294,7 @@ public class ScreenMapUtil {
 	
 	private static GameObject buildBuildingGameObject(BuildingMapObject buildingMapObject, int posX, int posY){
 		BuildingExitObject building = new BuildingExitObject(posX, posY, buildingMapObject.getBuildingType(),
-				buildingMapObject.getDestinationMapID(), buildingMapObject.getX(), buildingMapObject.getY());
+				buildingMapObject.getDestinationMapID(), buildingMapObject.getX() - 16, buildingMapObject.getY());
 		return building;
 	}
 	

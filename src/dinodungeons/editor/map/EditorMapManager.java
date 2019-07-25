@@ -86,6 +86,7 @@ public class EditorMapManager {
 	public void saveMap(String enteredID){
 		if(enteredID != null && !enteredID.isEmpty()){
 			saver.saveMap(enteredID, currentMap);
+			currentMap.setID(enteredID);
 		}
 	}
 	
