@@ -2,3 +2,6 @@
 /.classpath
 .class
 /bin/
+*.class
+/.idea/*
+/target/*
