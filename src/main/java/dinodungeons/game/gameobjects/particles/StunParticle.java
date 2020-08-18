@@ -6,6 +6,8 @@ import dinodungeons.gfx.sprites.SpriteManager;
 
 public class StunParticle extends BaseParticle {
 
+    public static final int STUN_PARTICLE_OFFSET = 8;
+
     private boolean finished;
     private long particleLifeTime;
     private int frame;
@@ -15,6 +17,11 @@ public class StunParticle extends BaseParticle {
         finished = false;
         particleLifeTime = 0;
         frame = 0;
+    }
+
+    public void updatePosition(float positionX, float positionY){
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
 
     public void stopStun(){

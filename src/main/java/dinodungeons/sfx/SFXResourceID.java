@@ -15,6 +15,7 @@ public enum SFXResourceID {
 	SFX_BOOMERANG_HIT(FolderConstants.folderEffects, "BoomerangHit.ogg"),
 	SFX_EXPLOSION(FolderConstants.folderEffects, "Explosion.ogg"),
 	SFX_HIT_CLUB(FolderConstants.folderEffects, "Hit_Club.ogg"),
+	SFX_EFFECT_STUN(FolderConstants.folderEffects, "Stun_Effect.ogg"),
 	SFX_PICKUP_COIN(FolderConstants.folderEffects, "Pickup_Coin.ogg"),
 	SFX_PICKUP_HEALTH(FolderConstants.folderEffects, "Pickup_Health.ogg"),
 	SFX_DESTROY_BUSH(FolderConstants.folderEffects, "Bush_Destroy.ogg"),

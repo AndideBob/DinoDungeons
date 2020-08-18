@@ -11,6 +11,7 @@ import dinodungeons.game.data.transitions.TransitionManager;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObject;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import dinodungeons.game.gameobjects.particles.StunParticle;
 import dinodungeons.game.utils.GameTextUtils;
 import dinodungeons.sfx.sound.SoundEffect;
 import dinodungeons.sfx.sound.SoundManager;
@@ -43,12 +44,13 @@ public class PlayerObject extends GameObject {
 	//Combat base Variables
 	private long stateTimer;
 	private GameObject weaponObject;
+	private StunParticle stunParticle;
 	
 	private ItemUsageManager itemUsageManager;
 	private PlayerDrawManager playerDrawManager;
 	
 	private PlayerState playerState;
-	
+
 	public PlayerObject(GameObjectTag tag, int startX, int startY) {
 		super(tag);
 		positionX = startX;
@@ -83,6 +85,16 @@ public class PlayerObject extends GameObject {
 			if(stateTimer <= DinoDungeonsConstants.stunTime - DinoDungeonsConstants.stunKnockbackTime) {
 				movementChangeX = 0;
 				movementChangeY = 0;
+			}
+			if(stateTimer <= 0){
+				playerState = PlayerState.DEFAULT;
+				if(stunParticle != null){
+					stunParticle.stopStun();
+					stunParticle = null;
+				}
+			}
+			else if(stunParticle != null){
+				stunParticle.updatePosition(positionX, positionY + StunParticle.STUN_PARTICLE_OFFSET);
 			}
 		case DAMAGE_TAKEN:
 			if(stateTimer <= 0){
@@ -226,7 +238,11 @@ public class PlayerObject extends GameObject {
 	
 	public void tryStun(int sourceX, int sourceY) {
 		if(playerState != PlayerState.DAMAGE_TAKEN && stateTimer <= 0){
-			SoundManager.getInstance().playSoundEffect(SoundEffect.PLAYER_DAMAGE);
+			SoundManager.getInstance().playSoundEffect(SoundEffect.STUN_EFFECT);
+			if(stunParticle == null){
+				stunParticle = new StunParticle(positionX, positionY + StunParticle.STUN_PARTICLE_OFFSET);
+				GameObjectManager.getInstance().addGameObjectToCurrentMap(stunParticle);
+			}
 			playerState = PlayerState.STUNNED;
 			if(weaponObject != null) {
 				GameObjectManager.getInstance().destroyGameObjectImmediately(weaponObject);

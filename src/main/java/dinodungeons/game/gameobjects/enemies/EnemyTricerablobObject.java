@@ -15,6 +15,8 @@ import dinodungeons.game.gameobjects.enemies.utility.MovementChecker;
 import dinodungeons.game.gameobjects.particles.StunParticle;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
+import dinodungeons.sfx.sound.SoundEffect;
+import dinodungeons.sfx.sound.SoundManager;
 import lwjgladapter.physics.collision.RectCollider;
 import lwjgladapter.physics.collision.base.Collider;
 
@@ -168,8 +170,9 @@ public class EnemyTricerablobObject extends BaseEnemyObject {
 		stunTimer = EnemyConstants.ENEMY_STUN_TIME;
 		if(myState != EnemyState.STUNNED){
 			myState = EnemyState.STUNNED;
+			SoundManager.getInstance().playSoundEffect(SoundEffect.STUN_EFFECT);
 			if(stunParticle == null){
-				stunParticle = new StunParticle(positionX, positionY + 8);
+				stunParticle = new StunParticle(positionX, positionY + StunParticle.STUN_PARTICLE_OFFSET);
 				GameObjectManager.getInstance().addGameObjectToCurrentMap(stunParticle);
 			}
 		}
