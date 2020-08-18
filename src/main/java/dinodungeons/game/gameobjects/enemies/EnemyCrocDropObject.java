@@ -32,7 +32,7 @@ public class EnemyCrocDropObject extends BaseEnemyObject {
 	private MovementChecker movementChecker;
 	
 	public EnemyCrocDropObject(int positionX, int positionY) {
-		super(GameObjectTag.ENEMY_TRICERABLOB, positionX, positionY);
+		super(GameObjectTag.ENEMY_CROCDROP, positionX, positionY);
 		direction = DinoDungeonsConstants.directionDown;
 		showWalkingFrame = false;
 		resetDirectionChangeTimer();
@@ -78,6 +78,10 @@ public class EnemyCrocDropObject extends BaseEnemyObject {
 			if(GameObjectTag.enemyDamagingObjects.contains(tag)){
 				return true;
 			}
+		}
+		//Bat dies from Boomerang
+		if(hasCollisionWithObjectWithTag(GameObjectTag.ITEM_BOOMERANG)){
+			return true;
 		}
 		return false;
 	}

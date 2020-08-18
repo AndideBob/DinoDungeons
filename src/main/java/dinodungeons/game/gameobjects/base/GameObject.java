@@ -46,6 +46,15 @@ public abstract class GameObject {
 		}
 		return tags;
 	}
+
+	public final boolean hasCollisionWithObjectWithTag(Collection<GameObjectTag> tags){
+		for(GameObjectTag tag : tags){
+			if(!getCollisionsWithObjectsWithTag(tag).isEmpty()){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	public final boolean hasCollisionWithObjectWithTag(GameObjectTag... tags){
 		for(GameObjectTag tag : tags){

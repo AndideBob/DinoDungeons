@@ -10,7 +10,9 @@ import dinodungeons.game.data.DinoDungeonsConstants;
 import dinodungeons.game.data.gameplay.InputInformation;
 import dinodungeons.game.gameobjects.GameObjectManager;
 import dinodungeons.game.gameobjects.base.GameObjectTag;
+import dinodungeons.game.gameobjects.enemies.utility.EnemyConstants;
 import dinodungeons.game.gameobjects.enemies.utility.MovementChecker;
+import dinodungeons.game.gameobjects.particles.StunParticle;
 import dinodungeons.gfx.sprites.SpriteID;
 import dinodungeons.gfx.sprites.SpriteManager;
 import lwjgladapter.physics.collision.RectCollider;
@@ -28,6 +30,9 @@ public class EnemyTricerablobObject extends BaseEnemyObject {
 	private float movementInThisPhase;
 	
 	private long waitTimer;
+
+	private long stunTimer;
+	private StunParticle stunParticle;
 	
 	private RectCollider colliderHead;
 	private RectCollider colliderBack;
@@ -144,11 +149,29 @@ public class EnemyTricerablobObject extends BaseEnemyObject {
 	protected void updateAlways(long deltaTimeInMs, InputInformation inputInformation) {
 		updateColliders();
 		checkForDamage();
+		checkForStun();
 	}
 	
 	private void checkForDamage() {
 		if(hasDamagingCollision()) {
 			die();
+		}
+	}
+
+	private void checkForStun(){
+		if(hasCollisionWithObjectWithTag(GameObjectTag.ITEM_BOOMERANG)){
+			triggerStun();
+		}
+	}
+
+	private void triggerStun(){
+		stunTimer = EnemyConstants.ENEMY_STUN_TIME;
+		if(myState != EnemyState.STUNNED){
+			myState = EnemyState.STUNNED;
+			if(stunParticle == null){
+				stunParticle = new StunParticle(positionX, positionY + 8);
+				GameObjectManager.getInstance().addGameObjectToCurrentMap(stunParticle);
+			}
 		}
 	}
 
@@ -201,7 +224,15 @@ public class EnemyTricerablobObject extends BaseEnemyObject {
 
 	@Override
 	protected void updateStunned(long deltaTimeInMs, InputInformation inputInformation) {
-		// TODO Auto-generated method stub
+		stunTimer -= deltaTimeInMs;
+		if(stunTimer <= 0){
+			if(stunParticle != null){
+				stunParticle.stopStun();
+				stunParticle = null;
+			}
+			waitTimer = 0;
+			myState = EnemyState.IDLE;
+		}
 	}
 
 	@Override

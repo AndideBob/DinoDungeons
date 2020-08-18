@@ -50,6 +50,7 @@ public enum GameObjectTag {
 	ITEM_BOOMERANG(SortingLayers.sortingLayerEffects),
 	ITEM_FIRE(SortingLayers.sortingLayerEffects),
 	DAMAGING_IMMOVABLE(SortingLayers.sortingLayerStatic),
+	ENEMY_CROCDROP(SortingLayers.sortingLayerMoving),
 	ENEMY_BAT(SortingLayers.sortingLayerMoving),
 	ENEMY_TRICERABLOB(SortingLayers.sortingLayerMoving),
 	PARTICLE(SortingLayers.sortingLayerEffects),
@@ -57,7 +58,9 @@ public enum GameObjectTag {
 	PUSHABLE(SortingLayers.sortingLayerStatic),
 	CANDLE_BLOCK(SortingLayers.sortingLayerStatic);
 	
-	public static final Collection<GameObjectTag> playerDamagingObjects = Arrays.asList(EXPLOSION, DAMAGING_IMMOVABLE, ENEMY_BAT, ENEMY_TRICERABLOB);
+	public static final Collection<GameObjectTag> playerDamagingObjects = Arrays.asList(EXPLOSION, DAMAGING_IMMOVABLE, ENEMY_CROCDROP, ENEMY_BAT, ENEMY_TRICERABLOB);
+
+	public static final Collection<GameObjectTag> enemyObjects = Arrays.asList(ENEMY_CROCDROP, ENEMY_BAT, ENEMY_TRICERABLOB);
 	
 	public static final Collection<GameObjectTag> enemyDamagingObjects = Arrays.asList(EXPLOSION, ITEM_CLUB);
 	

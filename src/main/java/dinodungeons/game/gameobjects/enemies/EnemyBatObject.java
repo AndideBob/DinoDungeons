@@ -75,6 +75,10 @@ public class EnemyBatObject extends BaseEnemyObject {
 				return true;
 			}
 		}
+		//Bat dies from Boomerang
+		if(hasCollisionWithObjectWithTag(GameObjectTag.ITEM_BOOMERANG)){
+			return true;
+		}
 		return false;
 	}
 

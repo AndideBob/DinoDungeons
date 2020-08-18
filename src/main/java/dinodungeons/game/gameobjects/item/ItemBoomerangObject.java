@@ -74,7 +74,8 @@ public class ItemBoomerangObject extends GameObject {
 		float yChange = 0f;
 		checkPickUps();
 		if(flyingOut) {
-			if(hasCollisionWithObjectWithTag(GameObjectTag.WALL)
+			if(hasCollisionWithObjectWithTag(GameObjectTag.enemyObjects)
+					||hasCollisionWithObjectWithTag(GameObjectTag.WALL)
 					|| positionX <= 0f
 					|| positionX >= DinoDungeonsConstants.mapWidth
 					|| positionY <= 0f
